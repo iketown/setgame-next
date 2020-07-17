@@ -14,7 +14,7 @@ const Game = () => {
   console.log("user", user);
   const { gameId } = router.query;
   return (
-    <Grid container>
+    <Grid container style={{ marginTop: "1rem" }}>
       <Grid item xs={12} sm={9}>
         game board {width}
       </Grid>
