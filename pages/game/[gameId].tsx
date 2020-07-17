@@ -18,6 +18,7 @@ const Game = () => {
       <Grid item xs={12} sm={9}>
         game board {width}
         {process.env.FIREBASE_API_KEY}
+        {process.env.FIREBASE_AUTH_DOMAIN}
       </Grid>
       <Grid
         item
