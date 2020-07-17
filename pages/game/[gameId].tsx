@@ -17,6 +17,7 @@ const Game = () => {
     <Grid container style={{ marginTop: "1rem" }}>
       <Grid item xs={12} sm={9}>
         game board {width}
+        {process.env.FIREBASE_API_KEY}
       </Grid>
       <Grid
         item
