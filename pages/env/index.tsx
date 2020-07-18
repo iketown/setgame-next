@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@material-ui/icons";
+import { Grid } from "@material-ui/core";
 const Environment = () => {
   return (
     <Grid container style={{ marginTop: "1rem" }}>
