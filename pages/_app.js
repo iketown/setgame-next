@@ -1,4 +1,4 @@
-import { FirebaseCtxProvider } from "../context/firebaseCtx";
+import { FirebaseCtxProvider } from "../context/firebase/firebaseCtx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../src/theme";

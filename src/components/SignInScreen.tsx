@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StyledFBAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
-import { useFBCtx } from "../../context/firebaseCtx";
+import { useFBCtx } from "../../context/firebase/firebaseCtx";
 import { Button, Card } from "@material-ui/core";
 
 const uiConfig = {
