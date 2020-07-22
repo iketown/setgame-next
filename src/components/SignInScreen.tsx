@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import StyledFBAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
 import { Button, Card } from "@material-ui/core";
+import { useFBCtx } from "../../context/firebase/firebaseCtx";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -23,7 +23,7 @@ const uiConfig = {
 };
 
 const SignInScreen = () => {
-  const { firebase, user } = useFBCtx();
+  const { firebase } = useFBCtx();
 
   return (
     <div>

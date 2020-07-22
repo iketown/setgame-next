@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/functions";
@@ -9,8 +9,7 @@ import "firebase/analytics"; // If you need it
 
 type FirebaseCtxType = {
   firebase: typeof firebase;
-  user: firebase.User;
-  userProfile: UserProfile;
+
   db: firebase.database.Database;
   firestore: firebase.firestore.Firestore;
   functions: firebase.functions.Functions;
@@ -18,7 +17,7 @@ type FirebaseCtxType = {
 
 export const FirebaseCtx = createContext<Partial<FirebaseCtxType>>({});
 
-export let clientCredentials = {
+export const clientCredentials = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -28,7 +27,7 @@ export let clientCredentials = {
   appId: process.env.FIREBASE_APP_ID,
 };
 
-let fbConfig = clientCredentials;
+const fbConfig = clientCredentials;
 
 let useLocalEmulators = false;
 if (typeof window !== "undefined" && window.location.hostname === "localhost") {
@@ -52,48 +51,14 @@ if (useLocalEmulators) {
 
 export const FirebaseCtxProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
-  const [loadingUser, setLoadingUser] = useState(true); // Helpful, to update the UI accordingly.
+
   const db = firebase.database();
+
   const firestore = firebase.firestore();
   const functions = firebase.functions();
-  useEffect(() => {
-    // Listen authenticated user
-    const unsubscriber = firebase.auth().onAuthStateChanged(async (user) => {
-      try {
-        if (user) {
-          // User is signed in.
-          const { uid, displayName, email, photoURL } = user;
-          console.log("user is signed in", user);
-          const _userProfile = await firestore
-            .doc(`users/${uid}`)
-            .get()
-            .then((doc) => doc.data());
-          console.log("_userProfile", _userProfile);
-          if (!_userProfile || !_userProfile.exists) {
-            // create minimal user Profile
-            firestore
-              .doc(`users/${uid}`)
-              .set({ displayName, photoURL }, { merge: true });
-          }
-          setUser({ uid, displayName, email, photoURL });
-          setUserProfile(_userProfile);
-        } else setUser(null);
-      } catch (error) {
-        // Most probably a connection error. Handle appropriately.
-      } finally {
-        setLoadingUser(false);
-      }
-    });
-
-    // Unsubscribe auth listener on unmount
-    return () => unsubscriber();
-  }, []);
 
   return (
-    <FirebaseCtx.Provider
-      value={{ user, userProfile, firebase, db, firestore, functions }}
-    >
+    <FirebaseCtx.Provider value={{ firebase, db, firestore, functions }}>
       {children}
     </FirebaseCtx.Provider>
   );

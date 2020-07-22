@@ -11,7 +11,7 @@ function getSets(cards) {
     for (let j = i + 1; j < cards.length - 1; j++) {
       const card2 = cards[j];
       const card3 = getThirdCard(card1, card2);
-      const isASet = cards.slice(j + 1).includes(card3);
+      const isASet = card1 && card2 && card3 && cards.slice(j).includes(card3);
       if (isASet) {
         sets.push([card1, card2, card3]);
       }
@@ -24,10 +24,11 @@ function getSets(cards) {
 const colors = ["r", "g", "b"];
 const fills = ["e", "f", "s"];
 const quants = ["1", "2", "3"];
-const shapes = ["e", "r", "s"];
+const shapes = ["d", "r", "s"];
 const options = [colors, fills, quants, shapes];
 
 function getThirdCard(card1, card2) {
+  if (!card1 || !card2) return null;
   const card3 = [];
   for (let i in card1) {
     if (card1[i] === card2[i]) {

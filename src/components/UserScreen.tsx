@@ -7,14 +7,15 @@ import {
   Grid,
   Avatar,
 } from "@material-ui/core";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import SignInScreen from "./SignInScreen";
 import { AccountCircle } from "@material-ui/icons";
+import { useFBCtx } from "../../context/firebase/firebaseCtx";
+import { useUserCtx } from "../../context/user/UserCtx";
+import SignInScreen from "./SignInScreen";
 //
 //
 const UserScreen = () => {
   const [fakeNoUser, setFakeNoUser] = useState(false);
-  const { user, userProfile } = useFBCtx();
+  const { user, userProfile } = useUserCtx();
   const signedInContent = (
     <Grid container spacing={2}>
       <Grid
@@ -27,11 +28,11 @@ const UserScreen = () => {
           padding: "1rem",
         }}
       >
-        <Avatar variant="rounded" style={{ height: "4rem", width: "4rem" }}>
+        <Avatar style={{ height: "4rem", width: "4rem" }}>
           {userProfile?.photoURL ? (
             <img
               alt={userProfile.displayName}
-              width={"100%"}
+              width="100%"
               src={userProfile.photoURL}
             />
           ) : (

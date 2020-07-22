@@ -1,37 +1,54 @@
+import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
 
-import { useRouter } from "next/router";
-import SignInScreen from "../../src/components/SignInScreen";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import { Grid, Button } from "@material-ui/core";
-import UserScreen from "../../src/components/UserScreen";
+import { GameCtxProvider, useGameCtx } from "../../context/game/GameCtx";
+import GameBoard from "../../src/components/GameBoard/GameBoard";
+import GamePlayers from "../../src/components/GamePlayers/GamePlayers";
+import GameRequests from "../../src/components/GamePlayers/GameRequests";
+import Layout from "../../src/components/layout/Layout";
+import { useSetListener } from "../../src/hooks/useSetListener";
 import useWidth from "../../src/hooks/useWidth";
+
 //
 //
 const Game = () => {
-  const router = useRouter();
-
   const width = useWidth();
-  const { user, db, firebase, firestore } = useFBCtx();
-  const { gameId } = router.query;
-  console.log({ gameId });
+  const { state } = useGameCtx();
+  useSetListener();
+  // if (state.message?.type === "NO_GAME_FOUND") return <div>no game found</div>;
 
   return (
-    <Grid container style={{ marginTop: "1rem" }}>
-      <Grid item xs={12} sm={9} style={{ textAlign: "center" }}>
-        game board {width}
-      </Grid>
-      <Grid item xs={12}></Grid>
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        style={{ display: "flex", justifyContent: "center" }}
-      >
-        <UserScreen />
-      </Grid>
-    </Grid>
+    <Layout>
+      <Container maxWidth="md" fixed>
+        <Grid
+          container
+          style={{ marginTop: "1rem", border: "1px dotted orange" }}
+        >
+          <Grid item xs={12} sm={9} style={{ textAlign: "center" }}>
+            <GameBoard />
+            <Typography variant="body2">
+              cards in deck: {state.deckCards.length}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <GamePlayers />
+            <GameRequests />
+            {/* <pre>{JSON.stringify(state.newCards, null, 1)}</pre> */}
+            {/* <pre>{JSON.stringify(state.successSet, null, 1)}</pre> */}
+            {/* <UserScreen /> */}
+          </Grid>
+        </Grid>
+      </Container>
+    </Layout>
   );
 };
 
-export default Game;
+const WrappedGame = () => {
+  return (
+    <GameCtxProvider>
+      <Game />
+    </GameCtxProvider>
+  );
+};
+
+export default WrappedGame;

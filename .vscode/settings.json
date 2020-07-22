@@ -1,3 +1,7 @@
 {
-  "workbench.colorTheme": "Cobalt2"
+  "workbench.colorTheme": "Visual Studio Dark",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true
 }
