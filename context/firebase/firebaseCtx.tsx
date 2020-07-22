@@ -41,7 +41,6 @@ if (!firebase.apps.length) {
 }
 
 if (useLocalEmulators) {
-  console.log("using EMULATORS");
   firebase.functions().useFunctionsEmulator("http://localhost:5001");
   firebase.firestore().settings({
     host: "localhost:8080",

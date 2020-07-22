@@ -1,7 +1,7 @@
+import firebase from "firebase";
 import React, { useState } from "react";
 import StyledFBAuth from "react-firebaseui/StyledFirebaseAuth";
-import firebase from "firebase";
-import { Button, Card } from "@material-ui/core";
+
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
 
 const uiConfig = {
@@ -23,11 +23,11 @@ const uiConfig = {
 };
 
 const SignInScreen = () => {
-  const { firebase } = useFBCtx();
+  const { firebase: fb } = useFBCtx();
 
   return (
     <div>
-      <StyledFBAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+      <StyledFBAuth uiConfig={uiConfig} firebaseAuth={fb.auth()} />
     </div>
   );
 };

@@ -41,20 +41,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       .onAuthStateChanged(async (user: firebaseScope.User) => {
         try {
           if (user) {
-            // User is signed in.
-            const { uid, displayName, email, photoURL } = user;
-            const _userProfile = await firestore
-              .doc(`users/${uid}`)
-              .get()
-              .then((doc) => doc.data());
-            // if (!_userProfile || !_userProfile.exists) {
-            //   // create minimal user Profile
-            //   firestore
-            //     .doc(`users/${uid}`)
-            //     .set({ displayName, photoURL }, { merge: true });
-            // }
             setUser(user);
-            setUserProfile(_userProfile);
           } else setUser(null);
         } catch (error) {
           // Most probably a connection error. Handle appropriately.
@@ -69,8 +56,19 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!user?.uid) return;
     const userProfileRef = firestore.doc(`users/${user.uid}`);
+    const setupProfile = async (userFull) => {
+      const {
+        uid,
+        photoURL = "noPhoto",
+        displayName = "noDisplayName",
+      } = userFull;
+      await userProfileRef.set({ uid, photoURL, displayName });
+    };
     const unsub = userProfileRef.onSnapshot((doc) => {
-      console.log("updating my profile", doc.data());
+      if (!doc.exists) {
+        console.log("setting up profile 1st time");
+        setupProfile(user);
+      }
       setUserProfile(doc.data());
     });
     return unsub;

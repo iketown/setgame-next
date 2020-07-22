@@ -16,6 +16,7 @@ export const useGame = () => {
   };
 
   const createGame = async (gamePrivate?: boolean) => {
+    console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
     try {
       const result: {
@@ -23,9 +24,9 @@ export const useGame = () => {
       } = await createGameFxn({
         isPrivate: gamePrivate,
       });
-      console.log("result", result);
       // eslint-disable-next-line no-shadow
       const { gameId } = result.data;
+      console.log("createGame response", result);
       navToGame(gameId);
     } catch (error) {
       console.error("error", error);

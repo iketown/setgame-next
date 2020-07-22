@@ -12,13 +12,16 @@ import {
 
 import { useGameCtx } from "context/game/GameCtx";
 import { useUserCtx } from "context/user/UserCtx";
+import SignInScreen from "@components/SignInScreen";
+import { useFBCtx } from "context/firebase/firebaseCtx";
 import MaxCardSelect from "../gameOptions/MaxCardsSelect";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
 
 const UserSettings = () => {
-  const { optionsDispatch, optionsState } = useGameCtx();
+  const { firebase } = useFBCtx();
   const {
+    user,
     userState,
     userDispatch,
     userProfile,
@@ -31,6 +34,7 @@ const UserSettings = () => {
     await updateUserPrefs(values);
     handleCancel();
   };
+
   return (
     <Dialog
       maxWidth="sm"
@@ -38,48 +42,57 @@ const UserSettings = () => {
       open={userState.dialogOpen}
       onClose={handleCancel}
     >
-      <Form
-        onSubmit={onSubmit}
-        initialValues={{ ...userDefaults, ...userProfile }}
-      >
-        {({ handleSubmit, values, errors, submitting }) => {
-          return (
-            <form onSubmit={handleSubmit}>
-              <DialogTitle>User Settings</DialogTitle>
-              <DialogContent>
-                <Grid container spacing={2}>
-                  <Grid container item xs={6} sm={4}>
-                    <ColorPicker />
+      {user ? (
+        <Form
+          onSubmit={onSubmit}
+          initialValues={{ ...userDefaults, ...userProfile }}
+        >
+          {({ handleSubmit, values, errors, submitting }) => {
+            return (
+              <form onSubmit={handleSubmit}>
+                <DialogTitle>User Settings</DialogTitle>
+                <DialogContent>
+                  <Grid container spacing={2}>
+                    <Grid container item xs={6} sm={4}>
+                      <ColorPicker />
+                    </Grid>
+                    <Grid item xs={6} sm={8}>
+                      <DisplayNameInput />
+                    </Grid>
+                    <Grid item xs={12} sm={6} />
+                    <Grid item xs={12} sm={6}>
+                      {/* <MaxCardSelect /> */}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6} sm={8}>
-                    <DisplayNameInput />
-                  </Grid>
-                  <Grid item xs={12} sm={6} />
-                  <Grid item xs={12} sm={6}>
-                    {/* <MaxCardSelect /> */}
-                  </Grid>
-                </Grid>
-              </DialogContent>
-              <DialogActions>
-                <Button color="secondary" onClick={handleCancel}>
-                  cancel
-                </Button>
-                <Button
-                  variant="outlined"
-                  disabled={submitting}
-                  color="primary"
-                  type="submit"
-                >
-                  save
-                </Button>
-              </DialogActions>
-              <pre style={{ fontSize: 10 }}>
-                {JSON.stringify(values, null, 2)}
-              </pre>
-            </form>
-          );
-        }}
-      </Form>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => firebase.auth().signOut()}>
+                    sign out
+                  </Button>
+                  <Button color="secondary" onClick={handleCancel}>
+                    cancel
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    disabled={submitting}
+                    color="primary"
+                    type="submit"
+                  >
+                    save
+                  </Button>
+                </DialogActions>
+                <pre style={{ fontSize: 10 }}>
+                  {JSON.stringify(values, null, 2)}
+                </pre>
+              </form>
+            );
+          }}
+        </Form>
+      ) : (
+        <DialogContent>
+          <SignInScreen />
+        </DialogContent>
+      )}
     </Dialog>
   );
 };
