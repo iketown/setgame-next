@@ -9,7 +9,6 @@
   "dependencies": {
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
-    "@types/moment": "2.13.0",
     "@types/styled-components": "5.1.1",
     "final-form": "4.20.1",
     "firebase": "7.11.0",
