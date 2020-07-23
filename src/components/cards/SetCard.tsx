@@ -1,28 +1,25 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useRef } from "react";
 import styled from "styled-components";
+import { motion, Variants } from "framer-motion";
 import colors from "./colors";
 import shapes from "./shapes";
+import { hexToRgbA } from "../../utils/hexToRgbA";
 
-const Card = styled.div<{
+const StyledCard = styled.div<{
   rotation: number;
   width: number;
-  isSelected?: boolean;
-  isCheater?: boolean;
+  border?: string;
 }>`
   width: ${(p) => p.width}px;
   height: ${(p) => p.width * 1.4}px;
-  border: ${(p) =>
-    p.isSelected
-      ? `3px solid red`
-      : p.isCheater
-      ? "2px solid blue"
-      : "1px solid lightgrey"};
+  box-shadow: 1px 1px 2px #0000003d;
+  border: ${(p) => p.border || "1px solid rgba(0, 0, 0, 0.1)"};
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 3px 3px 5px #00000038;
   background: white;
   transform: rotate(${(p) => p.rotation}deg);
   .card {
@@ -38,9 +35,9 @@ const SetCard: React.FC<{
   cardId: string;
   width?: number;
   horizontal?: boolean;
-  isSelected?: boolean;
-  isCheater?: boolean;
-}> = ({ cardId, width, horizontal, isSelected, isCheater }) => {
+  border?: string;
+}> = ({ cardId, width, horizontal, border }) => {
+  if (!cardId) return null;
   const [color, fill, quant, shape] = cardId.split("");
   const rotationRef = useRef(Math.random() * 5 - 2.5);
   const Shape = shapes[shape];
@@ -50,20 +47,20 @@ const SetCard: React.FC<{
   const stroke = colors[color];
   const style = horizontal ? { transform: "rotate(90deg)" } : {};
   return (
-    <Card
-      {...{ isSelected, isCheater }}
+    <StyledCard
       rotation={rotationRef.current}
       width={width || 100}
-      style={style}
+      style={{ ...style }}
+      border={border}
     >
       {Array.from({ length: Number(quant) }).map((_, index) => {
         return (
-          <div key={index} className="card">
+          <div key={`${cardId}${index}`} className="card">
             <Shape stroke={stroke} fill={fillProp} stripes={stripes} />
           </div>
         );
       })}
-    </Card>
+    </StyledCard>
   );
 };
 

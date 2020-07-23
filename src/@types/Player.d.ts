@@ -1,8 +1,9 @@
 type PlayerProfile = {
   uid: string;
   displayName: string;
-  photoURL: string;
-  userColor: PlayerColorOption;
+  photoURL?: string;
+  userColor?: PlayerColorOption;
+  faceImageNumber?: number;
 };
 
 type GamePlayer = {

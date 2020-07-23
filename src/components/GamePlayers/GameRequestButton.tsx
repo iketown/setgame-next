@@ -8,7 +8,7 @@ import { useGame } from "../../hooks/useGame";
 
 const GameRequestButton = () => {
   const { user } = useUserCtx();
-  const { isPlayer, gameRef } = useGameCtx();
+  const { isPlayer, gameRef, gameRequests } = useGameCtx();
   const { requestToJoin } = useGame();
 
   useEffect(() => {
@@ -24,14 +24,16 @@ const GameRequestButton = () => {
   }, [isPlayer, user, gameRef]);
   if (isPlayer) return null;
   if (!user?.uid) return null;
+  const isWaiting = gameRequests && gameRequests[user.uid];
   return (
     <>
-      <LinearProgress />
+      {isWaiting && <LinearProgress />}
       <br />
       <Button
         onClick={() => requestToJoin()}
         variant="contained"
         color="primary"
+        disabled={isWaiting}
       >
         Request to Join
       </Button>

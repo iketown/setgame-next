@@ -20,17 +20,40 @@ export const gameReducer = (
       const { message } = action.payload;
       return { ...state, message };
     }
+    case "REARRANGE_BOARD": {
+      const { boardCards } = action.payload;
+      if (!boardCards) return state;
+      return { ...state, boardCards };
+    }
+    case "SHOW_SUCCESS_SET": {
+      const { successSet } = action.payload;
+      return { ...state, successSet };
+    }
     case "UPDATE_BOARD": {
       const {
         boardCards = state.boardCards,
         deckCards = state.deckCards,
         sets = state.sets,
-        successSet = state.successSet,
       } = action.payload;
       const newCards = boardCards.filter((c) => !state.boardCards.includes(c));
-      const setCount = getSets(boardCards).length;
-      console.log({ setCount });
-      return { ...state, boardCards, deckCards, sets, successSet, newCards };
+      const replacementCards = [...newCards];
+      const hollowBoardCards = state.boardCards.map((c, i) =>
+        boardCards.includes(c) ? c : null
+      );
+      let nextBoardCards = hollowBoardCards.map(
+        (c) => c || replacementCards.pop()
+      );
+      if (!nextBoardCards.length) {
+        nextBoardCards = boardCards;
+      }
+      return {
+        ...state,
+        boardCards: nextBoardCards,
+        deckCards,
+        sets,
+        successSet: undefined,
+        newCards,
+      };
     }
     case "CLEAR_SET": {
       return { ...state, mySet: [], cheatCards: [] };

@@ -24,33 +24,16 @@ interface PlayerProfiles {
 }
 
 const GamePlayers = () => {
-  const { gameRef, isPlayer } = useGameCtx();
-  const { requestToJoin } = useGame();
+  const { gameRef, isPlayer, playerProfiles } = useGameCtx();
   const { user } = useUserCtx();
-  const [players, setPlayers] = useState<PlayersObj>();
-  const { setUserIds, userProfiles } = useUserProfiles();
-  useEffect(() => {
-    const playersRef = gameRef.child("players");
-    playersRef.on("value", (snap) => {
-      setPlayers(snap.val());
-    });
-    return () => playersRef.off();
-  }, [gameRef]);
-
-  useEffect(() => {
-    if (!players || !user) return;
-    const playerIds = Object.entries(players).map(([uid]) => uid);
-    setUserIds(playerIds);
-  }, [players, user]);
 
   return (
     <div>
       <Typography variant="subtitle2">Players</Typography>
       <List>
-        {players &&
-          Object.entries(players).map(([uid, { admin, joinedAt }]) => {
-            const userProfile = userProfiles && userProfiles[uid];
-            return <UserDisplay key={uid} user={userProfile} />;
+        {playerProfiles &&
+          Object.entries(playerProfiles).map(([uid, playerProfile]) => {
+            return <UserDisplay key={uid} user={playerProfile} />;
           })}
       </List>
       {/* <pre style={{ fontSize: 8 }}>{JSON.stringify(players, null, 1)}</pre> */}

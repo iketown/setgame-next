@@ -8,7 +8,7 @@ import { useFBCtx } from "../../context/firebase/firebaseCtx";
 //
 export const useUserProfiles = () => {
   const [userProfiles, setUserProfiles] = useState<{
-    [uid: string]: UserProfile;
+    [uid: string]: PlayerProfile;
   }>({});
   const [userIds, setUserIds] = useState<string[]>([]);
   const { firestore: fs } = useFBCtx();
@@ -19,7 +19,7 @@ export const useUserProfiles = () => {
       .collection("users")
       .where(firestore.FieldPath.documentId(), "in", userIds);
     const unsubscribe = usersRef.onSnapshot((snap) => {
-      const _userProfiles: { [uid: string]: UserProfile } = {};
+      const _userProfiles: { [uid: string]: PlayerProfile } = {};
       if (!snap.empty) {
         snap.forEach((doc) => {
           // @ts-ignore

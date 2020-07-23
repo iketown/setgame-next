@@ -1,22 +1,22 @@
-import React from "react";
-import { Form } from "react-final-form";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
-  Grid,
-  Button,
-} from "@material-ui/core";
-
-import { useGameCtx } from "context/game/GameCtx";
-import { useUserCtx } from "context/user/UserCtx";
 import SignInScreen from "@components/SignInScreen";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+} from "@material-ui/core";
 import { useFBCtx } from "context/firebase/firebaseCtx";
-import MaxCardSelect from "../gameOptions/MaxCardsSelect";
+import { useUserCtx } from "context/user/UserCtx";
+import React, { useState } from "react";
+import { Form } from "react-final-form";
+
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
+import FaceDialog from "./FaceDialog";
+import FaceDrawing from "../faces/FaceDrawing";
 
 const UserSettings = () => {
   const { firebase } = useFBCtx();
@@ -34,7 +34,7 @@ const UserSettings = () => {
     await updateUserPrefs(values);
     handleCancel();
   };
-
+  const [faceDialogOpen, setFaceDialogOpen] = useState(false);
   return (
     <Dialog
       maxWidth="sm"
@@ -59,7 +59,11 @@ const UserSettings = () => {
                     <Grid item xs={6} sm={8}>
                       <DisplayNameInput />
                     </Grid>
-                    <Grid item xs={12} sm={6} />
+                    <Grid item xs={12} sm={6}>
+                      <IconButton onClick={() => setFaceDialogOpen(true)}>
+                        <FaceDrawing faceImageNumber={values.faceImageNumber} />
+                      </IconButton>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                       {/* <MaxCardSelect /> */}
                     </Grid>
@@ -81,6 +85,10 @@ const UserSettings = () => {
                     save
                   </Button>
                 </DialogActions>
+                <FaceDialog
+                  open={faceDialogOpen}
+                  close={() => setFaceDialogOpen(false)}
+                />
                 <pre style={{ fontSize: 10 }}>
                   {JSON.stringify(values, null, 2)}
                 </pre>

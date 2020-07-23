@@ -7,13 +7,16 @@ import {
   Card,
   CircularProgress,
 } from "@material-ui/core";
+import styled from "styled-components";
+// import { faceSvgs } from "../faces/faceIndex";
 import { colorsObj } from "../GameBoard/playerColors";
+import FaceDrawing from "../faces/FaceDrawing";
 
 interface UserDisplayI {
-  user: UserProfile;
+  user: PlayerProfile;
 }
 
-const UserDisplay: React.FC<UserDisplayI> = ({ user }) => {
+const UserDisplay: React.FC<UserDisplayI> = ({ user, children }) => {
   if (!user) return <CircularProgress />;
   const userColorString = user.userColor || "grey";
   const { light, med, dark } = colorsObj[userColorString];
@@ -26,11 +29,12 @@ const UserDisplay: React.FC<UserDisplayI> = ({ user }) => {
           marginBottom: "10px",
         }}
       >
-        <ListItem dense>
-          <ListItemAvatar>
-            <Avatar style={{ background: med }} />
+        <ListItem dense style={{ padding: 0 }}>
+          <ListItemAvatar style={{ marginRight: "1rem" }}>
+            <FaceDrawing height="3rem" faceImageNumber={user.faceImageNumber} />
           </ListItemAvatar>
           <ListItemText primary={user.displayName} />
+          {children}
         </ListItem>
       </Card>
       {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}

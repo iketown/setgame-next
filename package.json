@@ -9,6 +9,7 @@
   "dependencies": {
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
+    "@svgr/webpack": "5.4.0",
     "@types/styled-components": "5.1.1",
     "final-form": "4.20.1",
     "firebase": "7.11.0",
@@ -43,6 +44,7 @@
     "eslint-plugin-react": "7.20.3",
     "prettier": "2.0.5",
     "tslint-react-hooks": "2.2.2",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "url-loader": "4.1.0"
   }
 }

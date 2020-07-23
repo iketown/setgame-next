@@ -12,6 +12,7 @@ import React, {
 import moment from "moment";
 
 import { useUserCtx } from "context/user/UserCtx";
+import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import {
   gameOptionsReducer,
   initialGOState,
@@ -33,6 +34,8 @@ const GameCtx = createContext<GameContextType>({
 });
 
 export const GameCtxProvider: React.FC = ({ children }) => {
+  const router = useRouter();
+  const gameId = router.query.gameId as string;
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [optionsState, optionsDispatch] = useReducer(
     gameOptionsReducer,
@@ -40,15 +43,15 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   );
   const [isGameAdmin, setIsGameAdmin] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
-
-  const router = useRouter();
-  const gameId = router.query.gameId as string;
+  const [gameRequests, setGameRequests] = useState<GameRequests>();
   const { db } = useFBCtx();
   const { user } = useUserCtx();
   const gameRef = useMemo(() => {
     return db.ref(`games/${gameId}`);
   }, [gameId]);
 
+  const { players, playerProfiles } = usePlayerProfiles(gameId);
+  // const playerProfiles = {};
   // console.log("render GameCtx", renderCount.current++);
 
   const updateWithSuccessDelay = useCallback((snapValue: any) => {
@@ -60,12 +63,18 @@ export const GameCtxProvider: React.FC = ({ children }) => {
       successSet = {},
       sets,
     } = snapValue;
-    const updateBoard = () => {
+
+    const fullUpdateBoard = () => {
       dispatch({
         type: "UPDATE_BOARD",
         payload: { boardCards, deckCards, sets, successSet },
       });
     };
+    const successCardsOnlyUpdateBoard = () => {
+      dispatch({ type: "SHOW_SUCCESS_SET", payload: { successSet } });
+      // dispatch({ type: "UPDATE_BOARD", payload: { successSet } });
+    };
+
     optionsDispatch({
       type: "SET_OPTION",
       payload: { optionUpdates: options },
@@ -74,10 +83,10 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     const timeSince = moment().diff(successSet.playedAt);
     const delayMs = Math.max(0, delay - timeSince);
     if (delayMs > 0) {
-      dispatch({ type: "UPDATE_BOARD", payload: { successSet } });
-      setTimeout(updateBoard, delayMs);
+      successCardsOnlyUpdateBoard();
+      setTimeout(fullUpdateBoard, delayMs);
     } else {
-      updateBoard();
+      fullUpdateBoard();
     }
   }, []);
 
@@ -100,13 +109,13 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         },
       });
       const snapValues = snapshot.val();
-      const { players } = snapValues;
-      console.log("players in game ctx", players);
+      const { players: _players, joinRequests } = snapValues;
       updateWithSuccessDelay(snapValues);
-      if (user?.uid && players && players[user.uid]) {
+      if (user?.uid && _players && _players[user.uid]) {
         setIsPlayer(true);
-        if (players[user.uid].admin) setIsGameAdmin(true);
+        if (_players[user.uid].admin) setIsGameAdmin(true);
       }
+      setGameRequests(joinRequests);
     });
     return () => gameRef.off();
   }, [db, gameRef, user]);
@@ -122,6 +131,8 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameRef,
         isGameAdmin,
         isPlayer,
+        playerProfiles,
+        gameRequests,
       }}
       {...{ children }}
     />

@@ -24,6 +24,8 @@ type GameActionType =
   | "CLEAR_SET"
   | "CANCEL_SET"
   | "UPDATE_BOARD"
+  | "SHOW_SUCCESS_SET"
+  | "REARRANGE_BOARD"
   | "SET_MESSAGE"
   | "TOGGLE_HIDE"
   | "TOGGLE_EXTRA"
@@ -54,4 +56,10 @@ type GameContextType = {
   optionsState: GOState;
   optionsDispatch: React.Dispatch<GOAction>;
   gameRef?: firebase.database.Reference;
+  playerProfiles?: { [uid: string]: PlayerProfile };
+  gameRequests?: GameRequests;
 };
+
+interface GameRequests {
+  [uid: string]: { requestTime: string; requesterProfile: PlayerProfile };
+}

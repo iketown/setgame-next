@@ -35,7 +35,7 @@ const GameBoard = () => {
     if (sourceIndex === targetIndex) return;
     const nextState = swap(boardCards, sourceIndex, targetIndex);
     console.log({ boardCards, nextState });
-    dispatch({ type: "UPDATE_BOARD", payload: { boardCards: nextState } });
+    dispatch({ type: "REARRANGE_BOARD", payload: { boardCards: nextState } });
   };
 
   const boxesPerRow = row5 ? 5 : 4;
@@ -61,7 +61,7 @@ const GameBoard = () => {
     <GridContextProvider onChange={onChange}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          {noSets && (
+          {boardCards.length && noSets && (
             <div>
               <Typography>NO SETS!</Typography>
               <Button
@@ -73,31 +73,26 @@ const GameBoard = () => {
               </Button>
             </div>
           )}
-          <motion.div
-            // variants={parentVariants}
-            animate={state.cheatCards.length ? "notSelected" : "normal"}
+          <GridDropZone
+            id="board"
+            boxesPerRow={boxesPerRow}
+            rowHeight={rowHeight}
+            style={{
+              width: `${(cardWidth + margin) * boxesPerRow}px`,
+              height: `${(cardWidth * 1.4 + margin) * 3}px`,
+            }}
           >
-            <GridDropZone
-              id="board"
-              boxesPerRow={boxesPerRow}
-              rowHeight={rowHeight}
-              style={{
-                width: `${(cardWidth + margin) * boxesPerRow}px`,
-                height: `${(cardWidth * 1.4 + margin) * 3}px`,
-              }}
-            >
-              {boardCards.map((cardId, cardIndex) => {
-                return (
-                  <GridItem
-                    key={cardId}
-                    onClick={(e) => handleClickCard(e, cardId)}
-                  >
-                    <GameBoardCard {...{ cardId, cardIndex }} />
-                  </GridItem>
-                );
-              })}
-            </GridDropZone>
-          </motion.div>
+            {boardCards.map((cardId, cardIndex) => {
+              return (
+                <GridItem
+                  key={cardId}
+                  onClick={(e) => handleClickCard(e, cardId)}
+                >
+                  <GameBoardCard {...{ cardId, cardIndex }} />
+                </GridItem>
+              );
+            })}
+          </GridDropZone>
         </Grid>
         <Grid>
           {state.sets?.sets?.map((set, i) => {
