@@ -24,7 +24,7 @@ const GameRequestButton = () => {
   }, [isPlayer, user, gameRef]);
   if (isPlayer) return null;
   if (!user?.uid) return null;
-  const isWaiting = gameRequests && gameRequests[user.uid];
+  const isWaiting = !!(gameRequests && gameRequests[user.uid]);
   return (
     <>
       {isWaiting && <LinearProgress />}
