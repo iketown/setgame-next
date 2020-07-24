@@ -15,10 +15,13 @@ export const useSetListener = () => {
     if (isValid) {
       const submitSet = functions.httpsCallable("submitSet");
       submitSet({ mySet, gameId }).then((response) => {
-        console.log("submitSet response", response);
         dispatch({ type: "CLEAR_SET", payload: {} });
       });
     } else {
+      dispatch({ type: "FAIL_SET", payload: { set: mySet } });
+      // setTimeout(() => {
+      //   dispatch({ type: "FAIL_SET", payload: { set: undefined } });
+      // }, 2000);
       dispatch({ type: "CLEAR_SET", payload: {} });
     }
   }, [mySet]);

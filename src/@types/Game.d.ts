@@ -3,11 +3,13 @@ type GameState = {
   deckCards: string[];
   cheatCards: string[];
   successSet?: SuccessSet;
+  failSet?: string[];
   newCards?: string[];
   sets: { length: 0; sets: string[][] };
   mySet: string[];
   declaring: boolean;
   message?: GameMessage | null;
+  playedSets?: PlayedSets;
 };
 interface SuccessSet {
   set: string[];
@@ -29,7 +31,8 @@ type GameActionType =
   | "SET_MESSAGE"
   | "TOGGLE_HIDE"
   | "TOGGLE_EXTRA"
-  | "TOGGLE_CHEATER";
+  | "TOGGLE_CHEATER"
+  | "FAIL_SET";
 
 interface GameMessage {
   type: "NO_GAME_FOUND" | "NOT_A_SET" | "NOT_A_PLAYER";
@@ -45,6 +48,7 @@ interface GameActionPayload {
   deckCards?: string[];
   message?: GameMessage;
   successSet?: SuccessSet;
+  playedSets?: PlayedSets;
 }
 
 type GameContextType = {
@@ -55,11 +59,16 @@ type GameContextType = {
   dispatch: React.Dispatch<GameAction>;
   optionsState: GOState;
   optionsDispatch: React.Dispatch<GOAction>;
-  gameRef?: firebase.database.Reference;
   playerProfiles?: { [uid: string]: PlayerProfile };
   gameRequests?: GameRequests;
+  gameOver?: boolean;
+  gameStarted?: boolean;
 };
 
 interface GameRequests {
   [uid: string]: { requestTime: string; requesterProfile: PlayerProfile };
+}
+
+interface PlayedSets {
+  [uid: string]: { playedAt: string; set: string[] }[];
 }

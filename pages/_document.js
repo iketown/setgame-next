@@ -22,11 +22,11 @@ class MyDocument extends Document {
       return {
         ...initialProps,
         styles: (
-          <React.Fragment>
+          <>
             {initialProps.styles}
             {materialSheets.getStyleElement()}
             {styledComponentsSheet.getStyleElement()}
-          </React.Fragment>
+          </>
         ),
       };
     } finally {

@@ -1,45 +1,45 @@
-import { Container, Grid, Typography } from "@material-ui/core";
+import GameBoard from "@components/GameBoard/GameBoard";
+import PreGame from "@components/GameBoard/PreGame";
+import GameOver from "@components/GameMessages/GameOver";
+import NotASet from "@components/GameMessages/NotASet";
+import GamePlayers from "@components/GamePlayers/GamePlayers";
+import GameRequests from "@components/GamePlayers/GameRequestsList";
+import Layout from "@components/layout/Layout";
+import PlayedSets from "@components/PlayedSets/PlayedSets";
+import { Container, Grid } from "@material-ui/core";
 import React from "react";
+import { NextPage } from "next";
 
 import { GameCtxProvider, useGameCtx } from "../../context/game/GameCtx";
-import GameBoard from "../../src/components/GameBoard/GameBoard";
-import GamePlayers from "../../src/components/GamePlayers/GamePlayers";
-import GameRequests from "../../src/components/GamePlayers/GameRequestsList";
-import Layout from "../../src/components/layout/Layout";
 import { useSetListener } from "../../src/hooks/useSetListener";
-import useWidth from "../../src/hooks/useWidth";
 
 //
 //
 const Game = () => {
-  const width = useWidth();
-  const { state } = useGameCtx();
   useSetListener();
-
+  const { gameStarted } = useGameCtx();
+  if (!gameStarted) return <PreGame />;
   return (
     <Layout>
-      <Container maxWidth="md" fixed>
-        <Grid
-          container
-          style={{ marginTop: "1rem", border: "1px dotted orange" }}
-        >
-          <Grid item xs={12} sm={9} style={{ textAlign: "center" }}>
+      <Container maxWidth="lg" fixed>
+        <Grid container style={{ marginTop: "1rem" }} spacing={2}>
+          <Grid
+            item
+            xs={12}
+            md={9}
+            style={{
+              textAlign: "center",
+              position: "relative",
+            }}
+          >
             <GameBoard />
-            <Typography variant="body2">
-              cards in deck: {state.deckCards.length}
-            </Typography>
+            <NotASet />
+            <GameOver />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} md={3}>
             <GamePlayers />
             <GameRequests />
-            {/* <pre>newCards</pre>
-            <pre>{JSON.stringify(state.newCards, null, 1)}</pre>
-            <pre>boardCards</pre>
-            <pre>{JSON.stringify(state.boardCards, null, 1)}</pre>
-            <pre>successSet</pre>
-            <pre>{JSON.stringify(state.successSet, null, 1)}</pre> */}
-            {/* <pre>{JSON.stringify(state.successSet, null, 1)}</pre> */}
-            {/* <UserScreen /> */}
+            <PlayedSets />
           </Grid>
         </Grid>
       </Container>
@@ -47,11 +47,13 @@ const Game = () => {
   );
 };
 
-const WrappedGame = () => {
+const WrappedGame: NextPage<{ origin?: string }> = ({ origin }) => {
   return (
-    <GameCtxProvider>
-      <Game />
-    </GameCtxProvider>
+    <div>
+      <GameCtxProvider origin={origin}>
+        <Game />
+      </GameCtxProvider>
+    </div>
   );
 };
 

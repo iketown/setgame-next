@@ -1,9 +1,10 @@
 import React, { useMemo, useEffect } from "react";
+import { useUserCtx } from "context/user/UserCtx";
 import useWidth from "./useWidth";
 import { useGameCtx } from "../../context/game/GameCtx";
-import SetCard from "../components/cards/SetCard";
 import useEventListener from "./useEventListener";
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
+
 export const useCards = () => {
   const {
     state: { boardCards, mySet },
@@ -11,6 +12,7 @@ export const useCards = () => {
     gameId,
     isPlayer,
   } = useGameCtx();
+  const { userProfile } = useUserCtx();
   const { functions } = useFBCtx();
 
   useEventListener("keydown", (e) => {
@@ -78,10 +80,13 @@ export const useCards = () => {
       });
       return;
     }
-    if (event.metaKey) {
+    if (event.metaKey || userProfile.singleClickToSelect) {
       dispatch({ type: "TOGGLE_CARD", payload: { card } });
     } else {
     }
+  };
+  const handleDoubleClick = (card: string) => {
+    dispatch({ type: "TOGGLE_CARD", payload: { card } });
   };
 
   const handleShuffle = () => {
@@ -89,6 +94,15 @@ export const useCards = () => {
     shuffle({ gameId });
   };
 
-  useEffect(() => {}, []);
-  return { cardWidth, rowHeight, row5, margin, handleClickCard, handleShuffle };
+  return {
+    cardWidth,
+    rowHeight,
+    row5,
+    margin,
+    handleClickCard,
+    handleDoubleClick,
+    handleShuffle,
+  };
 };
+
+export default useCards;

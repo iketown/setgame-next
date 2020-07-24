@@ -48,12 +48,12 @@ const FaceDialog: React.FC<FaceDialogI> = ({ open, close }) => {
       <DialogTitle>title</DialogTitle>
       <DialogContent>
         <FaceGrid>
-          {[...Array(80)].map((_, index) => {
-            const isSelected = index + 1 === value;
+          {[...Array(81)].map((_, index) => {
+            const isSelected = index === value;
             return (
               <div key={index} className={isSelected ? "selected box" : "box"}>
-                <IconButton onClick={() => handleSelectFace(index + 1)}>
-                  <FaceDrawing faceImageNumber={index + 1} />
+                <IconButton onClick={() => handleSelectFace(index)}>
+                  <FaceDrawing faceImageNumber={index} />
                 </IconButton>
               </div>
             );

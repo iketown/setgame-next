@@ -7,11 +7,14 @@ import { useGameCtx } from "context/game/GameCtx";
 import { useUserCtx } from "context/user/UserCtx";
 import UserSettings from "@components/UserSettings/UserSettings";
 import { useLayoutStyles } from "./layoutStyles";
+import useWidth from "../../hooks/useWidth";
+import FaceDrawing from "../faces/FaceDrawing";
 
 const Layout: React.FC = ({ children }) => {
   const classes = useLayoutStyles();
+  const width = useWidth();
   const { optionsDispatch, optionsState } = useGameCtx();
-  const { userDispatch } = useUserCtx();
+  const { userDispatch, userProfile } = useUserCtx();
   return (
     <div>
       <div className={classes.grow}>
@@ -19,7 +22,7 @@ const Layout: React.FC = ({ children }) => {
           <Toolbar>
             <Link href="/">
               <Typography className={classes.title} variant="h6" noWrap>
-                tre
+                tre {width}
               </Typography>
             </Link>
             <div className={classes.grow} />
@@ -33,7 +36,14 @@ const Layout: React.FC = ({ children }) => {
                 color="inherit"
                 onClick={() => userDispatch({ type: "OPEN_SETTINGS" })}
               >
-                <FaUserCircle />
+                {typeof userProfile?.faceImageNumber === "number" ? (
+                  <FaceDrawing
+                    height="30px"
+                    faceImageNumber={userProfile.faceImageNumber}
+                  />
+                ) : (
+                  <FaUserCircle />
+                )}
               </IconButton>
               <IconButton color="inherit" edge="end">
                 <FaUsers />

@@ -1,14 +1,7 @@
 import React from "react";
 import { useField, useForm } from "react-final-form";
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Avatar,
-} from "@material-ui/core";
+import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import colors, { colorsObj } from "../GameBoard/playerColors";
-import UserDisplay from "./UserDisplay";
 
 const ColorPicker = () => {
   const { input, meta } = useField("userColor");
@@ -26,8 +19,13 @@ const ColorPicker = () => {
         {colors.map((color) => {
           return (
             <MenuItem key={color.name} value={color.name}>
-              <Avatar
-                style={{ background: colorsObj[color.name || "grey"].med }}
+              <div
+                style={{
+                  background: colorsObj[color.name || "grey"].med,
+                  width: "1.5rem",
+                  height: "1.5rem",
+                  borderRadius: "50%",
+                }}
               />
             </MenuItem>
           );

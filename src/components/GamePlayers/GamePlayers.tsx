@@ -1,20 +1,11 @@
-import {
-  Card,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-} from "@material-ui/core";
-import { useUserCtx } from "context/user/UserCtx";
-import React, { useEffect, useState } from "react";
+import { List, Typography, Hidden, Grid } from "@material-ui/core";
+import React, { useMemo } from "react";
 
+import { motion } from "framer-motion";
 import { useGameCtx } from "../../../context/game/GameCtx";
-import { useGame } from "../../hooks/useGame";
-import { useUserProfiles } from "../../hooks/useUserProfiles";
-import GameRequestButton from "./GameRequestButton";
+import useWidth from "../../hooks/useWidth";
 import UserDisplay from "../UserSettings/UserDisplay";
+import GameRequestButton from "./GameRequestButton";
 
 interface PlayersObj {
   [uid: string]: GamePlayer;
@@ -24,21 +15,57 @@ interface PlayerProfiles {
 }
 
 const GamePlayers = () => {
-  const { gameRef, isPlayer, playerProfiles } = useGameCtx();
-  const { user } = useUserCtx();
-
+  const { isPlayer, playerProfiles, state } = useGameCtx();
+  const { playedSets } = state;
+  const width = useWidth();
+  const usersByPoints = useMemo(() => {
+    return (
+      playerProfiles &&
+      Object.entries(playerProfiles)
+        // get their points
+        .map(([uid]) => {
+          const mySets = !!playedSets && playedSets[uid];
+          const points = (mySets && mySets.length * 3) || 0;
+          return { uid, points };
+        })
+        // put them in order, most points at top
+        .sort((a, b) => b.points - a.points)
+    );
+  }, [playedSets, playerProfiles]);
   return (
-    <div>
-      <Typography variant="subtitle2">Players</Typography>
-      <List>
-        {playerProfiles &&
-          Object.entries(playerProfiles).map(([uid, playerProfile]) => {
-            return <UserDisplay key={uid} user={playerProfile} />;
+    <>
+      <Hidden smDown>
+        <Typography variant="subtitle2" color="textSecondary">
+          PLAYERS
+        </Typography>
+        <List>
+          {usersByPoints?.map(({ uid, points }) => {
+            const playerProfile = playerProfiles && playerProfiles[uid];
+            return (
+              <motion.div key={uid} layout>
+                <UserDisplay user={playerProfile} points={points} />
+              </motion.div>
+            );
           })}
-      </List>
-      {/* <pre style={{ fontSize: 8 }}>{JSON.stringify(players, null, 1)}</pre> */}
+        </List>
+      </Hidden>
+      <Hidden mdUp>
+        <Grid container spacing={2} style={{ marginTop: "2rem" }}>
+          {usersByPoints?.map(({ uid, points }) => {
+            const playerProfile = playerProfiles && playerProfiles[uid];
+            return (
+              <Grid item key={uid}>
+                <motion.div layout>
+                  <UserDisplay user={playerProfile} points={points} />
+                </motion.div>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Hidden>
+      {/* <pre style={{ fontSize: 8 }}>{JSON.stringify(playedSets, null, 1)}</pre> */}
       <GameRequestButton />
-    </div>
+    </>
   );
 };
 

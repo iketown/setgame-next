@@ -7,12 +7,14 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import { useFBCtx } from "context/firebase/firebaseCtx";
 import { useUserCtx } from "context/user/UserCtx";
 import React, { useState } from "react";
 import { Form } from "react-final-form";
-
+import SingleClickToSelect from "./SingleClickToSelect";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
 import FaceDialog from "./FaceDialog";
@@ -65,7 +67,7 @@ const UserSettings = () => {
                       </IconButton>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      {/* <MaxCardSelect /> */}
+                      <SingleClickToSelect />
                     </Grid>
                   </Grid>
                 </DialogContent>

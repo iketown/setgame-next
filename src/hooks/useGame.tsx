@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUserCtx } from "context/user/UserCtx";
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
@@ -33,6 +32,11 @@ export const useGame = () => {
     }
   };
 
+  const startGame = () => {
+    const now = new Date().toISOString();
+    db.ref(`/games/${gameId}`).update({ gameStarted: now });
+  };
+
   const requestToJoin = () => {
     const requestFxn = functions.httpsCallable("requestToJoin");
     requestFxn({ gameId });
@@ -62,6 +66,7 @@ export const useGame = () => {
     requestToJoin,
     respondToRequest,
     setCurrentOptionsAsDefault,
+    startGame,
   };
 };
 

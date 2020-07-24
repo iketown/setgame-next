@@ -11,41 +11,36 @@ export const usePlayerProfiles = (gameId: string) => {
   const [playerProfiles, setPlayerProfiles] = useState<{
     [uid: string]: PlayerProfile;
   }>();
-  const playerIds = useMemo(() => players && Object.keys(players), [players]);
 
-  const gameRef = useMemo(() => {
-    if (!gameId) return null;
-    return db.ref(`games/${gameId}`);
+  useEffect(() => {
+    if (!gameId) return;
+    const gameRef = db.ref(`games/${gameId}`);
+
+    const playersRef = gameRef.child("players");
+    playersRef.on("value", (snap) => {
+      if (!snap.exists || !snap.val()) return;
+      setPlayers(snap.val());
+    });
+    return playersRef.off;
   }, [gameId]);
 
   useEffect(() => {
-    const playersRef = gameRef && gameRef.child("players");
-    if (!playersRef) return;
-    playersRef.on("value", (snap) => {
-      console.log("updating players");
-      setPlayers(snap.val());
-    });
-    return playersRef?.off;
-  }, [gameRef]);
-
-  useEffect(() => {
-    if (!fs || !playerIds || !playerIds.length) return;
+    if (!fs || !players) return;
+    const playerIds = Object.keys(players);
+    if (!playerIds.length) return;
     const usersRef = fs
       .collection("users")
       .where(firestore.FieldPath.documentId(), "in", playerIds);
     const unsubscribe = usersRef.onSnapshot((snap) => {
       const _playerProfiles: { [uid: string]: PlayerProfile } = {};
-      if (!snap.empty) {
-        snap.forEach((doc) => {
-          // @ts-ignore
-          _playerProfiles[doc.id] = doc.data();
-        });
-        console.log("updating player profiles");
-        setPlayerProfiles(_playerProfiles);
-      }
+      snap.forEach((doc) => {
+        // @ts-ignore
+        _playerProfiles[doc.id] = doc.data();
+      });
+      setPlayerProfiles(_playerProfiles);
     });
     return unsubscribe;
-  }, [playerIds]);
+  }, [players]);
 
   return { players, playerProfiles };
 };

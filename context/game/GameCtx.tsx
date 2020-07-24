@@ -1,22 +1,21 @@
+/* eslint-disable consistent-return */
+import {
+  gameOptionsReducer,
+  initialGOState,
+} from "@components/gameOptions/gameOptionsReducer";
+import { useUserCtx } from "context/user/UserCtx";
+import moment from "moment";
 import { useRouter } from "next/router";
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
-  useRef,
   useState,
 } from "react";
-import moment from "moment";
 
-import { useUserCtx } from "context/user/UserCtx";
 import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
-import {
-  gameOptionsReducer,
-  initialGOState,
-} from "../../src/components/gameOptions/gameOptionsReducer";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
 
@@ -31,12 +30,19 @@ const GameCtx = createContext<GameContextType>({
   gameId: "",
   isGameAdmin: false,
   isPlayer: false,
+  gameOver: false,
 });
 
-export const GameCtxProvider: React.FC = ({ children }) => {
+export const GameCtxProvider: React.FC<{ origin?: string }> = ({
+  children,
+  origin,
+}) => {
+  console.log("game ctx origin", origin);
   const router = useRouter();
   const gameId = router.query.gameId as string;
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
+  const [gameOver, setGameOver] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const [optionsState, optionsDispatch] = useReducer(
     gameOptionsReducer,
     initialGOState
@@ -46,9 +52,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [gameRequests, setGameRequests] = useState<GameRequests>();
   const { db } = useFBCtx();
   const { user } = useUserCtx();
-  const gameRef = useMemo(() => {
-    return db.ref(`games/${gameId}`);
-  }, [gameId]);
 
   const { players, playerProfiles } = usePlayerProfiles(gameId);
   // const playerProfiles = {};
@@ -58,7 +61,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     const {
       boardCards = [],
       deckCards = [],
-      playedSets = [],
+      playedSets = {},
       options = {},
       successSet = {},
       sets,
@@ -67,11 +70,14 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     const fullUpdateBoard = () => {
       dispatch({
         type: "UPDATE_BOARD",
-        payload: { boardCards, deckCards, sets, successSet },
+        payload: { boardCards, deckCards, sets, successSet, playedSets },
       });
     };
     const successCardsOnlyUpdateBoard = () => {
-      dispatch({ type: "SHOW_SUCCESS_SET", payload: { successSet } });
+      dispatch({
+        type: "SHOW_SUCCESS_SET",
+        payload: { successSet, playedSets },
+      });
       // dispatch({ type: "UPDATE_BOARD", payload: { successSet } });
     };
 
@@ -91,14 +97,20 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const noGameFound = () => {
+      dispatch({
+        type: "SET_MESSAGE",
+        payload: {
+          message: { type: "NO_GAME_FOUND", message: "No Game Found" },
+        },
+      });
+    };
+    if (!gameId) return;
+
+    const gameRef = db.ref(`games/${gameId}`);
     gameRef.on("value", (snapshot) => {
-      if (!snapshot.val()) {
-        dispatch({
-          type: "SET_MESSAGE",
-          payload: {
-            message: { type: "NO_GAME_FOUND", message: "No Game Found" },
-          },
-        });
+      if (!snapshot.exists || !snapshot.val()) {
+        noGameFound();
         return null;
       }
 
@@ -109,7 +121,14 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         },
       });
       const snapValues = snapshot.val();
-      const { players: _players, joinRequests } = snapValues;
+      const {
+        players: _players,
+        joinRequests,
+        gameOver: _gameOver,
+        gameStarted: _gameStarted,
+      } = snapValues;
+      if (_gameOver) setGameOver(true);
+      if (_gameStarted) setGameStarted(true);
       updateWithSuccessDelay(snapValues);
       if (user?.uid && _players && _players[user.uid]) {
         setIsPlayer(true);
@@ -117,8 +136,8 @@ export const GameCtxProvider: React.FC = ({ children }) => {
       }
       setGameRequests(joinRequests);
     });
-    return () => gameRef.off();
-  }, [db, gameRef, user]);
+    return gameRef.off;
+  }, [db, user]);
 
   return (
     <GameCtx.Provider
@@ -128,11 +147,12 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameId,
         optionsState,
         optionsDispatch,
-        gameRef,
         isGameAdmin,
         isPlayer,
         playerProfiles,
         gameRequests,
+        gameOver,
+        gameStarted,
       }}
       {...{ children }}
     />

@@ -5,7 +5,7 @@ const FaceDiv = styled.div<{
   faceImageNumber: number | string;
   height: number | string;
 }>`
-  background-image: url(${(p) => `/images/face_${p.faceImageNumber}.svg`});
+  background-image: url(${(p) => `/images/face_${p.faceImageNumber}.webp`});
   width: ${(p) => p.height};
   height: ${(p) => p.height};
   background-size: contain;
@@ -23,7 +23,7 @@ const FaceDrawing: React.FC<FaceDrawingI> = ({
   height = "3rem",
   style,
 }) => {
-  if (!faceImageNumber)
+  if (typeof faceImageNumber !== "number")
     return (
       <div
         style={{

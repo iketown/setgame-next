@@ -4,6 +4,7 @@ type PlayerProfile = {
   photoURL?: string;
   userColor?: PlayerColorOption;
   faceImageNumber?: number;
+  singleClickToSelect?: boolean;
 };
 
 type GamePlayer = {

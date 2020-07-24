@@ -1,22 +1,22 @@
-import React from "react";
 import {
+  Card,
+  CircularProgress,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Avatar,
-  Card,
-  CircularProgress,
 } from "@material-ui/core";
-import styled from "styled-components";
-// import { faceSvgs } from "../faces/faceIndex";
-import { colorsObj } from "../GameBoard/playerColors";
-import FaceDrawing from "../faces/FaceDrawing";
+import React from "react";
 
+import FaceDrawing from "../faces/FaceDrawing";
+import { colorsObj } from "../GameBoard/playerColors";
+
+// import { faceSvgs } from "../faces/faceIndex";
 interface UserDisplayI {
   user: PlayerProfile;
+  points?: number;
 }
 
-const UserDisplay: React.FC<UserDisplayI> = ({ user, children }) => {
+const UserDisplay: React.FC<UserDisplayI> = ({ user, children, points }) => {
   if (!user) return <CircularProgress />;
   const userColorString = user.userColor || "grey";
   const { light, med, dark } = colorsObj[userColorString];
@@ -27,13 +27,18 @@ const UserDisplay: React.FC<UserDisplayI> = ({ user, children }) => {
           border: `1px solid ${dark}`,
           background: light,
           marginBottom: "10px",
+          width: "13rem",
         }}
       >
         <ListItem dense style={{ padding: 0 }}>
-          <ListItemAvatar style={{ marginRight: "1rem" }}>
+          <ListItemAvatar>
             <FaceDrawing height="3rem" faceImageNumber={user.faceImageNumber} />
           </ListItemAvatar>
-          <ListItemText primary={user.displayName} />
+          <ListItemText
+            primaryTypographyProps={{ noWrap: true }}
+            primary={user.displayName}
+            secondary={points}
+          />
           {children}
         </ListItem>
       </Card>

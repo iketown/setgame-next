@@ -1,10 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { motion, Variants } from "framer-motion";
-import colors from "./colors";
+import { colors } from "./colors";
 import shapes from "./shapes";
-import { hexToRgbA } from "../../utils/hexToRgbA";
 
 const StyledCard = styled.div<{
   rotation: number;
@@ -22,9 +20,9 @@ const StyledCard = styled.div<{
   align-items: center;
   background: white;
   transform: rotate(${(p) => p.rotation}deg);
-  .card {
+  .shape {
     width: 55%;
-    margin: 3px;
+    margin: ${(p) => p.width * 0.01}px;
   }
   :hover {
     box-shadow: 5px 5px 7px #00000030;
@@ -36,10 +34,13 @@ const SetCard: React.FC<{
   width?: number;
   horizontal?: boolean;
   border?: string;
-}> = ({ cardId, width, horizontal, border }) => {
+  rotation?: number;
+}> = ({ cardId, width, horizontal, border, rotation }) => {
   if (!cardId) return null;
   const [color, fill, quant, shape] = cardId.split("");
-  const rotationRef = useRef(Math.random() * 5 - 2.5);
+  const rotationRef = useRef(
+    typeof rotation === "number" ? rotation : Math.random() * 5 - 2.5
+  );
   const Shape = shapes[shape];
   if (!Shape) return <div>{`${shape}_${fill}`}</div>;
   const fillProp = fill === "f" ? colors[color] : "none";
@@ -52,10 +53,11 @@ const SetCard: React.FC<{
       width={width || 100}
       style={{ ...style }}
       border={border}
+      className="card"
     >
       {Array.from({ length: Number(quant) }).map((_, index) => {
         return (
-          <div key={`${cardId}${index}`} className="card">
+          <div key={`${cardId}${index}`} className="shape">
             <Shape stroke={stroke} fill={fillProp} stripes={stripes} />
           </div>
         );

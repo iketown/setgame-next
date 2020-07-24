@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { checkSet, getSets } from "../../functions/cards/checkCards";
 
 export const initialGameState: GameState = {
   boardCards: [],
@@ -26,14 +25,19 @@ export const gameReducer = (
       return { ...state, boardCards };
     }
     case "SHOW_SUCCESS_SET": {
-      const { successSet } = action.payload;
-      return { ...state, successSet };
+      const { successSet, playedSets } = action.payload;
+      return { ...state, successSet, playedSets };
+    }
+    case "FAIL_SET": {
+      const { set } = action.payload;
+      return { ...state, failSet: set };
     }
     case "UPDATE_BOARD": {
       const {
         boardCards = state.boardCards,
         deckCards = state.deckCards,
         sets = state.sets,
+        playedSets = state.playedSets,
       } = action.payload;
       const newCards = boardCards.filter((c) => !state.boardCards.includes(c));
       const replacementCards = [...newCards];
@@ -43,6 +47,10 @@ export const gameReducer = (
       let nextBoardCards = hollowBoardCards.map(
         (c) => c || replacementCards.pop()
       );
+      // if any left, put them at the end
+      nextBoardCards = [...nextBoardCards, ...replacementCards]
+        // and remove the gaps
+        .filter((c) => !!c);
       if (!nextBoardCards.length) {
         nextBoardCards = boardCards;
       }
@@ -53,6 +61,7 @@ export const gameReducer = (
         sets,
         successSet: undefined,
         newCards,
+        playedSets,
       };
     }
     case "CLEAR_SET": {

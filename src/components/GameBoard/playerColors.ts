@@ -1,16 +1,22 @@
 /* eslint-disable no-param-reassign */
 import {
   red,
+  purple,
+  pink,
+  indigo,
   cyan,
-  lightGreen,
+  green,
   orange,
   blueGrey,
 } from "@material-ui/core/colors";
 
 const playerColors = [
   { name: "grey" as PlayerColorOption, color: blueGrey },
+  { name: "purple" as PlayerColorOption, color: purple },
+  { name: "pink" as PlayerColorOption, color: pink },
+  { name: "indigo" as PlayerColorOption, color: indigo },
   { name: "red" as PlayerColorOption, color: red },
-  { name: "green" as PlayerColorOption, color: lightGreen },
+  { name: "green" as PlayerColorOption, color: green },
   { name: "orange" as PlayerColorOption, color: orange },
   { name: "cyan" as PlayerColorOption, color: cyan },
 ];

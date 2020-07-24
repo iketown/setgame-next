@@ -11,10 +11,10 @@ import { useGameCtx } from "../../../context/game/GameCtx";
 import { useCards } from "../../hooks/useCards";
 import SetCard from "../cards/SetCard";
 import GameBoardCard from "./GameBoardCard";
+import CheatButtons from "./CheatButtons";
 
 const GameBoard = () => {
   const { state, dispatch } = useGameCtx();
-  const [specialSelect, setSpecialSelect] = useState(false);
   const { boardCards } = state;
   const {
     cardWidth,
@@ -22,6 +22,7 @@ const GameBoard = () => {
     row5,
     margin,
     handleClickCard,
+    handleDoubleClick,
     handleShuffle,
   } = useCards();
   const noSets = state.sets && state.sets.length === 0;
@@ -39,28 +40,27 @@ const GameBoard = () => {
   };
 
   const boxesPerRow = row5 ? 5 : 4;
-  const transition = {
-    // staggerChildren: 0.03,
-  };
-  const parentVariants = {
-    selected: {
-      transition,
-    },
-    notSelected: {
-      transition,
-    },
-    normal: {
-      // transition: { staggerChildren: 0.05 },
-    },
-    exit: {
-      transition,
-    },
-  };
 
   return (
     <GridContextProvider onChange={onChange}>
       <Grid container spacing={2}>
+        <Grid xs={12} style={{ textAlign: "center" }}>
+          <Typography component="span">
+            cards left: <b>{state.deckCards.length}</b>
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
+          <CheatButtons />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {boardCards.length && noSets && (
             <div>
               <Typography>NO SETS!</Typography>
@@ -87,40 +87,13 @@ const GameBoard = () => {
                 <GridItem
                   key={cardId}
                   onClick={(e) => handleClickCard(e, cardId)}
+                  onDoubleClick={() => handleDoubleClick(cardId)}
                 >
                   <GameBoardCard {...{ cardId, cardIndex }} />
                 </GridItem>
               );
             })}
           </GridDropZone>
-        </Grid>
-        <Grid>
-          {state.sets?.sets?.map((set, i) => {
-            const onClick = () => {
-              set.forEach((card) => {
-                dispatch({ type: "TOGGLE_CHEATER", payload: { card } });
-              });
-            };
-            return (
-              <Button {...{ onClick }} key={i}>
-                cheat
-              </Button>
-            );
-          })}
-          <Button
-            onClick={() => {
-              dispatch({ type: "CLEAR_SET", payload: {} });
-            }}
-          >
-            CLEAR
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => setSpecialSelect((o) => !o)}
-          >
-            select
-          </Button>
         </Grid>
       </Grid>
     </GridContextProvider>
