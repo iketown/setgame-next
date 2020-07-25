@@ -18,7 +18,6 @@ import React, {
 import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
-import { useGameCtxHelper } from "./gameContextHelper";
 
 const errorFxn = () => {
   console.error("out of context");
