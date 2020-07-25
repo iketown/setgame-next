@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useFBCtx } from "context/firebase/firebaseCtx";
-import { Button, Container, Typography, Grid } from "@material-ui/core";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaThumbsUp } from "react-icons/fa";
-import GameRequestButton from "@components/GamePlayers/GameRequestButton";
-import { useGame } from "../../hooks/useGame";
-import Layout from "../layout/Layout";
-import GameRequestsList from "../GamePlayers/GameRequestsList";
-import GamePlayers from "../GamePlayers/GamePlayers";
+
 import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGame } from "../../hooks/useGame";
+import GamePlayers from "../GamePlayers/GamePlayers";
+import GameRequestsList from "../GamePlayers/GameRequestsList";
+import Layout from "../layout/Layout";
 
 const PreGame = () => {
   const [thisUrl, setThisUrl] = useState("");

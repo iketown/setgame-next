@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 import { useRouter } from "next/router";
 import { useUserCtx } from "context/user/UserCtx";
+import moment from "moment";
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
 import { useGameCtx } from "../../context/game/GameCtx";
 
 export const useGame = () => {
   const { db, firestore, functions } = useFBCtx();
-  const { user } = useUserCtx();
+  const { user, userProfile } = useUserCtx();
   const { gameId } = useGameCtx();
   const { push } = useRouter();
 
@@ -33,23 +34,42 @@ export const useGame = () => {
   };
 
   const startGame = () => {
-    const now = new Date().toISOString();
-    db.ref(`/games/${gameId}`).update({ gameStarted: now });
+    const gameStartTime = moment().add(5, "seconds").toISOString();
+
+    db.ref(`/games/${gameId}`).update({ gameStartTime });
   };
 
   const requestToJoin = () => {
-    const requestFxn = functions.httpsCallable("requestToJoin");
-    requestFxn({ gameId });
+    if (!user || !user.uid || !gameId) return;
+    const requestTime = new Date().toISOString();
+    const requesterProfile = userProfile;
+    db.ref(`/games/${gameId}/joinRequests`).update({
+      [user.uid]: { requestTime, requesterProfile },
+    });
   };
-  const respondToRequest = ({
+
+  const respondToRequest = async ({
     requesterUid,
     approved,
   }: {
     requesterUid: string;
     approved: boolean;
   }) => {
-    const responseFxn = functions.httpsCallable("respondToRequest");
-    responseFxn({ gameId, requesterUid, approved });
+    const joinedAt = new Date().toISOString();
+    const joinRequestRef = db.ref(
+      `/games/${gameId}/joinRequests/${requesterUid}`
+    );
+    if (!approved) {
+      return joinRequestRef.remove();
+    }
+    await joinRequestRef.remove();
+
+    return db
+      .ref(`/games/${gameId}/players/${requesterUid}`)
+      .update({ joinedAt, admin: false });
+
+    // const responseFxn = functions.httpsCallable("respondToRequest");
+    // responseFxn({ gameId, requesterUid, approved });
   };
 
   const setCurrentOptionsAsDefault = async () => {

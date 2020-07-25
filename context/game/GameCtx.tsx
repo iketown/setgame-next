@@ -18,6 +18,7 @@ import React, {
 import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
+import { useGameCtxHelper } from "./gameContextHelper";
 
 const errorFxn = () => {
   console.error("out of context");
@@ -31,18 +32,15 @@ const GameCtx = createContext<GameContextType>({
   isGameAdmin: false,
   isPlayer: false,
   gameOver: false,
+  gameStartTime: false,
 });
 
-export const GameCtxProvider: React.FC<{ origin?: string }> = ({
-  children,
-  origin,
-}) => {
-  console.log("game ctx origin", origin);
+export const GameCtxProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const gameId = router.query.gameId as string;
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [gameOver, setGameOver] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameStartTime, setGameStartTime] = useState<string | false>(false);
   const [optionsState, optionsDispatch] = useReducer(
     gameOptionsReducer,
     initialGOState
@@ -53,11 +51,11 @@ export const GameCtxProvider: React.FC<{ origin?: string }> = ({
   const { db } = useFBCtx();
   const { user } = useUserCtx();
 
-  const { players, playerProfiles } = usePlayerProfiles(gameId);
-  // const playerProfiles = {};
-  // console.log("render GameCtx", renderCount.current++);
+  const { playerProfiles } = usePlayerProfiles(gameId);
 
   const updateWithSuccessDelay = useCallback((snapValue: any) => {
+    // success delay is so you have a second to see what the
+    // last successful set was before they disappear.
     const {
       boardCards = [],
       deckCards = [],
@@ -67,18 +65,17 @@ export const GameCtxProvider: React.FC<{ origin?: string }> = ({
       sets,
     } = snapValue;
 
-    const fullUpdateBoard = () => {
-      dispatch({
-        type: "UPDATE_BOARD",
-        payload: { boardCards, deckCards, sets, successSet, playedSets },
-      });
-    };
     const successCardsOnlyUpdateBoard = () => {
       dispatch({
         type: "SHOW_SUCCESS_SET",
         payload: { successSet, playedSets },
       });
-      // dispatch({ type: "UPDATE_BOARD", payload: { successSet } });
+    };
+    const fullUpdateBoard = () => {
+      dispatch({
+        type: "UPDATE_BOARD",
+        payload: { boardCards, deckCards, sets, successSet, playedSets },
+      });
     };
 
     optionsDispatch({
@@ -125,17 +122,30 @@ export const GameCtxProvider: React.FC<{ origin?: string }> = ({
         players: _players,
         joinRequests,
         gameOver: _gameOver,
-        gameStarted: _gameStarted,
+        gameStartTime: _gameStartTime,
       } = snapValues;
       if (_gameOver) setGameOver(true);
-      if (_gameStarted) setGameStarted(true);
-      updateWithSuccessDelay(snapValues);
       if (user?.uid && _players && _players[user.uid]) {
         setIsPlayer(true);
         if (_players[user.uid].admin) setIsGameAdmin(true);
       }
+      if (_gameStartTime) {
+        setGameStartTime(_gameStartTime);
+        if (moment().isAfter(_gameStartTime)) {
+          // most game updates go here.
+          updateWithSuccessDelay(snapValues);
+        } else {
+          // game is about to start in 5 seconds or so.
+          dispatch({
+            type: "SET_DELAYED_STATE",
+            payload: { ...snapValues },
+          });
+        }
+      }
+
       setGameRequests(joinRequests);
     });
+
     return gameRef.off;
   }, [db, user]);
 
@@ -152,7 +162,7 @@ export const GameCtxProvider: React.FC<{ origin?: string }> = ({
         playerProfiles,
         gameRequests,
         gameOver,
-        gameStarted,
+        gameStartTime,
       }}
       {...{ children }}
     />

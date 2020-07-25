@@ -19,7 +19,9 @@ const GameRequestButton = () => {
       {isWaiting && <LinearProgress />}
       <br />
       <Button
-        onClick={() => requestToJoin()}
+        onClick={() => {
+          requestToJoin();
+        }}
         variant="contained"
         color="primary"
         disabled={isWaiting}

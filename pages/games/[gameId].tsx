@@ -1,5 +1,6 @@
 import GameBoard from "@components/GameBoard/GameBoard";
 import PreGame from "@components/GameBoard/PreGame";
+import CountdownToGame from "@components/GameBoard/CountdownToGame";
 import GameOver from "@components/GameMessages/GameOver";
 import NotASet from "@components/GameMessages/NotASet";
 import GamePlayers from "@components/GamePlayers/GamePlayers";
@@ -7,9 +8,9 @@ import GameRequests from "@components/GamePlayers/GameRequestsList";
 import Layout from "@components/layout/Layout";
 import PlayedSets from "@components/PlayedSets/PlayedSets";
 import { Container, Grid } from "@material-ui/core";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
-
+import moment from "moment";
 import { GameCtxProvider, useGameCtx } from "../../context/game/GameCtx";
 import { useSetListener } from "../../src/hooks/useSetListener";
 
@@ -17,8 +18,18 @@ import { useSetListener } from "../../src/hooks/useSetListener";
 //
 const Game = () => {
   useSetListener();
-  const { gameStarted } = useGameCtx();
-  if (!gameStarted) return <PreGame />;
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const { gameStartTime, state } = useGameCtx();
+
+  useEffect(() => {
+    if (gameInProgress || !gameStartTime) return;
+    if (moment().isAfter(gameStartTime)) {
+      setGameInProgress(true);
+    }
+  }, [state, gameStartTime]);
+
+  if (!gameStartTime) return <PreGame />;
+
   return (
     <Layout>
       <Container maxWidth="lg" fixed>
@@ -32,9 +43,15 @@ const Game = () => {
               position: "relative",
             }}
           >
-            <GameBoard />
-            <NotASet />
-            <GameOver />
+            {gameInProgress ? (
+              <>
+                <GameBoard />
+                <NotASet />
+                <GameOver />
+              </>
+            ) : (
+              <CountdownToGame onCountdownEnd={() => setGameInProgress(true)} />
+            )}
           </Grid>
           <Grid item xs={12} md={3}>
             <GamePlayers />
@@ -47,10 +64,10 @@ const Game = () => {
   );
 };
 
-const WrappedGame: NextPage<{ origin?: string }> = ({ origin }) => {
+const WrappedGame: NextPage<{ origin?: string }> = () => {
   return (
     <div>
-      <GameCtxProvider origin={origin}>
+      <GameCtxProvider>
         <Game />
       </GameCtxProvider>
     </div>

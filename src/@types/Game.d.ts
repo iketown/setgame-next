@@ -10,6 +10,11 @@ type GameState = {
   declaring: boolean;
   message?: GameMessage | null;
   playedSets?: PlayedSets;
+  delayedState?: {
+    boardCards: string[];
+    deckCards: string[];
+    sets: { length: 0; sets: string[][] };
+  };
 };
 interface SuccessSet {
   set: string[];
@@ -32,7 +37,9 @@ type GameActionType =
   | "TOGGLE_HIDE"
   | "TOGGLE_EXTRA"
   | "TOGGLE_CHEATER"
-  | "FAIL_SET";
+  | "FAIL_SET"
+  | "SET_DELAYED_STATE"
+  | "ACTIVATE_DELAYED_STATE";
 
 interface GameMessage {
   type: "NO_GAME_FOUND" | "NOT_A_SET" | "NOT_A_PLAYER";
@@ -62,7 +69,7 @@ type GameContextType = {
   playerProfiles?: { [uid: string]: PlayerProfile };
   gameRequests?: GameRequests;
   gameOver?: boolean;
-  gameStarted?: boolean;
+  gameStartTime?: false | string;
 };
 
 interface GameRequests {

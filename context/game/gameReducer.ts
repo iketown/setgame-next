@@ -28,6 +28,16 @@ export const gameReducer = (
       const { successSet, playedSets } = action.payload;
       return { ...state, successSet, playedSets };
     }
+    case "SET_DELAYED_STATE": {
+      const { boardCards, deckCards, sets } = action.payload;
+      if (!boardCards || !deckCards || !sets) return state;
+      return { ...state, delayedState: { boardCards, deckCards, sets } };
+    }
+    case "ACTIVATE_DELAYED_STATE": {
+      const { boardCards, deckCards, sets } = state.delayedState;
+      if (!boardCards || !deckCards || !sets) return state;
+      return { ...state, boardCards, deckCards, sets };
+    }
     case "FAIL_SET": {
       const { set } = action.payload;
       return { ...state, failSet: set };
