@@ -10,7 +10,11 @@ import { useLayoutStyles } from "./layoutStyles";
 import useWidth from "../../hooks/useWidth";
 import FaceDrawing from "../faces/FaceDrawing";
 
-const Layout: React.FC = ({ children }) => {
+interface LayoutI {
+  pageTitle?: string;
+}
+
+const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
   const classes = useLayoutStyles();
   const width = useWidth();
   const { optionsDispatch, optionsState } = useGameCtx();
@@ -22,12 +26,22 @@ const Layout: React.FC = ({ children }) => {
           <Toolbar>
             <Link href="/">
               <Typography className={classes.title} variant="h6" noWrap>
-                tre {width}
+                set.city
               </Typography>
             </Link>
+            {pageTitle && (
+              <Typography
+                color="textSecondary"
+                className={classes.title}
+                variant="h6"
+                style={{ marginLeft: "1rem" }}
+              >
+                • {pageTitle}
+              </Typography>
+            )}
             <div className={classes.grow} />
             <div>
-              <Link href="/lobby">
+              <Link href="/lobby" as="/lobby">
                 <IconButton color="inherit">
                   <FaHome />
                 </IconButton>

@@ -21,7 +21,7 @@ export const usePlayerProfiles = (gameId: string) => {
       if (!snap.exists || !snap.val()) return;
       setPlayers(snap.val());
     });
-    return playersRef.off;
+    return () => playersRef.off("value");
   }, [gameId]);
 
   useEffect(() => {

@@ -15,7 +15,7 @@ interface PlayerProfiles {
 }
 
 const GamePlayers = () => {
-  const { isPlayer, playerProfiles, state } = useGameCtx();
+  const { playerProfiles, state } = useGameCtx();
   const { playedSets } = state;
   const width = useWidth();
   const usersByPoints = useMemo(() => {
@@ -32,6 +32,7 @@ const GamePlayers = () => {
         .sort((a, b) => b.points - a.points)
     );
   }, [playedSets, playerProfiles]);
+  if (!usersByPoints || !usersByPoints.length) return <UserDisplay />;
   return (
     <>
       <Hidden smDown>
@@ -63,7 +64,6 @@ const GamePlayers = () => {
           })}
         </Grid>
       </Hidden>
-      {/* <pre style={{ fontSize: 8 }}>{JSON.stringify(playedSets, null, 1)}</pre> */}
       <GameRequestButton />
     </>
   );

@@ -9,7 +9,6 @@ import "firebase/analytics"; // If you need it
 
 type FirebaseCtxType = {
   firebase: typeof firebase;
-
   db: firebase.database.Database;
   firestore: firebase.firestore.Firestore;
   functions: firebase.functions.Functions;

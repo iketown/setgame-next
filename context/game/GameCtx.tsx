@@ -15,6 +15,7 @@ import React, {
   useState,
 } from "react";
 
+import useGame from "@hooks/useGame";
 import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
@@ -28,15 +29,19 @@ const GameCtx = createContext<GameContextType>({
   optionsDispatch: errorFxn,
   dispatch: errorFxn,
   gameId: "",
+  setGameId: errorFxn,
   isGameAdmin: false,
   isPlayer: false,
   gameOver: false,
   gameStartTime: false,
+  readyToStart: false,
 });
 
 export const GameCtxProvider: React.FC = ({ children }) => {
   const router = useRouter();
-  const gameId = router.query.gameId as string;
+  // const gameId = router.query.gameId as string;
+  const [gameId, setGameId] = useState("");
+  const [readyToStart, setReadyToStart] = useState(false);
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [gameOver, setGameOver] = useState(false);
   const [gameStartTime, setGameStartTime] = useState<string | false>(false);
@@ -49,7 +54,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [gameRequests, setGameRequests] = useState<GameRequests>();
   const { db } = useFBCtx();
   const { user } = useUserCtx();
-
+  const { createNewGame } = useGame();
   const { playerProfiles } = usePlayerProfiles(gameId);
 
   const updateWithSuccessDelay = useCallback((snapValue: any) => {
@@ -92,21 +97,18 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const noGameFound = () => {
-      dispatch({
-        type: "SET_MESSAGE",
-        payload: {
-          message: { type: "NO_GAME_FOUND", message: "No Game Found" },
-        },
-      });
-    };
-    if (!gameId) return;
+  const createGame = useCallback(async (_gameId: string) => {
+    console.log("creating game in game ctx", _gameId);
+    const response = await createNewGame(_gameId);
+    console.log("response in game ctx", response);
+  }, []);
 
+  useEffect(() => {
+    if (!gameId || !user?.uid) return;
     const gameRef = db.ref(`games/${gameId}`);
     gameRef.on("value", (snapshot) => {
       if (!snapshot.exists || !snapshot.val()) {
-        noGameFound();
+        createGame(gameId);
         return null;
       }
 
@@ -145,8 +147,8 @@ export const GameCtxProvider: React.FC = ({ children }) => {
       setGameRequests(joinRequests);
     });
 
-    return gameRef.off;
-  }, [db, user]);
+    return () => gameRef.off("value");
+  }, [db, user, gameId]);
 
   return (
     <GameCtx.Provider
@@ -154,6 +156,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         state,
         dispatch,
         gameId,
+        setGameId,
         optionsState,
         optionsDispatch,
         isGameAdmin,
@@ -162,6 +165,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameRequests,
         gameOver,
         gameStartTime,
+        readyToStart,
       }}
       {...{ children }}
     />

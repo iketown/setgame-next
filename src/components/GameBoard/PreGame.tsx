@@ -1,28 +1,32 @@
 import { Button, Container, Grid, Typography } from "@material-ui/core";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { FaThumbsUp } from "react-icons/fa";
-
+import { FaThumbsUp, FaCopy } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { useGameCtx } from "../../../context/game/GameCtx";
 import { useGame } from "../../hooks/useGame";
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
-import Layout from "../layout/Layout";
 
 const PreGame = () => {
   const [thisUrl, setThisUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const { startGame } = useGame();
-  const { isPlayer, isGameAdmin } = useGameCtx();
+  const { query } = useRouter();
+  const { isPlayer, isGameAdmin, gameId, setGameId } = useGameCtx();
+
+  useEffect(() => {
+    if (query?.gameId && gameId !== query.gameId) {
+      console.log("setting game id", query.gameId);
+      setGameId(query.gameId as string);
+    }
+  }, [query.gameId, gameId]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log(window.location.href);
       setThisUrl(window.location.href);
     }
   }, []);
-  const { asPath } = useRouter();
   const handleStart = () => {
     startGame();
   };
@@ -44,8 +48,8 @@ const PreGame = () => {
               style={{ marginRight: "1rem" }}
               variant={copied ? "contained" : "outlined"}
             >
-              {copied && <FaThumbsUp style={{ margin: "0 1rem 0 0" }} />} Click
-              Here {copied && <FaThumbsUp style={{ margin: "0 0 0 1rem" }} />}
+              <span style={{ marginRight: "1rem" }}>Click Here</span>{" "}
+              {copied ? <FaThumbsUp /> : <FaCopy />}
             </Button>
           </CopyToClipboard>
         </div>
@@ -54,6 +58,7 @@ const PreGame = () => {
           whatsapp etc)
         </Typography>
       </Grid>
+
       <Grid
         item
         xs={12}
@@ -85,14 +90,9 @@ const PreGame = () => {
   );
 
   return (
-    <Layout>
-      <Container
-        maxWidth="md"
-        style={{ height: "calc(100vh - 100px)", border: "1px solid orange" }}
-      >
-        {adminView}
-      </Container>
-    </Layout>
+    <Container maxWidth="md" style={{ height: "calc(100vh - 100px)" }}>
+      {adminView}
+    </Container>
   );
 };
 

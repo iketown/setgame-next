@@ -60,6 +60,7 @@ interface GameActionPayload {
 
 type GameContextType = {
   gameId: string;
+  setGameId: React.Dispatch<React.SetStateAction<string>>;
   isGameAdmin: boolean;
   isPlayer: boolean;
   state: GameState;
@@ -70,6 +71,7 @@ type GameContextType = {
   gameRequests?: GameRequests;
   gameOver?: boolean;
   gameStartTime?: false | string;
+  readyToStart: boolean;
 };
 
 interface GameRequests {

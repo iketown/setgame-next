@@ -1,33 +1,52 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 import { useRouter } from "next/router";
 import { useUserCtx } from "context/user/UserCtx";
 import moment from "moment";
+import { useCallback } from "react";
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
 import { useGameCtx } from "../../context/game/GameCtx";
 
 export const useGame = () => {
   const { db, firestore, functions } = useFBCtx();
   const { user, userProfile } = useUserCtx();
-  const { gameId } = useGameCtx();
+  const { gameId, setGameId } = useGameCtx();
   const { push } = useRouter();
 
   const navToGame = (_gameId: string) => {
     push(`/games/${_gameId}`);
   };
 
-  const createGame = async (gamePrivate?: boolean) => {
+  const checkNameAvailable = useCallback(async (_gameId: string) => {
+    const gameRef = db.ref(`currentGames/${_gameId}`);
+    let nameAvailable = false;
+    await gameRef.once("value", (snap) => {
+      nameAvailable = !snap.exists();
+    });
+    return nameAvailable;
+  }, []);
+
+  const findAvailableName = async (baseName: string) => {
+    if (await checkNameAvailable(baseName)) return baseName;
+    let isAvail = false;
+    let extraNum = 0;
+    while (!isAvail || extraNum < 100) {
+      extraNum++;
+      isAvail = await checkNameAvailable(`${baseName}_${extraNum}`);
+    }
+    return `${baseName}_${extraNum}`;
+  };
+
+  const createNewGame = async (_gameId: string) => {
     console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
     try {
-      const result: {
-        data: { refString: string; gameId: string };
-      } = await createGameFxn({
-        isPrivate: gamePrivate,
+      const response = await createGameFxn({
+        gameId: _gameId,
       });
-      // eslint-disable-next-line no-shadow
-      const { gameId } = result.data;
-      console.log("createGame response", result);
-      navToGame(gameId);
+      return response;
     } catch (error) {
       console.error("error", error);
     }
@@ -35,7 +54,6 @@ export const useGame = () => {
 
   const startGame = () => {
     const gameStartTime = moment().add(5, "seconds").toISOString();
-
     db.ref(`/games/${gameId}`).update({ gameStartTime });
   };
 
@@ -81,12 +99,13 @@ export const useGame = () => {
     firestore.doc(`users/${user.uid}`).update({ defaultOptions: gameOptions });
   };
   return {
-    createGame,
+    createNewGame,
     navToGame,
     requestToJoin,
     respondToRequest,
     setCurrentOptionsAsDefault,
     startGame,
+    findAvailableName,
   };
 };
 

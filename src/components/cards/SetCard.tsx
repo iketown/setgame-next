@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import styled from "styled-components";
 import { colors } from "./colors";
 import shapes from "./shapes";
@@ -66,4 +66,4 @@ const SetCard: React.FC<{
   );
 };
 
-export default SetCard;
+export default memo(SetCard);
