@@ -71,7 +71,6 @@ type GameContextType = {
   gameRequests?: GameRequests;
   gameOver?: boolean;
   gameStartTime?: false | string;
-  readyToStart: boolean;
   invalidName: boolean;
 };
 

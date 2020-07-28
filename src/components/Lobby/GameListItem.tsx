@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import moment from "moment";
+import useProfile from "@hooks/useProfile";
 import { useLobby } from "./useLobby";
 import FaceDrawing from "../faces/FaceDrawing";
 import { useFBCtx } from "../../../context/firebase/firebaseCtx";
@@ -36,8 +37,6 @@ const GameListItem: React.FC<GameListItemI> = ({
   gameStartTime,
   createdAt,
 }) => {
-  const { db } = useFBCtx();
-
   const whenText = gameStartTime
     ? `started ${moment(gameStartTime).fromNow()}`
     : "not yet started";
@@ -65,21 +64,9 @@ const GameListItem: React.FC<GameListItemI> = ({
             }}
           >
             {players &&
-              Object.entries(players).map(
-                ([uid, { joinedAt, playerProfile }]) => {
-                  const { displayName, faceImageNumber } = playerProfile;
-                  return (
-                    <Tooltip title={displayName} key={uid} placement="top">
-                      <div>
-                        <FaceDrawing
-                          height="40px"
-                          faceImageNumber={faceImageNumber}
-                        />
-                      </div>
-                    </Tooltip>
-                  );
-                }
-              )}
+              Object.entries(players).map(([uid, { joinedAt }]) => {
+                return <PlayerHead key={uid} uid={uid} />;
+              })}
           </div>
         </ListItemSecondaryAction>
       </ListItem>
@@ -88,3 +75,16 @@ const GameListItem: React.FC<GameListItemI> = ({
 };
 
 export default GameListItem;
+
+const PlayerHead = ({ uid }: { uid: string }) => {
+  const { profile } = useProfile(uid);
+  const displayName = profile?.displayName;
+  const faceImageNumber = profile?.faceImageNumber;
+  return (
+    <Tooltip title={displayName || "player"} key={uid} placement="top">
+      <div>
+        <FaceDrawing height="40px" faceImageNumber={faceImageNumber} />
+      </div>
+    </Tooltip>
+  );
+};

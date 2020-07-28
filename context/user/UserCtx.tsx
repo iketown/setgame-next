@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
 import firebaseScope from "firebase/app";
+import { useRouter } from "next/router";
 import React, {
   createContext,
   useContext,
@@ -31,9 +32,21 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [userState, userDispatch] = useReducer(userReducer, userInitialValue);
-  const [isConnected, setIsConnected] = useState(false);
-  // const [loadingUser, setLoadingUser] = useState(true);
   const { firestore, db, firebase } = useFBCtx();
+  const router = useRouter();
+
+  const setLocation = useCallback(() => {
+    if (!user?.uid) return null;
+    let location = "?";
+    if (router.route === "/lobby") location = "lobby";
+    else if (router.query?.gameId) location = router.query.gameId as string;
+    return db.ref(`/status/${user.uid}`).update({ location });
+  }, [router, user]);
+
+  useEffect(() => {
+    // setLocation when user moves to different games etc.
+    setLocation();
+  }, [router, user]);
 
   useEffect(() => {
     const isOffline = {
@@ -43,6 +56,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     const isOnline = {
       state: "online",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
+      location: router.query?.gameId ? router.query.gameId : "lobby",
     };
     const presenceRef = db.ref(".info/connected");
     // Listen authenticated user
@@ -58,7 +72,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
               userStatusDBRef
                 .onDisconnect()
                 .set(isOffline)
-                .then(() => {
+                .then(async () => {
                   userStatusDBRef.set(isOnline);
                 });
             });
@@ -77,14 +91,13 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       unsubscriber();
       presenceRef.off();
     };
-  }, []);
+  }, [router]);
 
   const handleSignOut = useCallback(async () => {
     const isOffline = {
       state: "offline",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
-    console.log("handleSignOut", { user });
     if (user) {
       await db.ref(`/status/${user.uid}`).set(isOffline);
     }
@@ -96,7 +109,6 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     if (!user?.uid) return;
     const userProfileRef = firestore.doc(`users/${user.uid}`);
     const setupProfile = async (userFull) => {
-      console.log("setting profile", userFull);
       const {
         uid,
         photoURL = "noPhoto",
@@ -107,24 +119,12 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     };
     const unsub = userProfileRef.onSnapshot((doc) => {
       if (!doc.exists) {
-        console.log("setting up profile 1st time");
         setupProfile(user);
       }
       setUserProfile(doc.data());
     });
     return unsub;
   }, [user]);
-
-  // useEffect(() => {
-  //   const connectedRef = db.ref(".info/connected");
-  //   connectedRef.on("value", (snap) => {
-  //     if (snap.val() === true) {
-  //       setIsConnected(true);
-  //     } else {
-  //       setIsConnected(false);
-  //     }
-  //   });
-  // }, []);
 
   const updateUserPrefs = useCallback(
     async (updateObj: { [key: string]: string | number }) => {
@@ -134,7 +134,6 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       }
       const userProfileRef = firestore.doc(`users/${user.uid}`);
       const response = await userProfileRef.set(updateObj, { merge: true });
-      console.log("response", response);
       return response;
     },
     [user]

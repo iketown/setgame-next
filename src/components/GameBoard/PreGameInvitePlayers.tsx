@@ -43,9 +43,17 @@ const PreGameInvitePlayers = () => {
 
   return (
     <>
-      <Card>
+      <Card style={{ width: "25rem" }}>
         <CardHeader title="Invite Players" />
-        <CardContent>
+        <CardContent
+          style={{
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <List dense>
             {friendsLatestFirst?.map(([uid]) => {
               const isPlaying = playerProfiles && !!playerProfiles[uid];

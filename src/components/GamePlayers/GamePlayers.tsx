@@ -1,7 +1,8 @@
 import { List, Typography, Hidden, Grid } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 
 import { motion } from "framer-motion";
+import { usePresence } from "@hooks/usePresence";
 import { useGameCtx } from "../../../context/game/GameCtx";
 import useWidth from "../../hooks/useWidth";
 import UserDisplay from "../UserSettings/UserDisplay";
@@ -14,10 +15,10 @@ interface PlayerProfiles {
   [uid: string]: PlayerProfile;
 }
 
-const GamePlayers = () => {
+const GamePlayers = ({ showTitle = true }) => {
   const { playerProfiles, state } = useGameCtx();
   const { playedSets } = state;
-  const width = useWidth();
+  const { setPlayerIds, whosHere } = usePresence();
   const usersByPoints = useMemo(() => {
     return (
       playerProfiles &&
@@ -32,18 +33,29 @@ const GamePlayers = () => {
         .sort((a, b) => b.points - a.points)
     );
   }, [playedSets, playerProfiles]);
+
+  useEffect(() => {
+    if (!playerProfiles) return;
+    setPlayerIds(Object.keys(playerProfiles));
+  }, [playerProfiles]);
   if (!usersByPoints || !usersByPoints.length) return <UserDisplay />;
   return (
     <>
       <Hidden smDown>
-        <Typography variant="subtitle2" color="textSecondary">
-          PLAYERS
-        </Typography>
+        {showTitle && (
+          <Typography variant="subtitle2" color="textSecondary">
+            PLAYERS
+          </Typography>
+        )}
         <List>
           {usersByPoints?.map(({ uid, points }) => {
             return (
               <motion.div key={uid} layout>
-                <UserDisplay userId={uid} points={points || undefined} />
+                <UserDisplay
+                  userId={uid}
+                  points={points || undefined}
+                  isHere={whosHere && whosHere[uid]}
+                />
               </motion.div>
             );
           })}
@@ -52,11 +64,14 @@ const GamePlayers = () => {
       <Hidden mdUp>
         <Grid container spacing={2} style={{ marginTop: "2rem" }}>
           {usersByPoints?.map(({ uid, points }) => {
-            const playerProfile = playerProfiles && playerProfiles[uid];
             return (
               <Grid item key={uid}>
                 <motion.div layout>
-                  <UserDisplay user={playerProfile} points={points} />
+                  <UserDisplay
+                    userId={uid}
+                    points={points}
+                    isHere={whosHere && whosHere[uid]}
+                  />
                 </motion.div>
               </Grid>
             );
@@ -64,6 +79,7 @@ const GamePlayers = () => {
         </Grid>
       </Hidden>
       <GameRequestButton />
+      {/* <pre>{JSON.stringify(whosHere, null, 2)}</pre> */}
     </>
   );
 };

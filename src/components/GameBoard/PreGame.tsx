@@ -4,6 +4,10 @@ import {
   Container,
   FormControlLabel,
   Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -58,7 +62,54 @@ const PreGame = () => {
             <GameRequestsList />
           </div>
         )}
-        <GamePlayers />
+        <Card style={{ width: "25rem" }}>
+          <CardHeader title="Players" />
+          <CardContent
+            style={{
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <GamePlayers showTitle={false} />
+            {isGameAdmin && (
+              <FormControlLabel
+                label="allow new players after start"
+                labelPlacement="start"
+                control={
+                  <Checkbox
+                    checked={allowNewPlayers}
+                    onChange={(e, chk) => {
+                      setAllowNewPlayers(chk);
+                    }}
+                  />
+                }
+              />
+            )}
+          </CardContent>
+
+          {isGameAdmin && (
+            <CardActions style={{ justifyContent: "space-between" }}>
+              <Button
+                onClick={handleCancel}
+                variant="outlined"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+              <Button
+                size="large"
+                variant="contained"
+                color="primary"
+                onClick={handleStart}
+              >
+                Start Game
+              </Button>
+            </CardActions>
+          )}
+        </Card>
       </Grid>
       <Grid
         item
@@ -69,35 +120,7 @@ const PreGame = () => {
           flexDirection: "column",
           alignItems: "center",
         }}
-      >
-        {isGameAdmin && (
-          <>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={handleStart}
-            >
-              Start Game
-            </Button>
-            <FormControlLabel
-              label="allow new players after start"
-              labelPlacement="start"
-              control={
-                <Checkbox
-                  checked={allowNewPlayers}
-                  onChange={(e, chk) => {
-                    setAllowNewPlayers(chk);
-                  }}
-                />
-              }
-            />
-            <Button onClick={handleCancel} variant="outlined" color="secondary">
-              Cancel Game
-            </Button>
-          </>
-        )}
-      </Grid>
+      />
     </Grid>
   );
 

@@ -35,7 +35,6 @@ const GameCtx = createContext<GameContextType>({
   isPlayer: false,
   gameOver: false,
   gameStartTime: false,
-  readyToStart: false,
   invalidName: false,
 });
 
@@ -46,7 +45,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   useEffect(() => {
     setGameId(query.gameId as string);
   }, [query.gameId]);
-  const [readyToStart, setReadyToStart] = useState(false);
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [gameOver, setGameOver] = useState(false);
   const [gameStartTime, setGameStartTime] = useState<string | false>(false);
@@ -172,7 +170,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameRequests,
         gameOver,
         gameStartTime,
-        readyToStart,
         invalidName,
       }}
       {...{ children }}

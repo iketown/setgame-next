@@ -14,9 +14,15 @@ import { colorsObj } from "../GameBoard/playerColors";
 interface UserDisplayI {
   userId?: string;
   points?: number;
+  isHere?: boolean;
 }
 
-const UserDisplay: React.FC<UserDisplayI> = ({ userId, children, points }) => {
+const UserDisplay: React.FC<UserDisplayI> = ({
+  userId,
+  children,
+  points,
+  isHere,
+}) => {
   const { profile } = useProfile(userId);
   const userColorString = profile?.userColor || "grey";
   const { light, med, dark } = colorsObj[userColorString];
@@ -31,6 +37,7 @@ const UserDisplay: React.FC<UserDisplayI> = ({ userId, children, points }) => {
           width: "13rem",
           position: "relative",
           overflow: "unset",
+          opacity: isHere ? 1 : 0.5,
         }}
       >
         <ListItem dense style={{ padding: 0 }}>
@@ -63,7 +70,6 @@ const UserDisplay: React.FC<UserDisplayI> = ({ userId, children, points }) => {
           )}
         </ListItem>
       </Card>
-      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
     </>
   );
 };

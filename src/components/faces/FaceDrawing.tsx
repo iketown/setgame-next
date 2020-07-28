@@ -40,15 +40,6 @@ const FaceDrawing: React.FC<FaceDrawingI> = ({
   return (
     <FaceDiv faceImageNumber={faceImageNumber} height={height} style={style} />
   );
-  // return (
-  //   <div style={{ height, margin: "3px" }}>
-  //     <img
-  //       alt={`face ${faceImageNumber}`}
-  //       style={{ width: "100%", height: "auto" }}
-  //       src={`/images/face_${faceImageNumber}.svg`}
-  //     />
-  //   </div>
-  // );
 };
 
 export default FaceDrawing;
