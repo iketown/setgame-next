@@ -1,7 +1,6 @@
-import { List } from "@material-ui/core";
+import { List, ListSubheader, Card } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
-
 import { useLobbyCtx } from "../../../context/lobby/LobbyCtx";
 import GameListItem from "./GameListItem";
 
@@ -14,7 +13,7 @@ const GameList = () => {
       return -1;
     });
   return (
-    <List dense>
+    <List dense subheader={<ListSubheader>CURRENT GAMES</ListSubheader>}>
       {gamesByStartTime &&
         gamesByStartTime.map(
           ([gameId, { players, gameStartTime, createdAt }]) => {

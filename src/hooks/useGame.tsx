@@ -103,11 +103,23 @@ export const useGame = () => {
     });
   }, [gameId]);
 
-  const exitGame = useCallback(async (_gameId: string) => {
-    const gamePlayersRef = db.ref(`games/${_gameId}/players`);
-    const players = await gamePlayersRef.once("value", (snap) => snap.val());
-    console.log("exit game", { players });
+  const cancelRequestToJoin = useCallback(() => {
+    if (!user || !user.uid || !gameId) return;
+    db.ref(`/games/${gameId}/joinRequests/${user.uid}`).remove();
+  }, [gameId]);
+
+  const endGame = useCallback(async (_gameId: string) => {
+    db.ref(`/games/${_gameId}`).update({ ended: moment().toISOString() });
+    db.ref(`/publicGames/${_gameId}`).remove();
   }, []);
+
+  const setNewAdmin = useCallback(
+    async (_gameId: string, newAdminUid: string) => {
+      const newAdminRef = db.ref(`games/${_gameId}/players/${newAdminUid}`);
+      newAdminRef.update({ admin: true });
+    },
+    []
+  );
 
   const respondToRequest = async ({
     requesterUid,
@@ -137,16 +149,13 @@ export const useGame = () => {
         .ref(`/publicGames/${gameId}/players/${requesterUid}`)
         .update({ joinedAt })
     );
-    // update your profile
-    promises.push(
-      firestore.doc(`users/${user.uid}`).update({
-        [`friends.${requesterUid}`]: firebase.firestore.FieldValue.arrayUnion({
-          gameId,
-          gameDate: moment().toISOString(),
-        }),
-      })
-    );
+
     return Promise.all(promises);
+  };
+
+  const removeMeFromGame = (_gameId: string) => {
+    if (!user) return;
+    db.ref(`/games/${_gameId}/players/${user.uid}`).remove();
   };
 
   const setCurrentOptionsAsDefault = async () => {
@@ -163,12 +172,15 @@ export const useGame = () => {
     deleteGame,
     navToGame,
     requestToJoin,
+    cancelRequestToJoin,
     respondToRequest,
     setCurrentOptionsAsDefault,
     startGame,
     findAvailableName,
-    exitGame,
     inviteToGame,
+    removeMeFromGame,
+    setNewAdmin,
+    endGame,
   };
 };
 

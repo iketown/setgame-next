@@ -71,7 +71,9 @@ type GameContextType = {
   gameRequests?: GameRequests;
   gameOver?: boolean;
   gameStartTime?: false | string;
+  gameEnded?: false | string;
   invalidName: boolean;
+  allowsNewPlayers: boolean;
 };
 
 interface GameRequests {

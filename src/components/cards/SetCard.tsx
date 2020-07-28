@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useRef, memo } from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import { colors } from "./colors";
 import shapes from "./shapes";
@@ -35,12 +35,10 @@ const SetCard: React.FC<{
   horizontal?: boolean;
   border?: string;
   rotation?: number;
-}> = ({ cardId, width, horizontal, border, rotation }) => {
+}> = ({ cardId, width, horizontal, border, rotation = 0 }) => {
   if (!cardId) return null;
   const [color, fill, quant, shape] = cardId.split("");
-  const rotationRef = useRef(
-    typeof rotation === "number" ? rotation : Math.random() * 5 - 2.5
-  );
+  // const aLittleRotation = Math.random() * 5 - 2.5
   const Shape = shapes[shape];
   if (!Shape) return <div>{`${shape}_${fill}`}</div>;
   const fillProp = fill === "f" ? colors[color] : "none";
@@ -49,7 +47,7 @@ const SetCard: React.FC<{
   const style = horizontal ? { transform: "rotate(90deg)" } : {};
   return (
     <StyledCard
-      rotation={rotationRef.current}
+      rotation={rotation}
       width={width || 100}
       style={{ ...style }}
       border={border}

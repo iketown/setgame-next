@@ -35,7 +35,9 @@ const GameCtx = createContext<GameContextType>({
   isPlayer: false,
   gameOver: false,
   gameStartTime: false,
+  gameEnded: false,
   invalidName: false,
+  allowsNewPlayers: false,
 });
 
 export const GameCtxProvider: React.FC = ({ children }) => {
@@ -48,6 +50,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [gameOver, setGameOver] = useState(false);
   const [gameStartTime, setGameStartTime] = useState<string | false>(false);
+  const [gameEnded, setGameEnded] = useState<string | false>(false);
   const [optionsState, optionsDispatch] = useReducer(
     gameOptionsReducer,
     initialGOState
@@ -55,11 +58,13 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [isGameAdmin, setIsGameAdmin] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
   const [gameRequests, setGameRequests] = useState<GameRequests>();
+  const [allowsNewPlayers, setAllowsNewPlayers] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
   const { db } = useFBCtx();
   const { user } = useUserCtx();
   const { playerProfiles } = usePlayerProfiles(gameId);
   const { createNewGame } = useGame();
+
   const updateWithSuccessDelay = useCallback((snapValue: any) => {
     // success delay is so you have a second to see what the
     // last successful set was before they disappear.
@@ -127,6 +132,8 @@ export const GameCtxProvider: React.FC = ({ children }) => {
       const {
         players: _players,
         joinRequests,
+        allowNewPlayers,
+        ended,
         gameOver: _gameOver,
         gameStartTime: _gameStartTime,
       } = snapValues;
@@ -148,7 +155,10 @@ export const GameCtxProvider: React.FC = ({ children }) => {
           });
         }
       }
-
+      if (ended) {
+        setGameEnded(ended);
+      }
+      setAllowsNewPlayers(allowNewPlayers);
       setGameRequests(joinRequests);
     });
 
@@ -168,8 +178,10 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         isPlayer,
         playerProfiles,
         gameRequests,
+        allowsNewPlayers,
         gameOver,
         gameStartTime,
+        gameEnded,
         invalidName,
       }}
       {...{ children }}

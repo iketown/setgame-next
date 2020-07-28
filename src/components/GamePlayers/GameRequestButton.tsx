@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { Button, LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress, Typography } from "@material-ui/core";
 import { useUserCtx } from "context/user/UserCtx";
 import React from "react";
 
@@ -8,35 +8,44 @@ import { useGame } from "../../hooks/useGame";
 
 const GameRequestButton = () => {
   const { user } = useUserCtx();
-  const { isPlayer, gameRequests } = useGameCtx();
-  const { requestToJoin } = useGame();
+  const { isPlayer, gameRequests, allowsNewPlayers } = useGameCtx();
+  const { requestToJoin, cancelRequestToJoin } = useGame();
 
   if (isPlayer) return null;
   if (!user?.uid) return null;
+
   const isWaiting = !!(gameRequests && gameRequests[user.uid]);
+  const handleClick = () => {
+    if (isWaiting) {
+      cancelRequestToJoin();
+    } else {
+      requestToJoin();
+    }
+  };
   return (
     <>
       <br />
-      <Button
-        onClick={() => {
-          requestToJoin();
-        }}
-        variant="contained"
-        color="primary"
-        disabled={isWaiting}
-      >
-        Request to Join
-        {isWaiting && (
-          <>
-            <LinearProgress
-              style={{ left: 0, right: 0, position: "absolute", top: -5 }}
-            />
+      {isWaiting && (
+        <Typography variant="caption" color="textSecondary" gutterBottom>
+          waiting for response. . .
+        </Typography>
+      )}
+      {allowsNewPlayers ? (
+        <Button
+          onClick={handleClick}
+          variant="contained"
+          color={isWaiting ? "secondary" : "primary"}
+        >
+          {isWaiting ? "cancel request" : "Request to Join"}
+          {isWaiting && (
             <LinearProgress
               style={{ left: 0, right: 0, position: "absolute", bottom: -5 }}
             />
-          </>
-        )}
-      </Button>
+          )}
+        </Button>
+      ) : (
+        <Typography variant="caption">not allowing new players</Typography>
+      )}
     </>
   );
 };

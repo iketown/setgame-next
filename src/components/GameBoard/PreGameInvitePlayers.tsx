@@ -88,12 +88,12 @@ const PreGameInvitePlayers = () => {
           </CopyToClipboard>
         </CardActions>
       </Card>
-      <Accordion TransitionProps={{ unmountOnExit: true }}>
+      {/* <Accordion TransitionProps={{ unmountOnExit: true }}>
         <AccordionSummary>thisPublicGame</AccordionSummary>
         <AccordionDetails>
           <pre>{JSON.stringify(thisPublicGame, null, 2)}</pre>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
     </>
   );
 };

@@ -5,7 +5,7 @@ type PlayerProfile = {
   userColor?: PlayerColorOption;
   faceImageNumber?: number;
   singleClickToSelect?: boolean;
-  friends?: { [uid: string]: FriendGameRecord[] };
+  friends?: { [uid: string]: string }; // last time you played
 };
 
 type GamePlayer = {

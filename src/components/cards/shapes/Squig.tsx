@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from "react";
 
 function _SquigStripes({

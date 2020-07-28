@@ -6,6 +6,8 @@ import {
   Checkbox,
   FormControlLabel,
   Container,
+  Card,
+  CardActions,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Layout from "@components/layout/Layout";
@@ -19,6 +21,12 @@ import { LobbyCtxProvider, useLobbyCtx } from "context/lobby/LobbyCtx";
 //
 const useStyles = makeStyles((theme) => ({
   container: { paddingTop: theme.spacing(2) },
+  root: {
+    backgroundImage: `url(/images/LobbyImage1000.jpg)`,
+    backgroundSize: "cover",
+    height: "100vh",
+    backgroundPosition: "right",
+  },
 }));
 
 const Lobby = () => {
@@ -27,7 +35,7 @@ const Lobby = () => {
   const { findAvailableName, createPendingGame } = useGame();
   const [newGameId, setNewGameId] = useState("");
   const { publicGames, uniqueName, getUniqueName } = useLobbyCtx();
-
+  const handleCreateGame = () => {};
   useEffect(() => {
     if (uniqueName?.name) {
       findAvailableName(uniqueName.name).then((useName) => {
@@ -37,23 +45,27 @@ const Lobby = () => {
   }, [uniqueName]);
 
   return (
-    <main>
+    <main className={classes.root}>
       <Container maxWidth="md" className={classes.container}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <GameList />
+            <Card>
+              <GameList />
+              <CardActions>
+                <Link href="/games/[gameId]" as={`/games/${newGameId}`}>
+                  <Button
+                    onClick={() => createPendingGame(newGameId)}
+                    variant="contained"
+                    color="primary"
+                  >
+                    create new game
+                  </Button>
+                </Link>
+              </CardActions>
+            </Card>
           </Grid>
           <Grid item xs={12}>
             <Typography>{newGameId}</Typography>
-            <Link href="/games/[gameId]" as={`/games/${newGameId}`}>
-              <Button
-                onClick={() => createPendingGame(newGameId)}
-                variant="contained"
-                color="primary"
-              >
-                create new game
-              </Button>
-            </Link>
           </Grid>
         </Grid>
       </Container>

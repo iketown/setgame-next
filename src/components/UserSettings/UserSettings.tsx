@@ -1,4 +1,4 @@
-import SignInScreen from "@components/SignInScreen";
+import SignInScreen from "@components/SignIn/SignInScreen";
 import {
   Button,
   Dialog,

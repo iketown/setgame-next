@@ -9,7 +9,7 @@ import { colorsObj } from "./playerColors";
 //
 //
 const cardVariants: Variants = {
-  selected: { scale: 1.05 },
+  selected: { scale: 1.05, rotate: 4 },
   notSelected: { scale: 0.9 },
   shrunk: { scale: 0, rotate: 45, y: -100, x: 100 },
   success: {
@@ -78,7 +78,11 @@ const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
       }
       case state.cheatCards.includes(cardId):
       case state.mySet.includes(cardId):
-        return { animationVariant: "selected", border: "1px solid blue" };
+        return {
+          animationVariant: "selected",
+          border: "1px solid blue",
+          rotation: 5,
+        };
       case !!state.cheatCards.length:
         return { animationVariant: "notSelected", border: defaultBorder };
       case state.newCards.includes(cardId):
@@ -87,7 +91,12 @@ const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
         return { animationVariant: "normal", border: defaultBorder };
     }
   };
-  const { animationVariant, border, faceImageNumber } = getCardState();
+  const {
+    animationVariant,
+    border,
+    faceImageNumber,
+    rotation,
+  } = getCardState();
   return (
     <motion.div
       key={cardId}

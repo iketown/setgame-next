@@ -102,6 +102,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       await db.ref(`/status/${user.uid}`).set(isOffline);
     }
     firebase.auth().signOut();
+    userDispatch({ type: "CLOSE_SETTINGS" });
   }, [user, db]);
 
   // user profile listener

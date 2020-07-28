@@ -42,7 +42,7 @@ const GameListItem: React.FC<GameListItemI> = ({
     : "not yet started";
   return (
     <Link href="/games/[gameId]" as={`/games/${gameId}`} key={gameId}>
-      <ListItem button dense>
+      <ListItem button dense divider>
         <ListItemText
           primary={<Typography>{gameId}</Typography>}
           secondary={
