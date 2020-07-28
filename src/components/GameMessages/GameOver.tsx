@@ -47,11 +47,11 @@ const GameOver = () => {
                   transition: { yoyo: Infinity, duration: 0.3 },
                 }}
               >
-                <UserDisplay key={uid} points={points} user={user} />
+                <UserDisplay key={uid} points={points} userId={uid} />
               </motion.div>
             );
           }
-          return <UserDisplay key={uid} points={points} user={user} />;
+          return <UserDisplay key={uid} points={points} userId={uid} />;
         })}
       </PlayerFinalList>
     </GameMessageOverlay>

@@ -1,10 +1,9 @@
-import { List, Typography, Hidden, Grid } from "@material-ui/core";
-import React, { useMemo, useEffect } from "react";
-
-import { motion } from "framer-motion";
 import { usePresence } from "@hooks/usePresence";
+import { Grid, Hidden, List, Typography } from "@material-ui/core";
+import { motion } from "framer-motion";
+import React, { useEffect, useMemo } from "react";
+
 import { useGameCtx } from "../../../context/game/GameCtx";
-import useWidth from "../../hooks/useWidth";
 import UserDisplay from "../UserSettings/UserDisplay";
 import GameRequestButton from "./GameRequestButton";
 
