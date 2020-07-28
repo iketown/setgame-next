@@ -2,17 +2,21 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
-import { useRouter } from "next/router";
+import useRenderCount from "@hooks/useRenderCount";
 import { useUserCtx } from "context/user/UserCtx";
+import firebase from "firebase";
 import moment from "moment";
-import { useCallback } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useRef } from "react";
+
 import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import { useGameCtx } from "../../context/game/GameCtx";
 
 export const useGame = () => {
+  useRenderCount("useGame");
+  const router = useRouter();
+  const gameId = router.query.gameId as string;
   const { db, firestore, functions } = useFBCtx();
   const { user, userProfile } = useUserCtx();
-  const { gameId, setGameId } = useGameCtx();
   const { push } = useRouter();
 
   const navToGame = (_gameId: string) => {
@@ -28,7 +32,7 @@ export const useGame = () => {
     return nameAvailable;
   }, []);
 
-  const findAvailableName = async (baseName: string) => {
+  const findAvailableName = useCallback(async (baseName: string) => {
     if (await checkNameAvailable(baseName)) return baseName;
     let isAvail = false;
     let extraNum = 0;
@@ -37,9 +41,9 @@ export const useGame = () => {
       isAvail = await checkNameAvailable(`${baseName}_${extraNum}`);
     }
     return `${baseName}_${extraNum}`;
-  };
+  }, []);
 
-  const createNewGame = async (_gameId: string) => {
+  const createNewGame = useCallback(async (_gameId: string) => {
     console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
     try {
@@ -50,21 +54,60 @@ export const useGame = () => {
     } catch (error) {
       console.error("error", error);
     }
-  };
+  }, []);
 
-  const startGame = () => {
-    const gameStartTime = moment().add(5, "seconds").toISOString();
-    db.ref(`/games/${gameId}`).update({ gameStartTime });
-  };
+  const createPendingGame = useCallback(async (_gameId: string) => {
+    console.log("creating pending game", _gameId);
+    const promises = [];
+    promises.push(db.ref(`/games/${_gameId}`).update({ isValid: true }));
+    promises.push(db.ref(`/publicGames/${_gameId}`).update({ isValid: true }));
+    Promise.all(promises).then(() => {
+      createNewGame(_gameId);
+    });
+  }, []);
 
-  const requestToJoin = () => {
+  const deleteGame = useCallback(async (_gameId: string) => {
+    const deleteGameFxn = functions.httpsCallable("deleteGame");
+    return deleteGameFxn({ gameId: _gameId });
+  }, []);
+
+  const startGame = useCallback(
+    (allowNewPlayers = true) => {
+      const gameStartTime = moment().add(5, "seconds").toISOString();
+      db.ref(`/games/${gameId}`).update({
+        gameStartTime,
+        allowNewPlayers,
+      });
+      return db
+        .ref(`/publicGames/${gameId}`)
+        .update({ gameStartTime, allowNewPlayers });
+    },
+    [gameId]
+  );
+
+  const inviteToGame = useCallback(
+    (uid: string) => {
+      const time = moment().toISOString();
+      db.ref(`/publicGames/${gameId}/invites`).update({
+        [uid]: { time, invitedBy: user.uid },
+      });
+    },
+    [gameId]
+  );
+
+  const requestToJoin = useCallback(() => {
     if (!user || !user.uid || !gameId) return;
     const requestTime = new Date().toISOString();
-    const requesterProfile = userProfile;
     db.ref(`/games/${gameId}/joinRequests`).update({
-      [user.uid]: { requestTime, requesterProfile },
+      [user.uid]: { requestTime },
     });
-  };
+  }, [gameId]);
+
+  const exitGame = useCallback(async (_gameId: string) => {
+    const gamePlayersRef = db.ref(`games/${_gameId}/players`);
+    const players = await gamePlayersRef.once("value", (snap) => snap.val());
+    console.log("exit game", { players });
+  }, []);
 
   const respondToRequest = async ({
     requesterUid,
@@ -81,13 +124,29 @@ export const useGame = () => {
       return joinRequestRef.remove();
     }
     await joinRequestRef.remove();
-
-    return db
-      .ref(`/games/${gameId}/players/${requesterUid}`)
-      .update({ joinedAt, admin: false });
-
-    // const responseFxn = functions.httpsCallable("respondToRequest");
-    // responseFxn({ gameId, requesterUid, approved });
+    const promises = [];
+    // update this game
+    promises.push(
+      db
+        .ref(`/games/${gameId}/players/${requesterUid}`)
+        .update({ joinedAt, admin: false })
+    );
+    // update public game
+    promises.push(
+      db
+        .ref(`/publicGames/${gameId}/players/${requesterUid}`)
+        .update({ joinedAt })
+    );
+    // update your profile
+    promises.push(
+      firestore.doc(`users/${user.uid}`).update({
+        [`friends.${requesterUid}`]: firebase.firestore.FieldValue.arrayUnion({
+          gameId,
+          gameDate: moment().toISOString(),
+        }),
+      })
+    );
+    return Promise.all(promises);
   };
 
   const setCurrentOptionsAsDefault = async () => {
@@ -100,12 +159,16 @@ export const useGame = () => {
   };
   return {
     createNewGame,
+    createPendingGame,
+    deleteGame,
     navToGame,
     requestToJoin,
     respondToRequest,
     setCurrentOptionsAsDefault,
     startGame,
     findAvailableName,
+    exitGame,
+    inviteToGame,
   };
 };
 

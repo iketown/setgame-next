@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { FaRegSmile } from "react-icons/fa";
 
 const FaceDiv = styled.div<{
   faceImageNumber: number | string;
@@ -25,16 +26,16 @@ const FaceDrawing: React.FC<FaceDrawingI> = ({
 }) => {
   if (typeof faceImageNumber !== "number")
     return (
-      <div
+      <FaRegSmile
+        size="large"
         style={{
           padding: "5px",
           height,
+          width: height,
           fontSize: "2rem",
           color: "grey",
         }}
-      >
-        ?
-      </div>
+      />
     );
   return (
     <FaceDiv faceImageNumber={faceImageNumber} height={height} style={style} />

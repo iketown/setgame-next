@@ -41,10 +41,9 @@ const GamePlayers = () => {
         </Typography>
         <List>
           {usersByPoints?.map(({ uid, points }) => {
-            const playerProfile = playerProfiles && playerProfiles[uid];
             return (
               <motion.div key={uid} layout>
-                <UserDisplay user={playerProfile} points={points} />
+                <UserDisplay userId={uid} points={points || undefined} />
               </motion.div>
             );
           })}

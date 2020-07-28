@@ -5,6 +5,7 @@ type PlayerProfile = {
   userColor?: PlayerColorOption;
   faceImageNumber?: number;
   singleClickToSelect?: boolean;
+  friends?: { [uid: string]: FriendGameRecord[] };
 };
 
 type GamePlayer = {
@@ -25,3 +26,8 @@ interface PlayerColor {
 }
 
 type PlayerColorOption = "grey" | "red" | "green" | "orange" | "cyan";
+
+type FriendGameRecord = {
+  gameDate: string;
+  gameId: string;
+};

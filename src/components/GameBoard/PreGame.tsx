@@ -1,34 +1,31 @@
-import { Button, Container, Grid, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { FaThumbsUp, FaCopy } from "react-icons/fa";
+import {
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  Grid,
+} from "@material-ui/core";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+
+import useRenderCount from "@hooks/useRenderCount";
 import { useGameCtx } from "../../../context/game/GameCtx";
 import { useGame } from "../../hooks/useGame";
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
+import PreGameInvitePlayers from "./PreGameInvitePlayers";
 
 const PreGame = () => {
-  const [thisUrl, setThisUrl] = useState("");
-  const [copied, setCopied] = useState(false);
-  const { startGame } = useGame();
-  const { query } = useRouter();
+  useRenderCount("PreGame");
+  const { startGame, deleteGame } = useGame();
+  const { query, push } = useRouter();
   const { isPlayer, isGameAdmin, gameId, setGameId } = useGameCtx();
-
-  useEffect(() => {
-    if (query?.gameId && gameId !== query.gameId) {
-      console.log("setting game id", query.gameId);
-      setGameId(query.gameId as string);
-    }
-  }, [query.gameId, gameId]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setThisUrl(window.location.href);
-    }
-  }, []);
+  const [allowNewPlayers, setAllowNewPlayers] = useState(true);
   const handleStart = () => {
-    startGame();
+    startGame(allowNewPlayers);
+  };
+  const handleCancel = async () => {
+    push("/lobby").then(() => deleteGame(gameId));
   };
 
   const adminView = (
@@ -42,21 +39,7 @@ const PreGame = () => {
       container
     >
       <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
-        <div>
-          <CopyToClipboard text={thisUrl} onCopy={() => setCopied(true)}>
-            <Button
-              style={{ marginRight: "1rem" }}
-              variant={copied ? "contained" : "outlined"}
-            >
-              <span style={{ marginRight: "1rem" }}>Click Here</span>{" "}
-              {copied ? <FaThumbsUp /> : <FaCopy />}
-            </Button>
-          </CopyToClipboard>
-        </div>
-        <Typography>
-          to copy the game url, then paste it into any message (text, email,
-          whatsapp etc)
-        </Typography>
+        <div>{isGameAdmin && <PreGameInvitePlayers />}</div>
       </Grid>
 
       <Grid
@@ -70,20 +53,49 @@ const PreGame = () => {
           flexDirection: "column",
         }}
       >
-        {isGameAdmin && <GameRequestsList />}
+        {isGameAdmin && (
+          <div style={{ marginBottom: "3rem" }}>
+            <GameRequestsList />
+          </div>
+        )}
         <GamePlayers />
       </Grid>
-      <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
+      <Grid
+        item
+        xs={12}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {isGameAdmin && (
-          <Button
-            size="large"
-            variant="contained"
-            color="primary"
-            onClick={handleStart}
-            style={{ marginTop: "3rem" }}
-          >
-            Start Game
-          </Button>
+          <>
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              onClick={handleStart}
+            >
+              Start Game
+            </Button>
+            <FormControlLabel
+              label="allow new players after start"
+              labelPlacement="start"
+              control={
+                <Checkbox
+                  checked={allowNewPlayers}
+                  onChange={(e, chk) => {
+                    setAllowNewPlayers(chk);
+                  }}
+                />
+              }
+            />
+            <Button onClick={handleCancel} variant="outlined" color="secondary">
+              Cancel Game
+            </Button>
+          </>
         )}
       </Grid>
     </Grid>

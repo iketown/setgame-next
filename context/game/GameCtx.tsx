@@ -3,9 +3,10 @@ import {
   gameOptionsReducer,
   initialGOState,
 } from "@components/gameOptions/gameOptionsReducer";
+import { useGame } from "@hooks/useGame";
+import useRenderCount from "@hooks/useRenderCount";
 import { useUserCtx } from "context/user/UserCtx";
 import moment from "moment";
-import { useRouter } from "next/router";
 import React, {
   createContext,
   useCallback,
@@ -15,7 +16,7 @@ import React, {
   useState,
 } from "react";
 
-import useGame from "@hooks/useGame";
+import { useRouter } from "next/router";
 import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
@@ -35,12 +36,16 @@ const GameCtx = createContext<GameContextType>({
   gameOver: false,
   gameStartTime: false,
   readyToStart: false,
+  invalidName: false,
 });
 
 export const GameCtxProvider: React.FC = ({ children }) => {
-  const router = useRouter();
-  // const gameId = router.query.gameId as string;
+  useRenderCount("GameCtxProvider");
+  const { query } = useRouter();
   const [gameId, setGameId] = useState("");
+  useEffect(() => {
+    setGameId(query.gameId as string);
+  }, [query.gameId]);
   const [readyToStart, setReadyToStart] = useState(false);
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [gameOver, setGameOver] = useState(false);
@@ -52,11 +57,11 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [isGameAdmin, setIsGameAdmin] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
   const [gameRequests, setGameRequests] = useState<GameRequests>();
+  const [invalidName, setInvalidName] = useState(false);
   const { db } = useFBCtx();
   const { user } = useUserCtx();
-  const { createNewGame } = useGame();
   const { playerProfiles } = usePlayerProfiles(gameId);
-
+  const { createNewGame } = useGame();
   const updateWithSuccessDelay = useCallback((snapValue: any) => {
     // success delay is so you have a second to see what the
     // last successful set was before they disappear.
@@ -98,14 +103,16 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   }, []);
 
   const createGame = useCallback(async (_gameId: string) => {
-    console.log("creating game in game ctx", _gameId);
-    const response = await createNewGame(_gameId);
-    console.log("response in game ctx", response);
+    const { data } = await createNewGame(_gameId);
+    if (data && data.invalidName) {
+      setInvalidName(true);
+    }
   }, []);
 
   useEffect(() => {
     if (!gameId || !user?.uid) return;
     const gameRef = db.ref(`games/${gameId}`);
+
     gameRef.on("value", (snapshot) => {
       if (!snapshot.exists || !snapshot.val()) {
         createGame(gameId);
@@ -166,6 +173,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameOver,
         gameStartTime,
         readyToStart,
+        invalidName,
       }}
       {...{ children }}
     />

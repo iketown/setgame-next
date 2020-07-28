@@ -12,6 +12,7 @@ import { useCards } from "../../hooks/useCards";
 import SetCard from "../cards/SetCard";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
+import GameProgressLine from "./GameProgressLine";
 
 const GameBoard = () => {
   const { state, dispatch } = useGameCtx();
@@ -44,11 +45,6 @@ const GameBoard = () => {
   return (
     <GridContextProvider onChange={onChange}>
       <Grid container spacing={2}>
-        <Grid xs={12} style={{ textAlign: "center" }}>
-          <Typography component="span">
-            cards left: <b>{state.deckCards.length}</b>
-          </Typography>
-        </Grid>
         <Grid item xs={12}>
           <CheatButtons />
         </Grid>
@@ -94,6 +90,9 @@ const GameBoard = () => {
               );
             })}
           </GridDropZone>
+        </Grid>
+        <Grid item xs={12} style={{ textAlign: "center" }}>
+          <GameProgressLine cardsLeft={state.deckCards.length} />
         </Grid>
       </Grid>
     </GridContextProvider>

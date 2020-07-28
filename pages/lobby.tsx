@@ -14,6 +14,7 @@ import { useLobby } from "@components/Lobby/useLobby";
 import { useGame } from "@hooks/useGame";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LobbyCtxProvider, useLobbyCtx } from "context/lobby/LobbyCtx";
 //
 //
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +24,9 @@ const useStyles = makeStyles((theme) => ({
 const Lobby = () => {
   const classes = useStyles();
   const { push } = useRouter();
-  const { findAvailableName } = useGame();
-  const [isPrivate, setPrivate] = useState(false);
+  const { findAvailableName, createPendingGame } = useGame();
   const [newGameId, setNewGameId] = useState("");
-  const { publicGames, uniqueName, getUniqueName } = useLobby();
+  const { publicGames, uniqueName, getUniqueName } = useLobbyCtx();
 
   useEffect(() => {
     if (uniqueName?.name) {
@@ -43,22 +43,14 @@ const Lobby = () => {
           <Grid item xs={12} sm={6}>
             <GameList />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={isPrivate}
-                  onChange={(e, chk) => setPrivate(chk)}
-                  name="checkedA"
-                />
-              }
-              label="Private"
-            />
-          </Grid>
           <Grid item xs={12}>
             <Typography>{newGameId}</Typography>
             <Link href="/games/[gameId]" as={`/games/${newGameId}`}>
-              <Button variant="contained" color="primary">
+              <Button
+                onClick={() => createPendingGame(newGameId)}
+                variant="contained"
+                color="primary"
+              >
                 create new game
               </Button>
             </Link>
@@ -69,4 +61,11 @@ const Lobby = () => {
   );
 };
 
-export default Lobby;
+const WrappedLobby = () => {
+  return (
+    <LobbyCtxProvider>
+      <Lobby />
+    </LobbyCtxProvider>
+  );
+};
+export default WrappedLobby;

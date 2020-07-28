@@ -10,13 +10,13 @@ import { useGameCtx } from "../../../context/game/GameCtx";
 import SetCard from "../cards/SetCard";
 import { colorsObj } from "../GameBoard/playerColors";
 
-const StyledLi = styled(Card)<{ backgroundColor: string; borderColor: string }>`
-  background: ${(p) => p.backgroundColor};
+const StyledLi = styled(Card)<{ background: string; border: string }>`
+  background: ${(p) => p.background};
   position: relative;
   height: 3rem;
   width: 15rem;
   border-radius: 10px;
-  border: 1px solid ${(p) => p.borderColor};
+  border: ${(p) => p.border};
   display: flex;
   padding: 3px;
   margin-bottom: 25px;
@@ -64,7 +64,7 @@ const PlayedSetListItem: React.FC<PlayedSetListItemI> = ({
   };
   return (
     <motion.div ref={liRef} initial={{ x: "100%" }} animate={{ x: 0 }}>
-      <StyledLi backgroundColor={color.light} borderColor={color.med}>
+      <StyledLi background={color.light} border={`1px solid ${color.med}`}>
         <div className="face">
           <FaceDrawing
             height="40px"

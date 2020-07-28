@@ -28,6 +28,7 @@ const UserSettings = () => {
     userDispatch,
     userProfile,
     updateUserPrefs,
+    handleSignOut,
   } = useUserCtx();
 
   const userDefaults = { userColor: "grey" };
@@ -72,9 +73,7 @@ const UserSettings = () => {
                   </Grid>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={() => firebase.auth().signOut()}>
-                    sign out
-                  </Button>
+                  <Button onClick={handleSignOut}>sign out</Button>
                   <Button color="secondary" onClick={handleCancel}>
                     cancel
                   </Button>

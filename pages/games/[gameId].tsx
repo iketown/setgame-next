@@ -1,24 +1,25 @@
-import GameBoard from "@components/GameBoard/GameBoard";
-import PreGame from "@components/GameBoard/PreGame";
 import CountdownToGame from "@components/GameBoard/CountdownToGame";
+import GameBoard from "@components/GameBoard/GameBoard";
+import GameError from "@components/GameBoard/GameError";
+import PreGame from "@components/GameBoard/PreGame";
 import GameOver from "@components/GameMessages/GameOver";
 import NotASet from "@components/GameMessages/NotASet";
 import GamePlayers from "@components/GamePlayers/GamePlayers";
 import GameRequests from "@components/GamePlayers/GameRequestsList";
-import Layout from "@components/layout/Layout";
 import PlayedSets from "@components/PlayedSets/PlayedSets";
+import { useRenderCount } from "@hooks/useRenderCount";
 import { Container, Grid } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-
 import moment from "moment";
+import { NextPage } from "next";
+import React, { useState } from "react";
+
 import { GameCtxProvider, useGameCtx } from "../../context/game/GameCtx";
 import { useSetListener } from "../../src/hooks/useSetListener";
 
 //
 //
 const Game = () => {
+  useRenderCount("Game");
   useSetListener();
   const { state, gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
@@ -58,8 +59,10 @@ const Game = () => {
 };
 
 const GameOrPreGame = () => {
-  const { setGameId, gameId, gameStartTime } = useGameCtx();
+  useRenderCount("GameOrPreGame");
+  const { gameStartTime, invalidName } = useGameCtx();
 
+  if (invalidName) return <GameError />;
   if (!gameStartTime) return <PreGame />;
   return <Game />;
 };

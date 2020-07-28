@@ -31,17 +31,15 @@ const GameRequestsList = () => {
             <List>
               {Object.entries(gameRequests).map(
                 ([uid, { requestTime, requesterProfile }]) => {
-                  const {
-                    displayName,
-                    faceImageNumber,
-                    userColor,
-                  } = requesterProfile;
-                  const reqTime = moment(requestTime).fromNow();
                   const handleRespond = (approved: boolean) => {
-                    respondToRequest({ requesterUid: uid, approved });
+                    respondToRequest({
+                      requesterUid: uid,
+                      approved,
+                      requesterProfile,
+                    });
                   };
                   return (
-                    <UserDisplay key={uid} user={requesterProfile}>
+                    <UserDisplay key={uid} userId={uid}>
                       <motion.div
                         key={uid}
                         style={{ position: "absolute", right: "-4rem" }}

@@ -22,6 +22,7 @@ type UserCtxType = {
   userState: UserState;
   userDispatch: React.Dispatch<UserAction>;
   updateUserPrefs: (updateObj: { [key: string]: string | number }) => void;
+  handleSignOut: () => void;
 };
 
 const UserCtx = createContext<Partial<UserCtxType>>({});
@@ -35,14 +36,36 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   const { firestore, db, firebase } = useFBCtx();
 
   useEffect(() => {
+    const isOffline = {
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    const isOnline = {
+      state: "online",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    const presenceRef = db.ref(".info/connected");
     // Listen authenticated user
     const unsubscriber = firebase
       .auth()
-      .onAuthStateChanged(async (user: firebaseScope.User) => {
+      .onAuthStateChanged(async (_user: firebaseScope.User) => {
         try {
-          if (user) {
-            setUser(user);
-          } else setUser(null);
+          if (_user) {
+            const userStatusDBRef = db.ref(`/status/${_user?.uid}`);
+            setUser(_user);
+            presenceRef.on("value", (snap) => {
+              if (!snap.val()) return;
+              userStatusDBRef
+                .onDisconnect()
+                .set(isOffline)
+                .then(() => {
+                  userStatusDBRef.set(isOnline);
+                });
+            });
+          } else {
+            setUser(null);
+            setUserProfile(null);
+          }
         } catch (error) {
           // Most probably a connection error. Handle appropriately.
           console.error("connection error", error);
@@ -50,8 +73,23 @@ export const UserCtxProvider: React.FC = ({ children }) => {
           // setLoadingUser(false);
         }
       });
-    return () => unsubscriber();
+    return () => {
+      unsubscriber();
+      presenceRef.off();
+    };
   }, []);
+
+  const handleSignOut = useCallback(async () => {
+    const isOffline = {
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    console.log("handleSignOut", { user });
+    if (user) {
+      await db.ref(`/status/${user.uid}`).set(isOffline);
+    }
+    firebase.auth().signOut();
+  }, [user, db]);
 
   // user profile listener
   useEffect(() => {
@@ -103,7 +141,14 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   );
   return (
     <UserCtx.Provider
-      value={{ user, userProfile, userState, userDispatch, updateUserPrefs }}
+      value={{
+        user,
+        userProfile,
+        userState,
+        userDispatch,
+        updateUserPrefs,
+        handleSignOut,
+      }}
       {...{ children }}
     />
   );

@@ -17,7 +17,6 @@ interface LayoutI {
 const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
   const classes = useLayoutStyles();
   const width = useWidth();
-  const { optionsDispatch, optionsState } = useGameCtx();
   const { userDispatch, userProfile } = useUserCtx();
   return (
     <div>

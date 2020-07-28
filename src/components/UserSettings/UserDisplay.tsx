@@ -6,18 +6,19 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-
+import { useProfile } from "@hooks/useProfile";
 import FaceDrawing from "../faces/FaceDrawing";
 import { colorsObj } from "../GameBoard/playerColors";
 
 // import { faceSvgs } from "../faces/faceIndex";
 interface UserDisplayI {
-  user?: PlayerProfile;
+  userId?: string;
   points?: number;
 }
 
-const UserDisplay: React.FC<UserDisplayI> = ({ user, children, points }) => {
-  const userColorString = user?.userColor || "grey";
+const UserDisplay: React.FC<UserDisplayI> = ({ userId, children, points }) => {
+  const { profile } = useProfile(userId);
+  const userColorString = profile?.userColor || "grey";
   const { light, med, dark } = colorsObj[userColorString];
 
   return (
@@ -33,17 +34,17 @@ const UserDisplay: React.FC<UserDisplayI> = ({ user, children, points }) => {
         }}
       >
         <ListItem dense style={{ padding: 0 }}>
-          {user ? (
+          {profile ? (
             <>
               <ListItemAvatar>
                 <FaceDrawing
                   height="3rem"
-                  faceImageNumber={user.faceImageNumber}
+                  faceImageNumber={profile.faceImageNumber}
                 />
               </ListItemAvatar>
               <ListItemText
                 primaryTypographyProps={{ noWrap: true }}
-                primary={user.displayName}
+                primary={profile.displayName}
                 secondary={points}
               />
               {children}

@@ -48,6 +48,7 @@ const cardVariants: Variants = {
 const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
   const { state, playerProfiles } = useGameCtx();
   const successPlayerId = state.successSet?.uid;
+
   const successColorString =
     (successPlayerId &&
       playerProfiles &&

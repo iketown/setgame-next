@@ -9,7 +9,7 @@ const SingleClickToSelect = () => {
     <FormControlLabel
       control={
         <Switch
-          checked={input.value}
+          checked={!!input.value}
           onChange={(e, chk) => input.onChange(chk)}
           name="checkedA"
         />
