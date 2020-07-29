@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
@@ -11,7 +12,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { useFBCtx } from "context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 import {
   userReducer,
   userInitialValue,
@@ -154,4 +155,4 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   );
 };
 
-export const useUserCtx = () => useContext(UserCtx);
+export const useUserCtx = (): Partial<UserCtxType> => useContext(UserCtx);

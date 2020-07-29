@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Grid } from "@material-ui/core";
-import Avatar, { Option, OptionContext, AvatarStyle } from "avataaars";
-import Layout from "../../src/components/layout/Layout";
-import AvatarForm from "./AvatarForm";
+import Avatar from "avataaars";
+import Layout from "@components/layout/Layout";
+import { AvatarForm } from "./AvatarForm";
 import AvatarSelector from "./AvatarSelector";
 
-const AvatarsPage = () => {
+const AvatarsPage: React.FC = () => {
   return (
     <Layout>
       <Container>
@@ -39,7 +39,5 @@ const AvatarsPage = () => {
     </Layout>
   );
 };
-
-const AvatarProvider = () => {};
 
 export default AvatarsPage;

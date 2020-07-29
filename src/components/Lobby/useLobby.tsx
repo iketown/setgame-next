@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import { useFBCtx } from "context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import fetch from "unfetch";
-import { useUserCtx } from "context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 

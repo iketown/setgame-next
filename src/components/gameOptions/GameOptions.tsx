@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,13 +8,11 @@ import {
   Button,
 } from "@material-ui/core";
 import { useGame } from "@hooks/useGame";
-import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import MaxCardSelect from "./MaxCardsSelect";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
 
 const GameOptions = () => {
-  const { optionsState, optionsDispatch, gameId } = useGameCtx();
-  const { maxCards } = optionsState;
+  const { optionsState, optionsDispatch } = useGameCtx();
   const { setCurrentOptionsAsDefault } = useGame();
 
   const handleClose = () => optionsDispatch({ type: "CLOSE_DIALOG" });

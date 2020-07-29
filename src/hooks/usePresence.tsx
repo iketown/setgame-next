@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 export const usePresence = () => {
   const router = useRouter();

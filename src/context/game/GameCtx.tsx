@@ -1,12 +1,16 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable consistent-return */
 import {
   gameOptionsReducer,
   initialGOState,
 } from "@components/gameOptions/gameOptionsReducer";
+import { useUserCtx } from "@context/user/UserCtx";
 import { useGame } from "@hooks/useGame";
-import useRenderCount from "@hooks/useRenderCount";
-import { useUserCtx } from "context/user/UserCtx";
+import { usePlayerProfiles } from "@hooks/usePlayerProfiles";
+import { useRenderCount } from "@hooks/useRenderCount";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React, {
   createContext,
   useCallback,
@@ -16,8 +20,6 @@ import React, {
   useState,
 } from "react";
 
-import { useRouter } from "next/router";
-import { usePlayerProfiles } from "../../src/hooks/usePlayerProfiles";
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
 
@@ -189,4 +191,4 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   );
 };
 
-export const useGameCtx = () => useContext(GameCtx);
+export const useGameCtx = (): GameContextType => useContext(GameCtx);

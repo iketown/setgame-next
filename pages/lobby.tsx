@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
+import GameList from "@components/Lobby/GameList";
+import { LobbyCtxProvider, useLobbyCtx } from "@context/lobby/LobbyCtx";
+import { useGame } from "@hooks/useGame";
 import {
-  Grid,
   Button,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  Container,
   Card,
   CardActions,
+  Container,
+  Grid,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Layout from "@components/layout/Layout";
-import GameList from "@components/Lobby/GameList";
-import { useLobby } from "@components/Lobby/useLobby";
-import { useGame } from "@hooks/useGame";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { LobbyCtxProvider, useLobbyCtx } from "context/lobby/LobbyCtx";
+import React, { useEffect, useState } from "react";
+
 //
 //
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +27,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Lobby = () => {
   const classes = useStyles();
-  const { push } = useRouter();
   const { findAvailableName, createPendingGame } = useGame();
   const [newGameId, setNewGameId] = useState("");
-  const { publicGames, uniqueName, getUniqueName } = useLobbyCtx();
-  const handleCreateGame = () => {};
+  const { uniqueName } = useLobbyCtx();
   useEffect(() => {
     if (uniqueName?.name) {
       findAvailableName(uniqueName.name).then((useName) => {
@@ -73,7 +67,7 @@ const Lobby = () => {
   );
 };
 
-const WrappedLobby = () => {
+const WrappedLobby: React.FC = () => {
   return (
     <LobbyCtxProvider>
       <Lobby />

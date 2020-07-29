@@ -1,14 +1,16 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from "react";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useUserCtx } from "@context/user/UserCtx";
+import { useGame } from "@hooks/useGame";
 import { Button } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
-import { useUserCtx } from "../../../context/user/UserCtx";
-import { useGame } from "../../hooks/useGame";
+import MenuItem from "@material-ui/core/MenuItem";
+import React, { useEffect, useState } from "react";
+
 //
 //
-const GameOptionsButton = ({ gameId }: { gameId: string }) => {
+const GameOptionsButton: React.FC<{ gameId: string }> = ({ gameId }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { user } = useUserCtx();
   const [players, setPlayers] = useState<{ [uid: string]: { admin: boolean } }>(
@@ -25,7 +27,6 @@ const GameOptionsButton = ({ gameId }: { gameId: string }) => {
       setPlayers(snap.val());
     });
     return () => {
-      console.log("bye bye gameoptionsbutton");
       playerRef.off();
     };
   }, [gameId]);

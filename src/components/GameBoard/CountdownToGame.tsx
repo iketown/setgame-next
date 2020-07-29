@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { useGameCtx } from "context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import moment from "moment";
 import styled from "styled-components";
 import { Button, Typography } from "@material-ui/core";

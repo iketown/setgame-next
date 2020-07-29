@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardActions,
-  Button,
-  CardContent,
-  Grid,
-  Avatar,
-} from "@material-ui/core";
+import { Card, CardActions, Button, Grid, Avatar } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import { useUserCtx } from "../../context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 import SignInScreen from "./SignIn/SignInScreen";
 //
 //
-const UserScreen = () => {
+const UserScreen: React.FC = () => {
   const [fakeNoUser, setFakeNoUser] = useState(false);
   const { user, userProfile } = useUserCtx();
   const signedInContent = (

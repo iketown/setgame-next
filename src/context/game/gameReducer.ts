@@ -51,7 +51,7 @@ export const gameReducer = (
       } = action.payload;
       const newCards = boardCards.filter((c) => !state.boardCards.includes(c));
       const replacementCards = [...newCards];
-      const hollowBoardCards = state.boardCards.map((c, i) =>
+      const hollowBoardCards = state.boardCards.map((c) =>
         boardCards.includes(c) ? c : null
       );
       let nextBoardCards = hollowBoardCards.map(

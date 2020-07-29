@@ -1,7 +1,5 @@
-import React from "react";
-
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import { useGameCtx } from "../../context/game/GameCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 
 export const useGameOptions = () => {
   const { db } = useFBCtx();
@@ -13,3 +11,5 @@ export const useGameOptions = () => {
   };
   return { setOptionValue };
 };
+
+export default useGameOptions;

@@ -2,13 +2,13 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { AppProps } from "next/app";
-import { FirebaseCtxProvider } from "../context/firebase/firebaseCtx";
-import { UserCtxProvider } from "../context/user/UserCtx";
+import Layout from "@components/layout/Layout";
+import { FirebaseCtxProvider } from "@context/firebase/firebaseCtx";
+import { UserCtxProvider } from "@context/user/UserCtx";
 import theme from "../src/theme";
-import Layout from "../src/components/layout/Layout";
 // Custom App to wrap it with context provider
 
-export default function App({ Component, pageProps }: AppProps) {
+export const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
@@ -29,4 +29,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </UserCtxProvider>
     </FirebaseCtxProvider>
   );
-}
+};
+
+export default App;

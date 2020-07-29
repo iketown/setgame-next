@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable consistent-return */
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useEffect, useState } from "react";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 export const useProfile = (uid?: string) => {
   const [profile, setProfile] = useState<PlayerProfile>();

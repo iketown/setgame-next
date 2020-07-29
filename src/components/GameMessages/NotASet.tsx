@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
-import { useGameCtx } from "context/game/GameCtx";
-import styled from "styled-components";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { Typography, Button } from "@material-ui/core";
+import { useGameCtx } from "@context/game/GameCtx";
+import { Button, Typography } from "@material-ui/core";
 import { ThumbDown } from "@material-ui/icons";
 import { motion } from "framer-motion";
-// @ts-ignore
+import React, { useEffect } from "react";
 import Countdown from "react-countdown";
-import GameMessageOverlay from "./GameMessageOverlay";
+import styled from "styled-components";
+
 import SetCard from "../cards/SetCard";
+import GameMessageOverlay from "./GameMessageOverlay";
 
 //
 //
@@ -19,7 +18,7 @@ const CardDisplay = styled.div`
   margin: 1rem;
 `;
 
-const NotASet = () => {
+const NotASet: React.FC = () => {
   const { state, dispatch } = useGameCtx();
   const { failSet } = state;
   const handleClose = () => {

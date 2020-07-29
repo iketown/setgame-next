@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
-import { useFBCtx } from "context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useEffect, useMemo, useState } from "react";
 import { firestore } from "firebase";
 

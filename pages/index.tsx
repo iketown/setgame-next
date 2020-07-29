@@ -8,10 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import { useRouter } from "next/router";
 import React from "react";
 
-import AnimatedSet from "../src/components/FrontPage/AnimatedSet";
-import Layout from "../src/components/layout/Layout";
+import AnimatedSet from "@components/FrontPage/AnimatedSet";
 
-function Copyright() {
+const Copyright: React.FC = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
@@ -21,7 +20,7 @@ function Copyright() {
       {new Date().getFullYear()}.
     </Typography>
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -58,9 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2];
-
-export default function Album() {
+export const Album: React.FC = () => {
   const classes = useStyles();
   const { push } = useRouter();
 
@@ -150,4 +147,6 @@ export default function Album() {
       {/* End footer */}
     </>
   );
-}
+};
+
+export default Album;

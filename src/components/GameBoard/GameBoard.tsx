@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Grid, CircularProgress, Button, Typography } from "@material-ui/core";
+/* eslint-disable no-console */
+import React from "react";
+import { Grid, Button, Typography } from "@material-ui/core";
 import {
   GridContextProvider,
   GridDropZone,
   GridItem,
   swap,
 } from "react-grid-dnd";
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useCards } from "../../hooks/useCards";
-import SetCard from "../cards/SetCard";
+import { useCards } from "@hooks/useCards";
+import { useGameCtx } from "@context/game/GameCtx";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
 import GameProgressLine from "./GameProgressLine";
 
-const GameBoard = () => {
+const GameBoard: React.FC = () => {
   const { state, dispatch } = useGameCtx();
   const { boardCards } = state;
   const {

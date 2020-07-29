@@ -1,5 +1,6 @@
 import CountdownToGame from "@components/GameBoard/CountdownToGame";
 import GameBoard from "@components/GameBoard/GameBoard";
+import GameEnded from "@components/GameBoard/GameEnded";
 import GameError from "@components/GameBoard/GameError";
 import PreGame from "@components/GameBoard/PreGame";
 import GameOver from "@components/GameMessages/GameOver";
@@ -7,24 +8,22 @@ import NotASet from "@components/GameMessages/NotASet";
 import GamePlayers from "@components/GamePlayers/GamePlayers";
 import GameRequests from "@components/GamePlayers/GameRequestsList";
 import PlayedSets from "@components/PlayedSets/PlayedSets";
-import GameEnded from "@components/GameBoard/GameEnded";
+import PleaseSignIn from "@components/SignIn/PleaseSignIn";
+import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 import { useRenderCount } from "@hooks/useRenderCount";
+import { useSetListener } from "@hooks/useSetListener";
 import { Container, Grid } from "@material-ui/core";
 import moment from "moment";
 import { NextPage } from "next";
 import React, { useState } from "react";
-import PleaseSignIn from "../../src/components/SignIn/PleaseSignIn";
-import { GameCtxProvider, useGameCtx } from "../../context/game/GameCtx";
-import { useUserCtx } from "../../context/user/UserCtx";
-import SignInScreen from "../../src/components/SignIn/SignInScreen";
-import { useSetListener } from "../../src/hooks/useSetListener";
 
 //
 //
 const Game = () => {
   useRenderCount("Game");
   useSetListener();
-  const { state, gameStartTime } = useGameCtx();
+  const { gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );

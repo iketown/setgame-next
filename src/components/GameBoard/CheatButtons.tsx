@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 //
 //
-const CheatButtons = () => {
+const CheatButtons: React.FC = () => {
   const { state, dispatch, isPlayer } = useGameCtx();
   const nodeEnv = process.env.NODE_ENV;
   if (nodeEnv !== "development") return null;

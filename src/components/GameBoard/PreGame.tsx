@@ -1,29 +1,29 @@
+import { useGameCtx } from "@context/game/GameCtx";
+import { useGame } from "@hooks/useGame";
+import { useRenderCount } from "@hooks/useRenderCount";
 import {
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   Checkbox,
   Container,
   FormControlLabel,
   Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import useRenderCount from "@hooks/useRenderCount";
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useGame } from "../../hooks/useGame";
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
 import PreGameInvitePlayers from "./PreGameInvitePlayers";
 
-const PreGame = () => {
+const PreGame: React.FC = () => {
   useRenderCount("PreGame");
   const { startGame, deleteGame } = useGame();
-  const { query, push } = useRouter();
-  const { isPlayer, isGameAdmin, gameId, setGameId } = useGameCtx();
+  const { push } = useRouter();
+  const { isGameAdmin, gameId } = useGameCtx();
   const [allowNewPlayers, setAllowNewPlayers] = useState(true);
   const handleStart = () => {
     startGame(allowNewPlayers);

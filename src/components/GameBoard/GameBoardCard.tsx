@@ -1,10 +1,9 @@
 import React from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { GridItem } from "react-grid-dnd";
+import { motion, Variants } from "framer-motion";
 import FaceDrawing from "@components/faces/FaceDrawing";
+import { useCards } from "@hooks/useCards";
+import { useGameCtx } from "@context/game/GameCtx";
 import SetCard from "../cards/SetCard";
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useCards } from "../../hooks/useCards";
 import { colorsObj } from "./playerColors";
 //
 //
@@ -31,7 +30,7 @@ const cardVariants: Variants = {
       delay: i * 0.1,
     },
   }),
-  normal: (i) => ({
+  normal: () => ({
     scale: 1.0,
     rotate: 0,
     y: 0,
@@ -91,12 +90,7 @@ const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
         return { animationVariant: "normal", border: defaultBorder };
     }
   };
-  const {
-    animationVariant,
-    border,
-    faceImageNumber,
-    rotation,
-  } = getCardState();
+  const { animationVariant, border, faceImageNumber } = getCardState();
   return (
     <motion.div
       key={cardId}

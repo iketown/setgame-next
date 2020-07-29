@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
+import { useGameCtx } from "@context/game/GameCtx";
+import { useGameInvites } from "@hooks/useGameInvites";
+import { usePreGame } from "@hooks/usePreGame";
+import { useRenderCount } from "@hooks/useRenderCount";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   Card,
   CardActions,
@@ -10,30 +12,22 @@ import {
   CardHeader,
   List,
 } from "@material-ui/core";
-import { useGameCtx } from "context/game/GameCtx";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaThumbsUp } from "react-icons/fa";
 
-import { useRenderCount } from "@hooks/useRenderCount";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
-import { useUserCtx } from "../../../context/user/UserCtx";
-import { useGame } from "../../hooks/useGame";
-import { usePreGame } from "../../hooks/usePreGame";
 import PreGameInvitePlayerListItem from "./PreGameInvitePlayerListItem";
 
 //
 //
-const PreGameInvitePlayers = () => {
+const PreGameInvitePlayers: React.FC = () => {
   useRenderCount("PreGameInvitePlayers");
-  const { playerProfiles, gameId } = useGameCtx();
+  const { playerProfiles } = useGameCtx();
   const { thisPublicGame, friendsLatestFirst } = usePreGame();
-  const { db } = useFBCtx();
 
   const [thisUrl, setThisUrl] = useState("");
   const [copied, setCopied] = useState(false);
-  const { inviteToGame } = useGame();
-  const { userProfile } = useUserCtx();
+  const { inviteToGame } = useGameInvites();
 
   useEffect(() => {
     if (typeof window !== "undefined") {

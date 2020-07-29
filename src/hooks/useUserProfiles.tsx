@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/prefer-default-export */
 import { useState, useEffect } from "react";
 import { firestore } from "firebase";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 //
 export const useUserProfiles = () => {

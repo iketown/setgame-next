@@ -1,19 +1,20 @@
 import React, { useMemo, useEffect } from "react";
-import { useUserCtx } from "context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
+import { useGameCtx } from "@context/game/GameCtx";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 import useWidth from "./useWidth";
-import { useGameCtx } from "../../context/game/GameCtx";
 import useEventListener from "./useEventListener";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
 
 export const useCards = () => {
   const {
-    state: { boardCards, mySet },
+    state: { boardCards },
     dispatch,
     gameId,
     isPlayer,
   } = useGameCtx();
   const { userProfile } = useUserCtx();
   const { functions } = useFBCtx();
+  const row5 = boardCards.length > 12;
 
   useEventListener("keydown", (e) => {
     const expandedLetters = [
@@ -40,10 +41,6 @@ export const useCards = () => {
     const activeLetters = row5 ? expandedLetters : letters;
     const cardIndex = activeLetters.indexOf(e.key);
     const card = boardCards[cardIndex];
-    if (!card) return;
-
-    console.log("cardIndex", cardIndex);
-    // select set with keys
   });
   const width = useWidth();
   const cardWidth = useMemo(() => {
@@ -62,7 +59,6 @@ export const useCards = () => {
   }, [width]);
   const margin = 15;
   const rowHeight = cardWidth * 1.4 + margin;
-  const row5 = boardCards.length > 12;
 
   const handleClickCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -82,7 +78,6 @@ export const useCards = () => {
     }
     if (event.metaKey || userProfile.singleClickToSelect) {
       dispatch({ type: "TOGGLE_CARD", payload: { card } });
-    } else {
     }
   };
   const handleDoubleClick = (card: string) => {

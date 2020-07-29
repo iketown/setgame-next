@@ -3,12 +3,12 @@ import React, { useMemo, useEffect, useState } from "react";
 import moment from "moment";
 import { Typography, Container, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import usePresence from "@hooks/usePresence";
+import { usePresence } from "@hooks/usePresence";
 import Link from "next/link";
-import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import UserDisplay from "../UserSettings/UserDisplay";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: "calc(100vh - 10rem)",
     display: "flex",
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 //
 //
-const GameEnded = () => {
+const GameEnded: React.FC = () => {
   const { gameEnded, state, playerProfiles } = useGameCtx();
   const { setPlayerIds, whosHere } = usePresence();
   const [fromNow, setFromNow] = useState("");
@@ -71,7 +71,7 @@ const GameEnded = () => {
         </Button>
       </Link>
       <div className={classes.spacer} />
-      {usersByPoints?.map(({ uid, points }, index) => {
+      {usersByPoints?.map(({ uid, points }) => {
         const isHere = whosHere && whosHere[uid];
         return (
           <UserDisplay key={uid} points={points} userId={uid} isHere={isHere} />

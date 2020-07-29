@@ -1,16 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
-import { useFBCtx } from "context/firebase/firebaseCtx";
-import React, {
-  useContext,
-  createContext,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import { useRenderCount } from "@hooks/useRenderCount";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useUserCtx } from "@context/user/UserCtx";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import fetch from "unfetch";
-import { useUserCtx } from "context/user/UserCtx";
-import { useRenderCount } from "@hooks/useRenderCount";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 const LobbyCtx = createContext<Partial<LobbyCtxType>>({});
@@ -19,11 +14,8 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
   useRenderCount("LobbyCtxProvider");
   const { db } = useFBCtx();
   const { userProfile } = useUserCtx();
-  const { data: uniqueName, error } = useSWR("/api/uniquename", fetcher);
-  const { user } = useUserCtx();
+  const { data: uniqueName } = useSWR("/api/uniquename", fetcher);
   const [publicGames, setPublicGames] = useState();
-  const [myInvites, setMyInvites] = useState<string[]>([]);
-  const [friendsOnline, setFriendsOnline] = useState();
 
   const getUniqueName = () => {
     mutate("/api/uniquename");
@@ -54,4 +46,4 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
   );
 };
 
-export const useLobbyCtx = () => useContext(LobbyCtx);
+export const useLobbyCtx = (): Partial<LobbyCtxType> => useContext(LobbyCtx);

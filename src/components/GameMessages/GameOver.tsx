@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGameCtx } from "context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ const PlayerFinalList = styled.div`
   align-items: center;
 `;
 
-const GameOver = () => {
+const GameOver: React.FC = () => {
   const { gameOver, state, playerProfiles } = useGameCtx();
   const { playedSets } = state;
   const usersByPoints = useMemo(() => {
@@ -38,7 +38,6 @@ const GameOver = () => {
           GAME OVER
         </Typography>
         {usersByPoints?.map(({ uid, points }, index) => {
-          const user = playerProfiles && playerProfiles[uid];
           if (index === 0) {
             return (
               <motion.div

@@ -1,13 +1,14 @@
-import { List, ListSubheader, Card } from "@material-ui/core";
+import { List, ListSubheader } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
-import { useLobbyCtx } from "../../../context/lobby/LobbyCtx";
+import { useLobbyCtx } from "@context/lobby/LobbyCtx";
 import GameListItem from "./GameListItem";
 
-const GameList = () => {
+const GameList: React.FC = () => {
   const { publicGames } = useLobbyCtx();
   const gamesByStartTime =
     publicGames &&
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(publicGames).sort(([gameId, obj], [gameId2, obj2]) => {
       if (moment(obj.createdAt).isBefore(moment(obj2.createdAt))) return 1;
       return -1;

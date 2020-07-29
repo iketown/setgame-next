@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { Container, Grid, Typography, Button } from "@material-ui/core";
+import React from "react";
+import { Container, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useUserCtx } from "context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     textAlign: "center",
     padding: "auto",
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PleaseSignIn = () => {
+const PleaseSignIn: React.FC = () => {
   const classes = useStyles();
   const { userDispatch, userState } = useUserCtx();
   const isOpen = userState.dialogOpen;

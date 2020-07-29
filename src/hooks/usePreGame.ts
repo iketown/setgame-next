@@ -1,11 +1,12 @@
-import { useRenderCount } from "@hooks/useRenderCount";
-
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable consistent-return */
-import { useState, useEffect, useMemo } from "react";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useGameCtx } from "@context/game/GameCtx";
+import { useUserCtx } from "@context/user/UserCtx";
+import { useRenderCount } from "@hooks/useRenderCount";
 import moment from "moment";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
-import { useGameCtx } from "../../context/game/GameCtx";
-import { useUserCtx } from "../../context/user/UserCtx";
+import { useEffect, useMemo, useState } from "react";
+
 //
 //
 export const usePreGame = () => {
@@ -14,7 +15,7 @@ export const usePreGame = () => {
   const { db } = useFBCtx();
   const { userProfile } = useUserCtx();
 
-  const { playerProfiles, gameId } = useGameCtx();
+  const { gameId } = useGameCtx();
 
   useEffect(() => {
     if (!gameId) return;
@@ -28,14 +29,9 @@ export const usePreGame = () => {
   const friendsLatestFirst = useMemo(() => {
     if (!userProfile?.friends) return null;
     return Object.entries(userProfile.friends).sort(
-      ([uid1, gameArr1], [uid2, gameArr2]) => {
-        const latestGame1 = gameArr1.sort((a, b) =>
-          moment(a.gameDate).isAfter(b.gameDate) ? -1 : 1
-        )[0].gameDate;
-        const latestGame2 = gameArr2.sort((a, b) =>
-          moment(a.gameDate).isAfter(b.gameDate) ? -1 : 1
-        )[0].gameDate;
-        return moment(latestGame1).isAfter(latestGame2) ? -1 : 1;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ([uid1, lastPlayed1], [uid2, lastPlayed2]) => {
+        return moment(lastPlayed1).isAfter(lastPlayed2) ? -1 : 1;
       }
     );
   }, [userProfile?.friends]);

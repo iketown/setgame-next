@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable import/prefer-default-export */
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import { useEffect } from "react";
-import { useGameCtx } from "../../context/game/GameCtx";
+
 import { checkSet } from "../../functions/cards/checkCards";
-import { useFBCtx } from "../../context/firebase/firebaseCtx";
 
 export const useSetListener = () => {
   const { state, dispatch, gameId } = useGameCtx();
@@ -14,7 +16,7 @@ export const useSetListener = () => {
     const isValid = checkSet(...mySet);
     if (isValid) {
       const submitSet = functions.httpsCallable("submitSet");
-      submitSet({ mySet, gameId }).then((response) => {
+      submitSet({ mySet, gameId }).then(() => {
         dispatch({ type: "CLEAR_SET", payload: {} });
       });
     } else {

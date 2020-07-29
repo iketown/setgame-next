@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import FaceDrawing from "@components/faces/FaceDrawing";
-import React, { useRef, useEffect } from "react";
+import { useGameCtx } from "@context/game/GameCtx";
+import { Card } from "@material-ui/core";
+import { motion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { motion } from "framer-motion";
-import { Card } from "@material-ui/core";
-import { useGameCtx } from "../../../context/game/GameCtx";
 import SetCard from "../cards/SetCard";
 import { colorsObj } from "../GameBoard/playerColors";
 
@@ -43,11 +43,7 @@ interface PlayedSetListItemI {
 const width = 60;
 const rotation = 0;
 
-const PlayedSetListItem: React.FC<PlayedSetListItemI> = ({
-  time,
-  uid,
-  set,
-}) => {
+const PlayedSetListItem: React.FC<PlayedSetListItemI> = ({ uid, set }) => {
   const { playerProfiles } = useGameCtx();
   const liRef = useRef(null);
   useEffect(() => {

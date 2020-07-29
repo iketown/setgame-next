@@ -4,14 +4,14 @@ import { List, Typography } from "@material-ui/core";
 import moment from "moment";
 import React, { useMemo, useRef, useEffect } from "react";
 
-import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import PlayedSetListItem from "./PlayedSetListItem";
 
 //
 //
 
-const PlayedSets = () => {
-  const { state, playerProfiles } = useGameCtx();
+const PlayedSets: React.FC = () => {
+  const { state } = useGameCtx();
   const { playedSets } = state;
   const listRef = useRef(null);
 

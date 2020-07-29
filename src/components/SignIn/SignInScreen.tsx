@@ -1,17 +1,18 @@
+import { useUserCtx } from "@context/user/UserCtx";
 import firebase from "firebase";
-import React, { useState } from "react";
+import React from "react";
 import StyledFBAuth from "react-firebaseui/StyledFirebaseAuth";
-import { useUserCtx } from "context/user/UserCtx";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
 
-const SignInScreen = () => {
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+
+const SignInScreen: React.FC = () => {
   const { firebase: fb } = useFBCtx();
   const { userDispatch } = useUserCtx();
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: "popup",
     callbacks: {
-      signInSuccessWithAuthResult: (auth) => {
+      signInSuccessWithAuthResult: () => {
         userDispatch({ type: "CLOSE_SETTINGS" });
         return false;
       },

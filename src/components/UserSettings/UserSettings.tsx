@@ -1,4 +1,5 @@
 import SignInScreen from "@components/SignIn/SignInScreen";
+import { useUserCtx } from "@context/user/UserCtx";
 import {
   Button,
   Dialog,
@@ -7,21 +8,17 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  FormControlLabel,
-  Switch,
 } from "@material-ui/core";
-import { useFBCtx } from "context/firebase/firebaseCtx";
-import { useUserCtx } from "context/user/UserCtx";
 import React, { useState } from "react";
 import { Form } from "react-final-form";
-import SingleClickToSelect from "./SingleClickToSelect";
+
+import FaceDrawing from "../faces/FaceDrawing";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
 import FaceDialog from "./FaceDialog";
-import FaceDrawing from "../faces/FaceDrawing";
+import SingleClickToSelect from "./SingleClickToSelect";
 
-const UserSettings = () => {
-  const { firebase } = useFBCtx();
+const UserSettings: React.FC = () => {
   const {
     user,
     userState,
@@ -50,7 +47,7 @@ const UserSettings = () => {
           onSubmit={onSubmit}
           initialValues={{ ...userDefaults, ...userProfile }}
         >
-          {({ handleSubmit, values, errors, submitting }) => {
+          {({ handleSubmit, values, submitting }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <DialogTitle>User Settings</DialogTitle>

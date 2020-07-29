@@ -1,19 +1,11 @@
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
 import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
-import { useGameCtx } from "context/game/GameCtx";
-import { useUserCtx } from "context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 import UserSettings from "@components/UserSettings/UserSettings";
 import { useRouter } from "next/router";
 import { useLayoutStyles } from "./layoutStyles";
-import useWidth from "../../hooks/useWidth";
 import FaceDrawing from "../faces/FaceDrawing";
 import GameOptionsButton from "./GameOptionsButton";
 
@@ -24,7 +16,6 @@ interface LayoutI {
 const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
   const router = useRouter();
   const classes = useLayoutStyles();
-  const width = useWidth();
   const { userDispatch, userProfile } = useUserCtx();
   const gameId = router.query?.gameId as string;
   return (

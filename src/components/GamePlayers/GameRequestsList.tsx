@@ -4,21 +4,19 @@ import { ThumbDown, ThumbUp } from "@material-ui/icons";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 
-import usePresence from "@hooks/usePresence";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useGame } from "../../hooks/useGame";
+import { usePresence } from "@hooks/usePresence";
+import { useGameInvites } from "@hooks/useGameInvites";
+import { useGameCtx } from "@context/game/GameCtx";
 import UserDisplay from "../UserSettings/UserDisplay";
 
 //
 //
 
-const GameRequestsList = () => {
+const GameRequestsList: React.FC = () => {
   const { isGameAdmin, gameRequests } = useGameCtx();
   const { setPlayerIds, whosHere } = usePresence();
-  const { db } = useFBCtx();
 
-  const { respondToRequest } = useGame();
+  const { respondToRequest } = useGameInvites();
   useEffect(() => {
     if (!isGameAdmin || !gameRequests) return;
     setPlayerIds(Object.keys(gameRequests));

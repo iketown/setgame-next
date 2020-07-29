@@ -2,8 +2,7 @@ import { usePresence } from "@hooks/usePresence";
 import { Grid, Hidden, List, Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
 import React, { useEffect, useMemo } from "react";
-import { useUserCtx } from "../../../context/user/UserCtx";
-import { useGameCtx } from "../../../context/game/GameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 import UserDisplay from "../UserSettings/UserDisplay";
 import GameRequestButton from "./GameRequestButton";
 
@@ -14,9 +13,10 @@ interface PlayerProfiles {
   [uid: string]: PlayerProfile;
 }
 
-const GamePlayers = ({ showTitle = true }) => {
+const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
+  showTitle = true,
+}) => {
   const { playerProfiles, state } = useGameCtx();
-  const { user } = useUserCtx();
   const { playedSets } = state;
   const { setPlayerIds, whosHere } = usePresence();
   const usersByPoints = useMemo(() => {

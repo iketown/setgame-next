@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { useGameCtx } from "@context/game/GameCtx";
+import { useGameOptions } from "@hooks/useGameOptions";
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import React from "react";
 
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useGameOptions } from "../../hooks/useGameOptions";
-
-const MaxCardsSelect = () => {
-  const { gameId, optionsState } = useGameCtx();
+const MaxCardsSelect: React.FC = () => {
+  const { optionsState } = useGameCtx();
   const { setOptionValue } = useGameOptions();
   const handleChange = (e) => {
     const maxCards = e.target.value;

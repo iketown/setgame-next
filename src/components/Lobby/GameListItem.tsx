@@ -1,21 +1,16 @@
-import React, { useEffect } from "react";
+import { useProfile } from "@hooks/useProfile";
 import {
-  List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
-  ListItemAvatar,
-  Typography,
-  IconButton,
+  ListItemText,
   Tooltip,
+  Typography,
 } from "@material-ui/core";
-import Link from "next/link";
-import { FaArrowAltCircleRight } from "react-icons/fa";
 import moment from "moment";
-import useProfile from "@hooks/useProfile";
-import { useLobby } from "./useLobby";
+import Link from "next/link";
+import React from "react";
+
 import FaceDrawing from "../faces/FaceDrawing";
-import { useFBCtx } from "../../../context/firebase/firebaseCtx";
 
 //
 //
@@ -35,7 +30,6 @@ const GameListItem: React.FC<GameListItemI> = ({
   gameId,
   players,
   gameStartTime,
-  createdAt,
 }) => {
   const whenText = gameStartTime
     ? `started ${moment(gameStartTime).fromNow()}`
@@ -64,7 +58,7 @@ const GameListItem: React.FC<GameListItemI> = ({
             }}
           >
             {players &&
-              Object.entries(players).map(([uid, { joinedAt }]) => {
+              Object.entries(players).map(([uid]) => {
                 return <PlayerHead key={uid} uid={uid} />;
               })}
           </div>

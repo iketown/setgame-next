@@ -1,15 +1,15 @@
 /* eslint-disable consistent-return */
 import { Button, LinearProgress, Typography } from "@material-ui/core";
-import { useUserCtx } from "context/user/UserCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 import React from "react";
 
-import { useGameCtx } from "../../../context/game/GameCtx";
-import { useGame } from "../../hooks/useGame";
+import { useGameInvites } from "@hooks/useGameInvites";
+import { useGameCtx } from "@context/game/GameCtx";
 
-const GameRequestButton = () => {
+const GameRequestButton: React.FC = () => {
   const { user } = useUserCtx();
   const { isPlayer, gameRequests, allowsNewPlayers } = useGameCtx();
-  const { requestToJoin, cancelRequestToJoin } = useGame();
+  const { requestToJoin, cancelRequestToJoin } = useGameInvites();
 
   if (isPlayer) return null;
   if (!user?.uid) return null;
