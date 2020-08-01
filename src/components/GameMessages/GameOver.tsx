@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useGameCtx } from "@context/game/GameCtx";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
@@ -15,6 +15,12 @@ const PlayerFinalList = styled.div`
 
 const GameOver: React.FC = () => {
   const { gameOver, state, playerProfiles } = useGameCtx();
+  const [showGameOver, setShowGameOver] = useState(false); // allows for a couple seconds before showing game over screen
+  const delayShowGameOver = () => {
+    setTimeout(() => {
+      setShowGameOver(true);
+    }, 3000);
+  };
   const { playedSets } = state;
   const usersByPoints = useMemo(() => {
     return (
@@ -31,28 +37,38 @@ const GameOver: React.FC = () => {
     );
   }, [playedSets, playerProfiles]);
   if (!gameOver) return null;
+  if (gameOver && !showGameOver) {
+    delayShowGameOver();
+    return null;
+  }
+
   return (
     <GameMessageOverlay>
-      <PlayerFinalList>
-        <Typography variant="h3" gutterBottom>
-          GAME OVER
-        </Typography>
-        {usersByPoints?.map(({ uid, points }, index) => {
-          if (index === 0) {
-            return (
-              <motion.div
-                animate={{
-                  scale: [0.95, 1.05],
-                  transition: { yoyo: Infinity, duration: 0.3 },
-                }}
-              >
-                <UserDisplay key={uid} points={points} userId={uid} />
-              </motion.div>
-            );
-          }
-          return <UserDisplay key={uid} points={points} userId={uid} />;
-        })}
-      </PlayerFinalList>
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1, transition: { duration: 1.5 } }}
+      >
+        <PlayerFinalList>
+          <Typography variant="h3" gutterBottom>
+            GAME OVER
+          </Typography>
+          {usersByPoints?.map(({ uid, points }, index) => {
+            if (index === 0) {
+              return (
+                <motion.div
+                  animate={{
+                    scale: [0.95, 1.05],
+                    transition: { yoyo: Infinity, duration: 0.3 },
+                  }}
+                >
+                  <UserDisplay key={uid} points={points} userId={uid} />
+                </motion.div>
+              );
+            }
+            return <UserDisplay key={uid} points={points} userId={uid} />;
+          })}
+        </PlayerFinalList>
+      </motion.div>
     </GameMessageOverlay>
   );
 };

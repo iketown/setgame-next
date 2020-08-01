@@ -12,6 +12,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import getUniqueName from "../src/utils/getUniqueName";
 
 //
 //
@@ -27,16 +28,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Lobby = () => {
   const classes = useStyles();
-  const { findAvailableName, createPendingGame } = useGame();
+  const { createPendingGame } = useGame();
   const [newGameId, setNewGameId] = useState("");
-  const { uniqueName } = useLobbyCtx();
+
   useEffect(() => {
-    if (uniqueName?.name) {
-      findAvailableName(uniqueName.name).then((useName) => {
-        setNewGameId(useName);
-      });
+    if (!newGameId) {
+      setNewGameId(getUniqueName());
     }
-  }, [uniqueName]);
+  }, [newGameId]);
 
   return (
     <main className={classes.root}>

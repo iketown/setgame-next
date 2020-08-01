@@ -9,21 +9,23 @@ import GamePlayers from "@components/GamePlayers/GamePlayers";
 import GameRequests from "@components/GamePlayers/GameRequestsList";
 import PlayedSets from "@components/PlayedSets/PlayedSets";
 import PleaseSignIn from "@components/SignIn/PleaseSignIn";
+import { Button, Container, Grid } from "@material-ui/core";
 import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useSetListener } from "@hooks/useSetListener";
-import { Container, Grid } from "@material-ui/core";
+
 import moment from "moment";
 import { NextPage } from "next";
 import React, { useState } from "react";
+import { useGame } from "@hooks/useGame";
 
 //
 //
 const Game = () => {
   useRenderCount("Game");
   useSetListener();
-  const { gameStartTime } = useGameCtx();
+  const { gameStartTime, gameId } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );

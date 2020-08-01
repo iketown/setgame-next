@@ -14,9 +14,9 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
   useRenderCount("LobbyCtxProvider");
   const { db } = useFBCtx();
   const { userProfile } = useUserCtx();
-  const { data: uniqueName } = useSWR("/api/uniquename", fetcher);
+  const { data: uniqueName, error } = useSWR("/api/uniquename", fetcher);
   const [publicGames, setPublicGames] = useState();
-
+  console.log({ uniqueName, error });
   const getUniqueName = () => {
     mutate("/api/uniquename");
   };

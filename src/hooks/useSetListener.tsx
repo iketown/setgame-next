@@ -9,8 +9,8 @@ import { checkSet } from "../../functions/cards/checkCards";
 export const useSetListener = () => {
   const { state, dispatch, gameId } = useGameCtx();
   const { functions } = useFBCtx();
+  const { mySet, boardCards, deckCards } = state;
 
-  const { mySet } = state;
   useEffect(() => {
     if (mySet.length < 3) return;
     const isValid = checkSet(...mySet);

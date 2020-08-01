@@ -19,26 +19,6 @@ export const useGame = () => {
   const { db, firestore, functions } = useFBCtx();
   const { user } = useUserCtx();
 
-  const checkNameAvailable = useCallback(async (_gameId: string) => {
-    const gameRef = db.ref(`currentGames/${_gameId}`);
-    let nameAvailable = false;
-    await gameRef.once("value", (snap) => {
-      nameAvailable = !snap.exists();
-    });
-    return nameAvailable;
-  }, []);
-
-  const findAvailableName = useCallback(async (baseName: string) => {
-    if (await checkNameAvailable(baseName)) return baseName;
-    let isAvail = false;
-    let extraNum = 0;
-    while (!isAvail || extraNum < 100) {
-      extraNum++;
-      isAvail = await checkNameAvailable(`${baseName}_${extraNum}`);
-    }
-    return `${baseName}_${extraNum}`;
-  }, []);
-
   const createNewGame = useCallback(async (_gameId: string) => {
     console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
@@ -81,6 +61,12 @@ export const useGame = () => {
     [gameId]
   );
 
+  const endGame2 = useCallback(async (_gameId) => {
+    const endGame = functions.httpsCallable("endGame");
+    const response = await endGame({ gameId: _gameId });
+    console.log("endGame2 response", response);
+  }, []);
+
   const endGame = useCallback(async (_gameId: string) => {
     db.ref(`/games/${_gameId}`).update({ ended: moment().toISOString() });
     db.ref(`/publicGames/${_gameId}`).remove();
@@ -113,10 +99,10 @@ export const useGame = () => {
     deleteGame,
     setCurrentOptionsAsDefault,
     startGame,
-    findAvailableName,
     removeMeFromGame,
     setNewAdmin,
     endGame,
+    endGame2,
   };
 };
 

@@ -24,7 +24,7 @@ const PreGame: React.FC = () => {
   const { startGame, deleteGame } = useGame();
   const { push } = useRouter();
   const { isGameAdmin, gameId } = useGameCtx();
-  const [allowNewPlayers, setAllowNewPlayers] = useState(true);
+  const [allowNewPlayers, setAllowNewPlayers] = useState(false);
   const handleStart = () => {
     startGame(allowNewPlayers);
   };

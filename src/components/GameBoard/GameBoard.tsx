@@ -56,18 +56,6 @@ const GameBoard: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          {boardCards.length && noSets && (
-            <div>
-              <Typography>NO SETS!</Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleShuffle}
-              >
-                Shuffle
-              </Button>
-            </div>
-          )}
           <GridDropZone
             id="board"
             boxesPerRow={boxesPerRow}
