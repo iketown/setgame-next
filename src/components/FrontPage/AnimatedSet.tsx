@@ -53,33 +53,53 @@ const listOfSets = [
   ["rf1r", "rs2d", "re3s"],
 ];
 
-const AnimatedSet = () => {
-  const randomSet = () =>
-    listOfSets[Math.floor(Math.random() * listOfSets.length)];
-  const [set, setSet] = useState(listOfSets[10]);
-  const [setIndex, setSetIndex] = useState(11);
+interface AnimatedSetI {
+  startIndex?: number;
+  delay?: number;
+  cardWidth?: number;
+}
+
+const AnimatedSet: React.FC<AnimatedSetI> = ({
+  startIndex,
+  delay,
+  cardWidth,
+}) => {
+  const [setIndex, setSetIndex] = useState(startIndex || 12);
+  const [set, setSet] = useState(
+    listOfSets[(startIndex && startIndex + 1) || 13]
+  );
   const getNewSet = () => {
-    setSet(randomSet());
-    setSetIndex(Math.floor(Math.random() * listOfSets.length));
+    setSet(listOfSets[setIndex]);
+    setSetIndex((old) => (old + 1) % listOfSets.length);
   };
   useEffect(() => {
-    const interval = setInterval(getNewSet, 4000);
-    return () => clearInterval(interval);
+    let interval;
+    const timeout = setTimeout(() => {
+      interval = setInterval(getNewSet, 4000);
+    }, delay || 0);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, []);
   return (
     <div>
-      <AnimatePresence>
-        <ThreeCards>
-          <CardList set={set} />
-        </ThreeCards>
-      </AnimatePresence>
+      <ThreeCards>
+        <CardList set={set} cardWidth={cardWidth} />
+      </ThreeCards>
     </div>
   );
 };
 
 export default AnimatedSet;
 
-const CardList = ({ set }: { set: string[] }) => {
+const CardList = ({
+  set,
+  cardWidth = 80,
+}: {
+  set: string[];
+  cardWidth?: number;
+}) => {
   const setNum = useRef(0);
   return (
     <>
@@ -91,7 +111,6 @@ const CardList = ({ set }: { set: string[] }) => {
             custom={index}
             initial="pre"
             animate="in"
-            exit="exit" // doesnt work.  (?)
             variants={{
               in: (i) => ({
                 scale: 1,
@@ -100,12 +119,13 @@ const CardList = ({ set }: { set: string[] }) => {
                 transition: { delay: i * 0.3 },
               }),
               pre: { scale: 0, y: -100, rotate: 90 },
-              exit: {
-                scale: 2,
-              },
             }}
           >
-            <SetCard cardId={cardId} width={80} rotation={rotations[index]} />
+            <SetCard
+              cardId={cardId}
+              width={cardWidth}
+              rotation={rotations[index]}
+            />
           </motion.div>
         );
       })}

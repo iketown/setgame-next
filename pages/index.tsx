@@ -2,7 +2,7 @@ import FrontPageMediaCard from "@components/FrontPage/FrontPageMediaCard";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
+import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useRouter } from "next/router";
@@ -14,9 +14,7 @@ const Copyright: React.FC = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://ike.town/">
-        ike.town
-      </Link>{" "}
+      ike.town
       {new Date().getFullYear()}.
     </Typography>
   );
@@ -108,22 +106,24 @@ export const Album: React.FC = () => {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <FrontPageMediaCard
-              image="https://source.unsplash.com/random"
-              imageTitle="How To Play"
-              header="How To Play"
-              description="Coming soon - a page to quickly learn how to play"
-              actions={
-                <>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
-                  <Button size="small" color="primary">
-                    YO
-                  </Button>
-                </>
-              }
-            />
+            <Grid item xs={12} sm={6}>
+              <FrontPageMediaCard
+                image="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2304&q=80"
+                imageTitle="How To Play"
+                header="How To Play"
+                description="The rules of the game"
+                clickCardLink="/instructions"
+                actions={
+                  <>
+                    <Link href="/instructions" as="/instructions">
+                      <Button size="small" color="primary" variant="contained">
+                        Go
+                      </Button>
+                    </Link>
+                  </>
+                }
+              />
+            </Grid>
           </Grid>
         </Container>
       </main>

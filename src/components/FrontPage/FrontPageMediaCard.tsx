@@ -1,14 +1,14 @@
-import React from "react";
 import {
   Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
   CardMedia,
   Typography,
-  CardContent,
-  Button,
-  CardActions,
-  Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    minWidth: "15rem",
   },
   cardMedia: {
     paddingTop: "56.25%", // 16:9
@@ -34,6 +35,7 @@ interface FrontPageMediaCard {
   header: string;
   description: string;
   actions: JSX.Element;
+  clickCardLink?: string;
 }
 
 const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
@@ -42,11 +44,18 @@ const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
   header,
   description,
   actions,
+  clickCardLink,
 }) => {
   const classes = useStyles();
+  const router = useRouter();
+  useEffect(() => {
+    if (clickCardLink) router.prefetch(clickCardLink);
+  }, []);
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Card className={classes.card}>
+    <Card className={classes.card}>
+      <CardActionArea
+        onClick={() => clickCardLink && router.push(clickCardLink)}
+      >
         <CardMedia
           className={classes.cardMedia}
           image={image}
@@ -58,9 +67,12 @@ const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
           </Typography>
           <Typography>{description}</Typography>
         </CardContent>
-        <CardActions>{actions}</CardActions>
-      </Card>
-    </Grid>
+      </CardActionArea>
+
+      <CardActions style={{ justifyContent: "space-around" }}>
+        {actions}
+      </CardActions>
+    </Card>
   );
 };
 

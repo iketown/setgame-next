@@ -1,7 +1,11 @@
-// On production, variables are set with `now secrets`. On development, they use the .env file
 require("dotenv").config();
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx?$/,
+});
+// On production, variables are set with `now secrets`. On development, they use the .env file
 
-module.exports = {
+module.exports = withMDX({
+  pageExtensions: ["js", "jsx", "md", "mdx", "tsx"],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -22,4 +26,4 @@ module.exports = {
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
   },
-};
+});
