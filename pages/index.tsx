@@ -14,8 +14,7 @@ const Copyright: React.FC = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      ike.town
-      {new Date().getFullYear()}.
+      {new Date().getFullYear()} ike.town
     </Typography>
   );
 };
@@ -86,18 +85,18 @@ export const Album: React.FC = () => {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button
-                    onClick={() => push("/lobby")}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Join a Game
-                  </Button>
+                  <Link href="/lobby" as="/lobby">
+                    <Button variant="contained" color="primary">
+                      Join a Game
+                    </Button>
+                  </Link>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Play Solo
-                  </Button>
+                  <Link href="/solo" as="/solo">
+                    <Button variant="outlined" color="primary">
+                      Play Solo
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
             </div>
@@ -108,7 +107,7 @@ export const Album: React.FC = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6}>
               <FrontPageMediaCard
-                image="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2304&q=80"
+                image="/images/settable.jpg"
                 imageTitle="How To Play"
                 header="How To Play"
                 description="The rules of the game"
@@ -130,7 +129,7 @@ export const Album: React.FC = () => {
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography
-          variant="subtitle1"
+          variant="caption"
           align="center"
           color="textSecondary"
           component="p"

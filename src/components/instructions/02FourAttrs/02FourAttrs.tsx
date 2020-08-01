@@ -1,14 +1,14 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
-import { ButtonBase, Grid, Typography, Box } from "@material-ui/core";
+import { Box, ButtonBase, Grid, Typography } from "@material-ui/core";
 import { motion, Variants } from "framer-motion";
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import { FullLine, P, NextButton } from "../typographyElements";
+import { FullLine, NextButton, P } from "../typographyElements";
 import { AnimatedCardPile } from "./AnimatedCardPile";
-import attrOptions from "./attrOptions";
+import { attrOptions } from "./attrOptions";
 import { useAttrButtons } from "./useAttrButtons";
-import AnimatedSentence from "./AnimatedSentence";
 
 const StyledGrid = styled.div`
   display: grid;
@@ -42,7 +42,7 @@ const StyledGrid = styled.div`
     }
     &.stripes {
       background-image: linear-gradient(
-        90deg ${(p) => ", grey, white, white".repeat(12)}
+        90deg ${() => ", grey, white, white".repeat(12)}
       );
     }
   }

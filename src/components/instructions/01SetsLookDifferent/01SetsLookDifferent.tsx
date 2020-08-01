@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import { motion } from "framer-motion";
 import React from "react";
 
-import AnimatedSet from "../../../src/components/FrontPage/AnimatedSet";
+import AnimatedSet from "../../FrontPage/AnimatedSet";
 import { NextButton, P } from "../typographyElements";
 
 const SetsLookDifferent: React.FC<{ advance: (num?: number) => void }> = ({

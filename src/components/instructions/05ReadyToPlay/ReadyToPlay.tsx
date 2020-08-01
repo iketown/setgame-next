@@ -2,9 +2,9 @@ import { Box, Button, Grid, Typography } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
 
-import FrontPageMediaCard from "../../../src/components/FrontPage/FrontPageMediaCard";
+import FrontPageMediaCard from "@components/FrontPage/FrontPageMediaCard";
 
-const ReadyToPlay = () => {
+const ReadyToPlay: React.FC = () => {
   return (
     <Grid container>
       <Grid item xs={12} style={{ textAlign: "center" }}>

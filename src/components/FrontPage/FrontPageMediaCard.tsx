@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 interface FrontPageMediaCard {
   image: string;
   imageTitle: string;
-  header: string;
-  description: string;
+  header: string | JSX.Element;
+  description: string | JSX.Element;
   actions: JSX.Element;
   clickCardLink?: string;
 }

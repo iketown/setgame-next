@@ -3,6 +3,7 @@
 /* eslint-disable react/no-array-index-key */
 import { useCallback, useEffect, useState, useRef } from "react";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useAttrButtons = () => {
   const [attrCharIndex, setAttrCharIndex] = useState(0); // which attribute to automatically change next
   const [shape, setShape] = useState("d");
@@ -65,3 +66,5 @@ export const useAttrButtons = () => {
 
   return { gridObjects, cardId };
 };
+
+export default useAttrButtons;

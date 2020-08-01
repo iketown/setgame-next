@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SetCard from "../../src/components/cards/SetCard";
+import SetCard from "../cards/SetCard";
 
 //
 //

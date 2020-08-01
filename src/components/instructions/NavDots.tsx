@@ -1,9 +1,7 @@
-import { Button, Container, Grid, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { FaDotCircle, FaCircle } from "react-icons/fa";
-import Intro from "./00Intro/00Intro";
-import SetsLookDifferent from "./01SetsLookDifferent/01SetsLookDifferent";
+import { FaCircle, FaDotCircle } from "react-icons/fa";
 
 const NavDots = ({
   quantity,

@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import React from "react";
 import { Typography } from "@material-ui/core";
 
@@ -179,5 +180,3 @@ export const allTests = {
   shapes_numbers_colors: [snc1, snc2, snc3],
   all_attrs: [all1, all2, all3],
 };
-
-export default allTests;

@@ -1,13 +1,13 @@
 import { Button, Container } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 
-import Intro from "./00Intro/00Intro";
-import SetsLookDifferent from "./01SetsLookDifferent/01SetsLookDifferent";
-import NavDots from "./NavDots";
-import FourAttrs from "./02FourAttrs/02FourAttrs";
-import ToMakeASet from "./03ToMakeASet/ToMakeASet";
-import TestContainer from "./04TestShapes/04TestContainer";
-import ReadyToPlay from "./05ReadyToPlay/ReadyToPlay";
+import SetsLookDifferent from "@components/instructions/01SetsLookDifferent/01SetsLookDifferent";
+import Intro from "@components/instructions/00Intro/00Intro";
+import NavDots from "@components/instructions/NavDots";
+import FourAttrs from "@components/instructions/02FourAttrs/02FourAttrs";
+import ToMakeASet from "@components/instructions/03ToMakeASet/ToMakeASet";
+import TestContainer from "@components/instructions/04TestShapes/04TestContainer";
+import ReadyToPlay from "@components/instructions/05ReadyToPlay/ReadyToPlay";
 //
 //
 

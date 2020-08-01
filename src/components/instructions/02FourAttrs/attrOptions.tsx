@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import React from "react";
 import Diamond from "@components/cards/shapes/Diamond";
 import Round from "@components/cards/shapes/Round";
@@ -103,11 +104,9 @@ const fillOptions = [
   },
 ];
 
-const attrOptions = {
+export const attrOptions = {
   shape: shapeOptions,
   number: numberOptions,
   color: colorOptions,
   fill: fillOptions,
 };
-
-export default attrOptions;

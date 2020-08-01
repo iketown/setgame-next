@@ -15,6 +15,7 @@ export const P: React.FC<{
     </motion.div>
   </AnimatePresence>
 );
+export default P;
 
 export const Subtitle: React.FC = ({ children }) => (
   <Typography variant="subtitle1">{children}</Typography>
