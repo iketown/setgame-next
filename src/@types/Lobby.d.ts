@@ -1,6 +1,4 @@
 type LobbyCtxType = {
-  getUniqueName: () => void;
-  uniqueName: { name: string };
   publicGames: { [gameId: string]: PublicGame };
 };
 

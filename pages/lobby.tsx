@@ -68,6 +68,7 @@ const Lobby = () => {
                   <Typography
                     onClick={changeGameId}
                     style={{ cursor: "pointer" }}
+                    noWrap
                   >
                     {newGameId}
                   </Typography>
