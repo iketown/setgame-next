@@ -12,8 +12,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import getUniqueName from "../src/utils/getUniqueName";
-
+import { getUniqueName } from "../src/utils/getUniqueName";
+import { useFBCtx } from "../src/context/firebase/firebaseCtx";
 //
 //
 const useStyles = makeStyles((theme) => ({
@@ -29,12 +29,22 @@ const useStyles = makeStyles((theme) => ({
 const Lobby = () => {
   const classes = useStyles();
   const { createPendingGame } = useGame();
+  const { db } = useFBCtx();
   const [newGameId, setNewGameId] = useState("");
-
+  const changeGameId = () => {
+    setNewGameId(getUniqueName());
+  };
   useEffect(() => {
     if (!newGameId) {
       setNewGameId(getUniqueName());
     }
+    db.ref(`games/${newGameId}`)
+      .once("value")
+      .then((snap) => {
+        if (snap.exists()) {
+          changeGameId();
+        }
+      });
   }, [newGameId]);
 
   return (
@@ -54,11 +64,16 @@ const Lobby = () => {
                     create new game
                   </Button>
                 </Link>
+                {!!newGameId && (
+                  <Typography
+                    onClick={changeGameId}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {newGameId}
+                  </Typography>
+                )}
               </CardActions>
             </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography>{newGameId}</Typography>
           </Grid>
         </Grid>
       </Container>

@@ -93,7 +93,10 @@ export const useGame = () => {
   }, []);
 
   const endGame = useCallback(async (_gameId: string) => {
-    db.ref(`/games/${_gameId}`).update({ ended: moment().toISOString() });
+    db.ref(`/games/${_gameId}`).update({
+      ended: moment().toISOString(),
+      gameOver: moment().toISOString(),
+    });
     db.ref(`/publicGames/${_gameId}`).remove();
   }, []);
 

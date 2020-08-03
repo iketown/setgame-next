@@ -18,17 +18,26 @@ import { useRouter } from "next/router";
 import moment from "moment";
 import { NextPage } from "next";
 import React, { useState } from "react";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 //
 //
 const Game = () => {
   useRenderCount("Game");
   const { query } = useRouter();
+  const { db } = useFBCtx();
   useSetListener();
   const { gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );
+  const testGetAllGames = async () => {
+    const allGames = await db
+      .ref("games")
+      .once("value")
+      .then((snap) => snap.val());
+    console.log("allGames", allGames);
+  };
 
   return (
     <Container maxWidth="lg" fixed>
@@ -56,6 +65,7 @@ const Game = () => {
           <GamePlayers />
           <GameRequests />
           <PlayedSets />
+          <Button onClick={testGetAllGames}>get all games</Button>
         </Grid>
       </Grid>
     </Container>
