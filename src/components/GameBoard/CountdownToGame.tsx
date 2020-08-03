@@ -18,7 +18,6 @@ const renderTime = ({ remainingTime }) => {
   const currentTime = useRef(remainingTime);
   const prevTime = useRef(null);
   const isNewTimeFirstTick = useRef(false);
-  const [, setOneLastRerender] = useState(0);
 
   if (currentTime.current !== remainingTime) {
     isNewTimeFirstTick.current = true;
@@ -26,13 +25,6 @@ const renderTime = ({ remainingTime }) => {
     currentTime.current = remainingTime;
   } else {
     isNewTimeFirstTick.current = false;
-  }
-
-  // force one last re-render when the time is over to tirgger the last animation
-  if (remainingTime === 0) {
-    setTimeout(() => {
-      setOneLastRerender((val) => val + 1);
-    }, 20);
   }
 
   const isTimeUp = isNewTimeFirstTick.current;
@@ -123,7 +115,7 @@ const CountdownToGame = ({
         key={secondsTillStart}
         isPlaying={!!secondsTillStart}
         size={200}
-        duration={5}
+        duration={secondsTillStart > 5 ? 60 : 5}
         initialRemainingTime={secondsTillStart}
         colors={[
           ["#004777", 0.33],

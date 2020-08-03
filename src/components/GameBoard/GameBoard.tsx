@@ -8,6 +8,7 @@ import {
   swap,
 } from "react-grid-dnd";
 import { useCards } from "@hooks/useCards";
+import { useKeyboardListener } from "@hooks/useKeyboardListener";
 import { useGameCtx } from "@context/game/GameCtx";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
@@ -25,6 +26,7 @@ const GameBoard: React.FC = () => {
     handleDoubleClick,
     handleShuffle,
   } = useCards();
+  useKeyboardListener();
   const noSets = state.sets && state.sets.length === 0;
   const onChange: (
     sourceId: string,

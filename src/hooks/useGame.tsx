@@ -19,6 +19,31 @@ export const useGame = () => {
   const { db, firestore, functions } = useFBCtx();
   const { user } = useUserCtx();
 
+  const createRematch = useCallback(
+    async (_gameId: string, gameStartTime: string) => {
+      const createRematchFxn = functions.httpsCallable("createRematch");
+      return createRematchFxn({
+        newGameId: _gameId,
+        oldGameId: gameId,
+        gameStartTime,
+      });
+    },
+    []
+  );
+
+  const makeRematch = useCallback(async (rematchGameId: string) => {
+    // if someone else started it already, join it.
+    const newGameRef = db.ref(`/games/${rematchGameId}`);
+    const newGame = await newGameRef.once("value").then((snap) => snap.val());
+    if (!newGame) {
+      await newGameRef.update({ isValid: true });
+      const nextGameStart = moment().add(1, "minute").toISOString();
+      await db.ref(`/games/${gameId}/rematch`).update({ nextGameStart });
+      await createRematch(rematchGameId, nextGameStart);
+    }
+    console.log("newGame value", newGame);
+  }, []);
+
   const createNewGame = useCallback(async (_gameId: string) => {
     console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
@@ -103,6 +128,7 @@ export const useGame = () => {
     setNewAdmin,
     endGame,
     endGame2,
+    makeRematch,
   };
 };
 

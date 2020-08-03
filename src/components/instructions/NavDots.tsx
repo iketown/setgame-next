@@ -18,7 +18,8 @@ const NavDots = ({
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        width: "100%",
+        maxWidth: "46rem",
+        margin: "0 auto",
       }}
     >
       {Array.from({ length: quantity }).map((_, i) => {
@@ -26,9 +27,8 @@ const NavDots = ({
         return (
           <IconButton
             onClick={() => setIndex(i)}
-            size="small"
             key={i}
-            style={{ margin: "0 1rem" }}
+            style={{ margin: "0 5px" }}
           >
             <motion.span
               animate={isActive ? "active" : "inactive"}

@@ -50,7 +50,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     setGameId(query.gameId as string);
   }, [query.gameId]);
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState<false | string>(false);
   const [gameStartTime, setGameStartTime] = useState<string | false>(false);
   const [gameEnded, setGameEnded] = useState<string | false>(false);
   const [optionsState, optionsDispatch] = useReducer(
@@ -139,7 +139,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         gameOver: _gameOver,
         gameStartTime: _gameStartTime,
       } = snapValues;
-      if (_gameOver) setGameOver(true);
+      setGameOver(_gameOver);
       if (user?.uid && _players && _players[user.uid]) {
         setIsPlayer(true);
         if (_players[user.uid].admin) setIsGameAdmin(true);

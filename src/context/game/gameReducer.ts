@@ -15,6 +15,9 @@ export const gameReducer = (
   action: GameAction
 ): GameState => {
   switch (action.type) {
+    case "RESET_GAME": {
+      return initialGameState;
+    }
     case "SET_MESSAGE": {
       const { message } = action.payload;
       return { ...state, message };

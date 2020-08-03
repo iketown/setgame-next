@@ -7161,6 +7161,11 @@ react-base16-styling@^0.6.0:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
+react-compound-timer@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-compound-timer/-/react-compound-timer-1.2.0.tgz#52df2980dce0b63ddaf5718235a51188cb223d1d"
+  integrity sha512-BEFT0Z/+vusfAy4Ci1+G5lr8mI+dk3ddRJuu1DIYA5xGS+5P+M0o4krHmFMKgHuaIY9H3xx0KCvf3ilb1+HFWA==
+
 react-copy-to-clipboard@5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.2.tgz#d82a437e081e68dfca3761fbd57dbf2abdda1316"
@@ -7175,6 +7180,11 @@ react-countdown-circle-timer@2.3.7:
   integrity sha512-OcO/Iaze3cA/MwqQwovGg4E9x+FXmriFNTYOC1Au2t68MMyv2tEZtU24V4jlFBS2M28EE8X+jcsxfJu0FReQHg==
   dependencies:
     use-elapsed-time "^2.1.5"
+
+react-countdown-hook@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-countdown-hook/-/react-countdown-hook-0.2.0.tgz#b03cc63c6520abbd89f7beccb193b457b2217994"
+  integrity sha512-5FCAu4I3dGFrwcfdVyyM+HKTpCDaj0TIfOz88vJUCu+pMZ1kGxaZfZzmcJNxrTHbl+1FoRDrKS/kYTtnamakzA==
 
 react-countdown@2.2.1:
   version "2.2.1"
@@ -7273,6 +7283,11 @@ react-textarea-autosize@^6.1.0:
   integrity sha512-F6bI1dgib6fSvG8so1HuArPUv+iVEfPliuLWusLF+gAKz0FbB4jLrWUrTAeq1afnPT2c9toEZYUdz/y1uKMy4A==
   dependencies:
     prop-types "^15.6.0"
+
+react-timer-hook@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-timer-hook/-/react-timer-hook-2.0.2.tgz#4dd917447ea561abb3dfde9ac58a88aaaaace60a"
+  integrity sha512-EolK7yDDQolAMYE9tK3Uc3B0uYQgJXi+ExfHT26QFmJNvN/hm7MreW/IoTv0jufVOCYQ1gSab9Jp3lHf+m0mgQ==
 
 react-transition-group@^4.4.0:
   version "4.4.1"

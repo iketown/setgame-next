@@ -16,32 +16,6 @@ export const useCards = () => {
   const { functions } = useFBCtx();
   const row5 = boardCards.length > 12;
 
-  useEventListener("keydown", (e) => {
-    const expandedLetters = [
-      "q",
-      "w",
-      "e",
-      "r",
-      "t",
-      "a",
-      "s",
-      "d",
-      "f",
-      "g",
-      "z",
-      "x",
-      "c",
-      "v",
-      "b",
-    ];
-    if (!expandedLetters.includes(e.key)) return;
-    const letters = expandedLetters.filter(
-      (letter) => !["t", "g", "b"].includes(letter)
-    );
-    const activeLetters = row5 ? expandedLetters : letters;
-    const cardIndex = activeLetters.indexOf(e.key);
-    const card = boardCards[cardIndex];
-  });
   const width = useWidth();
   const cardWidth = useMemo(() => {
     switch (width) {

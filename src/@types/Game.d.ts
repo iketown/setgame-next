@@ -27,6 +27,7 @@ interface GameAction {
 }
 
 type GameActionType =
+  | "RESET_GAME"
   | "TOGGLE_CARD"
   | "CLEAR_SET"
   | "CANCEL_SET"
@@ -69,7 +70,7 @@ type GameContextType = {
   optionsDispatch: React.Dispatch<GOAction>;
   playerProfiles?: { [uid: string]: PlayerProfile };
   gameRequests?: GameRequests;
-  gameOver?: boolean;
+  gameOver?: false | string;
   gameStartTime?: false | string;
   gameEnded?: false | string;
   invalidName: boolean;
@@ -82,4 +83,9 @@ interface GameRequests {
 
 interface PlayedSets {
   [uid: string]: { playedAt: string; set: string[] }[];
+}
+
+interface RematchType {
+  nextGameId: string;
+  nextGameStart: false | string;
 }

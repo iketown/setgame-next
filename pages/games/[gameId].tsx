@@ -14,18 +14,18 @@ import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useSetListener } from "@hooks/useSetListener";
-
+import { useRouter } from "next/router";
 import moment from "moment";
 import { NextPage } from "next";
 import React, { useState } from "react";
-import { useGame } from "@hooks/useGame";
 
 //
 //
 const Game = () => {
   useRenderCount("Game");
+  const { query } = useRouter();
   useSetListener();
-  const { gameStartTime, gameId } = useGameCtx();
+  const { gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );
@@ -44,9 +44,9 @@ const Game = () => {
         >
           {gameInProgress ? (
             <>
-              <GameBoard />
-              <NotASet />
-              <GameOver />
+              <GameBoard key={`${query.gameId}GameBoard`} />
+              <NotASet key={`${query.gameId}NotASet`} />
+              <GameOver key={`${query.gameId}GameOver`} />
             </>
           ) : (
             <CountdownToGame onCountdownEnd={() => setGameInProgress(true)} />
@@ -65,6 +65,7 @@ const Game = () => {
 const GameOrPreGame = () => {
   useRenderCount("GameOrPreGame");
   const { gameStartTime, invalidName, gameEnded } = useGameCtx();
+
   const { user } = useUserCtx();
   if (!user) return <PleaseSignIn />;
   if (invalidName) return <GameError />;
@@ -74,8 +75,10 @@ const GameOrPreGame = () => {
 };
 
 const WrappedGame: NextPage = () => {
+  const { query } = useRouter();
+
   return (
-    <GameCtxProvider>
+    <GameCtxProvider key={`${query.gameId as string}ctxprovider`}>
       <GameOrPreGame />
     </GameCtxProvider>
   );
