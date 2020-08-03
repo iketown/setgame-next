@@ -69,6 +69,7 @@ export const gameReducer = (
       }
       return {
         ...state,
+        mySet: state.mySet.filter((cardId) => nextBoardCards.includes(cardId)),
         boardCards: nextBoardCards,
         deckCards,
         sets,

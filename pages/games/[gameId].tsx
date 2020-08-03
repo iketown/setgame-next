@@ -31,13 +31,6 @@ const Game = () => {
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );
-  const testGetAllGames = async () => {
-    const allGames = await db
-      .ref("games")
-      .once("value")
-      .then((snap) => snap.val());
-    console.log("allGames", allGames);
-  };
 
   return (
     <Container maxWidth="lg" fixed>
@@ -65,7 +58,6 @@ const Game = () => {
           <GamePlayers />
           <GameRequests />
           <PlayedSets />
-          <Button onClick={testGetAllGames}>get all games</Button>
         </Grid>
       </Grid>
     </Container>
