@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from "react";
 
 function _RoundStripes({
@@ -39,7 +40,7 @@ function _RoundStripes({
         )}
         <rect
           stroke={stroke || "#979797"}
-          strokeWidth={4}
+          strokeWidth={8}
           x={2}
           y={2}
           width={299}

@@ -44,7 +44,10 @@ const cardVariants: Variants = {
   }),
 };
 
-const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
+const GameBoardCard: React.FC<{ cardId: string; overlay?: JSX.Element }> = ({
+  cardId,
+  overlay,
+}) => {
   const { state, playerProfiles } = useGameCtx();
   const successPlayerId = state.successSet?.uid;
 
@@ -100,6 +103,7 @@ const GameBoardCard: React.FC<{ cardId: string }> = ({ cardId }) => {
       variants={cardVariants}
       style={{ position: "relative" }}
     >
+      {overlay}
       {faceImageNumber && (
         <FaceDrawing
           faceImageNumber={faceImageNumber}

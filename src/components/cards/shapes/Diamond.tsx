@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from "react";
 
 function _Diamond({
@@ -32,7 +33,7 @@ function _Diamond({
         )}
         <path
           stroke={stroke || "#979797"}
-          strokeWidth={6}
+          strokeWidth={8}
           d="M156 3l151 80-151 80L5 83z"
           fill={fill || "none"}
           fillRule="evenodd"

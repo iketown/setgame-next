@@ -10,7 +10,7 @@ import styled from "styled-components";
 import SetCard from "../cards/SetCard";
 import { colorsObj } from "../GameBoard/playerColors";
 
-const StyledLi = styled(Card)<{ background: string; border: string }>`
+const StyledLi = styled.div<{ background: string; border: string }>`
   background: ${(p) => p.background};
   position: relative;
   height: 3rem;
@@ -20,7 +20,10 @@ const StyledLi = styled(Card)<{ background: string; border: string }>`
   display: flex;
   padding: 3px;
   margin-bottom: 25px;
-  overflow: unset;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+
+  /* overflow: unset; */
   .face {
   }
   .cards {
@@ -46,13 +49,7 @@ const rotation = 0;
 const PlayedSetListItem: React.FC<PlayedSetListItemI> = ({ uid, set }) => {
   const { playerProfiles } = useGameCtx();
   const liRef = useRef(null);
-  useEffect(() => {
-    // liRef.current?.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "nearest",
-    //   inline: "start",
-    // });
-  }, []);
+
   const player = playerProfiles && playerProfiles[uid];
   const color = (player?.userColor && colorsObj[player.userColor]) || {
     light: "lightgray",
@@ -73,11 +70,9 @@ const PlayedSetListItem: React.FC<PlayedSetListItemI> = ({ uid, set }) => {
             .sort((a, b) => Number(a.charAt(2)) - Number(b.charAt(2)))
             .map((cardId) => {
               return (
-                <SetCard
-                  key={cardId}
-                  {...{ width, rotation }}
-                  cardId={cardId}
-                />
+                <div key={cardId}>
+                  <SetCard {...{ width, rotation }} cardId={cardId} />
+                </div>
               );
             })}
         </div>

@@ -26,7 +26,7 @@ const GameBoard: React.FC = () => {
     handleDoubleClick,
     handleShuffle,
   } = useCards();
-  useKeyboardListener();
+  const { showShortcuts, activeLetters } = useKeyboardListener();
   const noSets = state.sets && state.sets.length === 0;
   const onChange: (
     sourceId: string,
@@ -46,9 +46,7 @@ const GameBoard: React.FC = () => {
   return (
     <GridContextProvider onChange={onChange}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <CheatButtons />
-        </Grid>
+        <CheatButtons />
         <Grid
           item
           xs={12}
@@ -74,7 +72,23 @@ const GameBoard: React.FC = () => {
                   onClick={(e) => handleClickCard(e, cardId)}
                   onDoubleClick={() => handleDoubleClick(cardId)}
                 >
-                  <GameBoardCard {...{ cardId, cardIndex }} />
+                  <GameBoardCard
+                    {...{ cardId, cardIndex }}
+                    overlay={
+                      showShortcuts ? (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 5,
+                            left: 10,
+                            zIndex: 1,
+                          }}
+                        >
+                          {activeLetters[cardIndex]}
+                        </div>
+                      ) : null
+                    }
+                  />
                 </GridItem>
               );
             })}
