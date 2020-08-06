@@ -25,6 +25,7 @@ const SoloIndex: React.FC = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FrontPageMediaCard
+            imageTitle="just chill"
             image="https://images.unsplash.com/photo-1519834411415-51492bcd6027?ixlib=rb-1.2.1&auto=format&fit=crop&w=1324&q=80"
             header="Unscored"
             description="No clock, no points.  Just chill and find sets."
