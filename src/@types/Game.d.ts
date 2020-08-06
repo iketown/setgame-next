@@ -51,7 +51,7 @@ interface GameMessage {
 interface GameActionPayload {
   card?: string;
   set?: string[];
-  sets?: { length: 0; sets: string[][] };
+  sets?: { length: number; sets: string[][] };
   boardCards?: string[];
   deckCards?: string[];
   message?: GameMessage;
@@ -64,6 +64,7 @@ type GameContextType = {
   setGameId: React.Dispatch<React.SetStateAction<string>>;
   isGameAdmin: boolean;
   isPlayer: boolean;
+  setIsPlayer: React.Dispatch<React.SetStateAction<boolean>>;
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
   optionsState: GOState;
@@ -71,6 +72,7 @@ type GameContextType = {
   playerProfiles?: { [uid: string]: PlayerProfile };
   gameRequests?: GameRequests;
   gameOver?: false | string;
+  setGameOver?: React.Dispatch<React.SetStateAction<string | false>>;
   gameStartTime?: false | string;
   gameEnded?: false | string;
   invalidName: boolean;

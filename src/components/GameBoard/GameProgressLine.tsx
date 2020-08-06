@@ -8,8 +8,8 @@ const GameProgressLine = ({ cardsLeft }: { cardsLeft: number }) => {
   const MAX = 81;
   const normalize = (value: number) => ((value - MIN) * 100) / (MAX - MIN);
   return (
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
+    <Box display="flex" alignItems="center" flexDirection="column">
+      <Box width="100%">
         <LinearProgress variant="determinate" value={normalize(cardsLeft)} />
       </Box>
       <Box minWidth={100}>

@@ -9,7 +9,7 @@ const SetsLookDifferent: React.FC<{ advance: (num?: number) => void }> = ({
   advance,
 }) => {
   return (
-    <Grid container style={{ height: "calc(100vh - 5rem)" }}>
+    <Grid container style={{ marginTop: "5rem" }}>
       <Grid item xs={12}>
         <AnimatedSet cardWidth={100} />
       </Grid>
@@ -18,14 +18,11 @@ const SetsLookDifferent: React.FC<{ advance: (num?: number) => void }> = ({
           animate="in"
           variants={{ in: { transition: { staggerChildren: 0.5 } } }}
         >
-          <P from="left">Sets can look very different from eachother,</P>
-          <P from="right">and they can be challenging to find.</P>
+          <P from="left">Sets can look very different from each other.</P>
+          <P from="right">They can be challenging to find,</P>
           <P from="right">but all cards have a few common attributes...</P>
         </motion.div>
         <NextButton onClick={advance} />
-      </Grid>
-      <Grid item xs={12}>
-        <AnimatedSet startIndex={20} delay={2000} cardWidth={100} />
       </Grid>
     </Grid>
   );

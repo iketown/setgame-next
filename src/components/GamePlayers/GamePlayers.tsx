@@ -1,6 +1,7 @@
 import { usePresence } from "@hooks/usePresence";
 import { Grid, Hidden, List, Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
+
 import React, { useEffect, useMemo } from "react";
 import { useGameCtx } from "@context/game/GameCtx";
 import UserDisplay from "../UserSettings/UserDisplay";
@@ -79,7 +80,6 @@ const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
         </Grid>
       </Hidden>
       <GameRequestButton />
-      {/* <pre>{JSON.stringify(whosHere, null, 2)}</pre> */}
     </>
   );
 };

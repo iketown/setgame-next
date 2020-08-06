@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable consistent-return */
@@ -19,6 +20,7 @@ import React, {
   useReducer,
   useState,
 } from "react";
+import { getSets } from "../../utils/checkCards";
 
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
@@ -35,6 +37,7 @@ const GameCtx = createContext<GameContextType>({
   setGameId: errorFxn,
   isGameAdmin: false,
   isPlayer: false,
+  setIsPlayer: () => {},
   gameOver: false,
   gameStartTime: false,
   gameEnded: false,
@@ -42,14 +45,19 @@ const GameCtx = createContext<GameContextType>({
   allowsNewPlayers: false,
 });
 
-export const GameCtxProvider: React.FC = ({ children }) => {
+export const GameCtxProvider: React.FC<{
+  initialBoardCards?: string[];
+  isTraining?: boolean;
+}> = ({ children, initialBoardCards, isTraining }) => {
   useRenderCount("GameCtxProvider");
   const { query } = useRouter();
   const [gameId, setGameId] = useState("");
   useEffect(() => {
     setGameId(query.gameId as string);
   }, [query.gameId]);
-  const [state, dispatch] = useReducer(gameReducer, initialGameState);
+  const [state, dispatch] = useReducer(gameReducer, {
+    ...initialGameState,
+  });
   const [gameOver, setGameOver] = useState<false | string>(false);
   const [gameStartTime, setGameStartTime] = useState<string | false>(false);
   const [gameEnded, setGameEnded] = useState<string | false>(false);
@@ -115,6 +123,20 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!isTraining || !initialBoardCards?.length) return;
+    const sets = getSets(initialBoardCards);
+    setIsPlayer(true);
+    dispatch({
+      type: "UPDATE_BOARD",
+      payload: {
+        boardCards: initialBoardCards,
+        sets: { length: sets.length, sets },
+      },
+    });
+  }, [isTraining]);
+
+  useEffect(() => {
+    // firebase game controller.
     if (!gameId || !user?.uid) return;
     const gameRef = db.ref(`games/${gameId}`);
 
@@ -178,10 +200,12 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         optionsDispatch,
         isGameAdmin,
         isPlayer,
+        setIsPlayer,
         playerProfiles,
         gameRequests,
         allowsNewPlayers,
         gameOver,
+        setGameOver,
         gameStartTime,
         gameEnded,
         invalidName,

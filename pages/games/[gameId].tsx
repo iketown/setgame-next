@@ -17,7 +17,7 @@ import { useSetListener } from "@hooks/useSetListener";
 import { useRouter } from "next/router";
 import moment from "moment";
 import { NextPage } from "next";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 //
@@ -25,8 +25,19 @@ import { useFBCtx } from "@context/firebase/firebaseCtx";
 const Game = () => {
   useRenderCount("Game");
   const { query } = useRouter();
+  const { functions } = useFBCtx();
   const { db } = useFBCtx();
-  useSetListener();
+
+  const submitSetApi = useCallback(
+    ({ mySet }: { mySet: string[] }) => {
+      const { gameId } = query;
+      const submitSet = functions.httpsCallable("submitSet");
+      return submitSet({ mySet, gameId });
+    },
+    [query.gameId, functions]
+  );
+
+  useSetListener({ submitSetApi });
   const { gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())

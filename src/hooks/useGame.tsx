@@ -86,12 +86,6 @@ export const useGame = () => {
     [gameId]
   );
 
-  const endGame2 = useCallback(async (_gameId) => {
-    const endGame = functions.httpsCallable("endGame");
-    const response = await endGame({ gameId: _gameId });
-    console.log("endGame2 response", response);
-  }, []);
-
   const endGame = useCallback(async (_gameId: string) => {
     db.ref(`/games/${_gameId}`).update({
       ended: moment().toISOString(),
@@ -130,7 +124,6 @@ export const useGame = () => {
     removeMeFromGame,
     setNewAdmin,
     endGame,
-    endGame2,
     makeRematch,
   };
 };

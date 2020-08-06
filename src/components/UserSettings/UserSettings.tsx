@@ -87,9 +87,11 @@ const UserSettings: React.FC = () => {
                   open={faceDialogOpen}
                   close={() => setFaceDialogOpen(false)}
                 />
-                {/* <pre style={{ fontSize: 10 }}>
-                  {JSON.stringify(values, null, 2)}
-                </pre> */}
+                {process.env.NODE_ENV === "development" && (
+                  <pre style={{ fontSize: 10 }}>
+                    {JSON.stringify(values, null, 2)}
+                  </pre>
+                )}
               </form>
             );
           }}

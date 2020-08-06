@@ -45,24 +45,24 @@ const cardVar: Variants = {
 };
 
 const exampleBoard = [
-  "ge3s",
-  "rs1d",
   "rf1r",
-  "gf2s",
+  "gs2d",
+  "ge2s",
+  "re3d",
   "gs1r",
-  "bf1r",
-  "be2r",
+  "rs3d",
   "rf2r",
-  "bs3r",
-  "gs3r",
-  "gf3s",
-  "rf2s",
+  "be3d",
+  "rf3r",
+  "bf2s",
+  "be2r",
+  "gf2r",
 ];
 
 const sets = [
-  ["rs1d", "be2r", "gf3s"],
-  ["rf1r", "be2r", "gs3r"],
-  ["bf1r", "be2r", "bs3r"],
+  ["rf1r", "rf2r", "rf3r"],
+  ["gs2d", "gf2r", "ge2s"],
+  ["gs1r", "bf2s", "re3d"],
 ];
 
 const Intro: React.FC<{ advance: () => void }> = ({ advance }) => {
@@ -93,11 +93,13 @@ const Intro: React.FC<{ advance: () => void }> = ({ advance }) => {
       <FullLine center>
         <motion.div animate="in" variants={parentVariants}>
           <P from="right">
-            A Game of Set starts with 12 cards face-up on the table.
+            A game of Set starts with 12 cards face-up on the table.
           </P>
           <P from="left">
-            Each player's goal is to find as many three-card <em>sets</em> as
-            possible.
+            Each player's goal is to find a three-card{" "}
+            <b>
+              <em>set</em>
+            </b>
           </P>
           <P from="bottom">
             <Typography component="span" color="textSecondary">
@@ -125,7 +127,11 @@ const Intro: React.FC<{ advance: () => void }> = ({ advance }) => {
               animate={animate}
               variants={cardVar}
             >
-              <SetCard width={80} {...{ cardId }} />
+              <SetCard
+                width={80}
+                {...{ cardId }}
+                border={isSelected ? "1px solid grey" : ""}
+              />
             </motion.div>
           );
         })}

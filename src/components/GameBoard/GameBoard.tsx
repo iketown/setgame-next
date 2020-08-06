@@ -24,10 +24,8 @@ const GameBoard: React.FC = () => {
     margin,
     handleClickCard,
     handleDoubleClick,
-    handleShuffle,
   } = useCards();
   const { showShortcuts, activeLetters } = useKeyboardListener();
-  const noSets = state.sets && state.sets.length === 0;
   const onChange: (
     sourceId: string,
     sourceIndex: number,

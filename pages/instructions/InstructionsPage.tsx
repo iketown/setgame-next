@@ -5,9 +5,12 @@ import SetsLookDifferent from "@components/instructions/01SetsLookDifferent/01Se
 import Intro from "@components/instructions/00Intro/00Intro";
 import NavDots from "@components/instructions/NavDots";
 import FourAttrs from "@components/instructions/02FourAttrs/02FourAttrs";
+import FourAttrsSimple from "@components/instructions/02FourAttrs/FourAttrsSimple";
 import ToMakeASet from "@components/instructions/03ToMakeASet/ToMakeASet";
 import TestContainer from "@components/instructions/04TestShapes/04TestContainer";
 import ReadyToPlay from "@components/instructions/05ReadyToPlay/ReadyToPlay";
+import ExampleSets from "../../src/components/instructions/02b Example Sets/ExampleSets";
+import SameDifferent from "../../src/components/instructions/02b Example Sets/SameDifferent";
 //
 //
 
@@ -27,19 +30,10 @@ const InstructionsPage: React.FC = () => {
   const frames = [
     <Intro key="intro" {...{ advance }} />,
     <SetsLookDifferent key="setslookdifferent" {...{ advance }} />,
-    <FourAttrs key="FourAttrs" {...{ advance }} />,
-    <ToMakeASet key="concept0" {...{ advance }} conceptIndex={0} />,
-    <TestContainer key="testA" {...{ advance }} testName="shapes" />,
-    <ToMakeASet key="concept1" {...{ advance }} conceptIndex={1} />,
-    <TestContainer key="testB" {...{ advance }} testName="shapes_numbers" />,
-    <ToMakeASet key="concept2" {...{ advance }} conceptIndex={2} />,
-    <TestContainer
-      key="testC"
-      {...{ advance }}
-      testName="shapes_numbers_colors"
-    />,
-    <ToMakeASet key="concept3" {...{ advance }} conceptIndex={3} colorZero />,
-    <TestContainer key="testC" {...{ advance }} testName="all_attrs" />,
+    <FourAttrsSimple key="FourAttrs" {...{ advance }} />,
+    <SameDifferent {...{ advance }} />,
+    <ExampleSets key="examplesets" {...{ advance }} />,
+
     <ReadyToPlay key="ready2play" />,
     <div key="junk" style={{ marginTop: "4rem" }}>
       <Button

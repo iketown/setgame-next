@@ -6,7 +6,7 @@ import FrontPageMediaCard from "@components/FrontPage/FrontPageMediaCard";
 
 const ReadyToPlay: React.FC = () => {
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       <Grid item xs={12} style={{ textAlign: "center" }}>
         <Box marginTop="2rem" />
         <Typography variant="h3">CONGRATULATIONS!</Typography>
@@ -16,6 +16,30 @@ const ReadyToPlay: React.FC = () => {
       </Grid>
       <Grid item xs={12}>
         <Box marginTop="2rem" />
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          justifyItems: "center",
+          alignItems: "center",
+        }}
+      >
+        <FrontPageMediaCard
+          imageTitle="a group of people"
+          image="https://images.unsplash.com/photo-1558978325-66dcf73b99b0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
+          header="Orientation"
+          description={<span>how to select cards, change settings, etc.</span>}
+          actions={
+            <Link href="/orientation" as="/orientation">
+              <Button>Orientation</Button>
+            </Link>
+          }
+          clickCardLink="/orientation"
+        />
       </Grid>
       <Grid
         item

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    minWidth: "15rem",
+    width: "20rem",
   },
   cardMedia: {
     paddingTop: "56.25%", // 16:9
@@ -52,7 +52,7 @@ const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
     if (clickCardLink) router.prefetch(clickCardLink);
   }, []);
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ justifyContent: "space-between" }}>
       <CardActionArea
         onClick={() => clickCardLink && router.push(clickCardLink)}
       >
@@ -69,7 +69,11 @@ const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
         </CardContent>
       </CardActionArea>
 
-      <CardActions style={{ justifyContent: "space-around" }}>
+      <CardActions
+        style={{
+          justifyContent: "space-around",
+        }}
+      >
         {actions}
       </CardActions>
     </Card>
