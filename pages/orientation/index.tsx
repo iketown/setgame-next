@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
-import FakeGame from "./FakeGame";
+import { SoloGameCtxProvider } from "@context/game/SoloGameCtx";
+import SoloGame from "@components/SoloGame/SoloGame";
+import { GameCtxProvider } from "@context/game/GameCtx";
 
-const Orientation = () => {
+const Orientation: React.FC = () => {
   return (
     <div>
-      orientation
-      <FakeGame />
+      <Typography>hey hi there</Typography>
+      <SoloGame specialDeck={["rf2s", "re2s", "rs2s"]} />
     </div>
   );
 };
 
-export default Orientation;
+const OrientationWrapper = () => {
+  return (
+    <GameCtxProvider key="orientation">
+      <SoloGameCtxProvider>
+        <Orientation />
+      </SoloGameCtxProvider>
+    </GameCtxProvider>
+  );
+};
+export default OrientationWrapper;

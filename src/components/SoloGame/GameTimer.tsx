@@ -71,7 +71,7 @@ const CountdownToGame: React.FC<{
         .duration(
           moment(latestSetTime).add(secondsPerBonus, "seconds").diff(moment())
         )
-        .seconds()
+        .asSeconds()
     : 0;
   const handleComplete = () => {
     onCountdownEnd();

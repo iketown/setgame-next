@@ -2,9 +2,10 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 
 import { FullLine, NextButton, P } from "../typographyElements";
-import { equalColor, EqualityStatement, notEqualColor } from "./EqualsIcons";
+import AttrsExample from "./AttrsExample";
+import { equalColor, EqualityStatement } from "./EqualsIcons";
 
-const SameDifferent: React.FC<{ advance: () => void }> = ({ advance }) => {
+const AttrsSame: React.FC<{ advance: () => void }> = ({ advance }) => {
   return (
     <FullLine center>
       <P>Any two cards can start a set.</P>
@@ -35,33 +36,18 @@ const SameDifferent: React.FC<{ advance: () => void }> = ({ advance }) => {
           }
         />
         <Typography>
-          i.e. If the first two cards are both diamonds, the third card must
-          also be diamonds.
+          If the first two cards are both <b>diamonds</b>, the third card must
+          also be <b>diamonds</b>.
         </Typography>
-        <EqualityStatement
-          content={
-            <Typography>
-              if an attribute is{" "}
-              <span style={{ fontWeight: "bold", color: notEqualColor }}>
-                DIFFERENT
-              </span>{" "}
-              on the first two cards,
-              <br /> it must also be{" "}
-              <span style={{ fontWeight: "bold", color: notEqualColor }}>
-                DIFFERENT
-              </span>{" "}
-              on the third card.
-            </Typography>
-          }
+        <AttrsExample cardIds={["bf2d", "be2d", "bs2d"]} ok />
+        <AttrsExample
+          cardIds={["bf2d", "be2d", "bs2s"]}
+          explanation="two diamond cards, one squiggle card"
         />
-        <Typography>
-          i.e. If the first card is purple, and the second card is green, <br />{" "}
-          the third card can't be purple or green. (it must be red)
-        </Typography>
-        <NextButton onClick={advance}>Got it</NextButton>
       </Box>
+      <NextButton onClick={advance}>Got it</NextButton>
     </FullLine>
   );
 };
 
-export default SameDifferent;
+export default AttrsSame;

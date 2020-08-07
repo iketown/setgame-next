@@ -14,7 +14,7 @@ import GameTimer from "./GameTimer";
 import PointsDisplay from "./PointsDisplay";
 import PlayedSoloSets from "./PlayedSoloSets";
 
-const SoloGame = () => {
+const SoloGame: React.FC<{ specialDeck?: string[] }> = ({ specialDeck }) => {
   const { user } = useUserCtx();
   const { setGameOver } = useGameCtx();
   const { handleStartGame } = useSoloGame();
@@ -46,7 +46,7 @@ const SoloGame = () => {
               size="large"
               variant="contained"
               color="primary"
-              onClick={handleStartGame}
+              onClick={() => handleStartGame(specialDeck)}
             >
               START GAME
             </Button>
@@ -77,11 +77,13 @@ const SoloGame = () => {
   );
 };
 
-const WrappedSoloGame: React.FC = () => {
+const WrappedSoloGame: React.FC<{ specialDeck?: string[] }> = ({
+  specialDeck,
+}) => {
   return (
     <GameCtxProvider>
       <SoloGameCtxProvider>
-        <SoloGame />
+        <SoloGame {...{ specialDeck }} />
       </SoloGameCtxProvider>
     </GameCtxProvider>
   );

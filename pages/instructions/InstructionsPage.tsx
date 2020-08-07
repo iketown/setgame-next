@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import SetsLookDifferent from "@components/instructions/01SetsLookDifferent/01SetsLookDifferent";
 import Intro from "@components/instructions/00Intro/00Intro";
 import NavDots from "@components/instructions/NavDots";
-import FourAttrsSimple from "@components/instructions/02FourAttrs/FourAttrsSimple";
+
 import ReadyToPlay from "@components/instructions/05ReadyToPlay/ReadyToPlay";
+import AttrsSame from "@components/instructions/02b Example Sets/AttrsSame";
+import AttrsDifferent from "@components/instructions/02b Example Sets/AttrsDifferent";
 import ExampleSets from "../../src/components/instructions/02b Example Sets/ExampleSets";
-import SameDifferent from "../../src/components/instructions/02b Example Sets/SameDifferent";
 //
 //
 
@@ -27,8 +28,8 @@ const InstructionsPage: React.FC = () => {
   const frames = [
     <Intro key="intro" {...{ advance }} />,
     <SetsLookDifferent key="setslookdifferent" {...{ advance }} />,
-    <FourAttrsSimple key="FourAttrs" {...{ advance }} />,
-    <SameDifferent key="samedifferent" {...{ advance }} />,
+    <AttrsSame key="same" {...{ advance }} />,
+    <AttrsDifferent key="different" {...{ advance }} />,
     <ExampleSets key="examplesets" {...{ advance }} />,
 
     <ReadyToPlay key="ready2play" />,

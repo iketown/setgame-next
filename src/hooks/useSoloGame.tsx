@@ -14,8 +14,8 @@ export const useSoloGame = () => {
   const { dispatch, state, setIsPlayer, setGameOver } = useGameCtx();
   const { soloDispatch } = useSoloGameCtx();
 
-  const handleStartGame = () => {
-    const deck = getMixedDeck();
+  const handleStartGame = (specialDeck?: string[]) => {
+    const deck = specialDeck || getMixedDeck();
     let boardCards = deck.slice(0, 12);
     let deckCards = deck.slice(12);
     for (let i = 0; !getSets(boardCards).length; i += 3) {

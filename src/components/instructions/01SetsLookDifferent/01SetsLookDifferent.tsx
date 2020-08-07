@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Typography, Box } from "@material-ui/core";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -18,9 +18,38 @@ const SetsLookDifferent: React.FC<{ advance: (num?: number) => void }> = ({
           animate="in"
           variants={{ in: { transition: { staggerChildren: 0.5 } } }}
         >
-          <P from="left">Sets can look very different from each other.</P>
-          <P from="right">They can be challenging to find,</P>
-          <P from="right">but all cards have a few common attributes...</P>
+          <P from="left">Sets can look very different from each other,</P>
+          <P space from="right">
+            and they can be challenging to find.
+          </P>
+          <Box marginTop="2rem">
+            <P from="right">Each card has four attributes:</P>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="h5">
+                <u>
+                  <b>Shape</b>
+                </u>
+              </Typography>
+              <Box marginX="1rem">•</Box>
+              <Typography variant="h5">
+                <u>
+                  <b>Fill</b>
+                </u>
+              </Typography>
+              <Box marginX="1rem">•</Box>
+              <Typography variant="h5">
+                <u>
+                  <b>Color</b>
+                </u>
+              </Typography>
+              <Box marginX="1rem">•</Box>
+              <Typography variant="h5">
+                <u>
+                  <b>Quantity</b>
+                </u>
+              </Typography>
+            </Box>
+          </Box>
         </motion.div>
         <NextButton onClick={advance} />
       </Grid>
