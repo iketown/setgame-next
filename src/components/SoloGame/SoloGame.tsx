@@ -70,9 +70,9 @@ const SoloGame = () => {
         </Box>
         <PlayedSoloSets />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <pre>{JSON.stringify(soloState, null, 2)}</pre>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
