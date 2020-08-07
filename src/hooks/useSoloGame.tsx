@@ -59,7 +59,9 @@ export const useSoloGame = () => {
         boardCards = [...boardCards, ...threeCards];
       }
       const sets = getSets(boardCards);
-      if (!sets.length) setGameOver(moment().format());
+      if (!sets.length) {
+        setGameOver(moment().format());
+      }
 
       dispatch({
         type: "UPDATE_BOARD",
@@ -85,6 +87,7 @@ export const useSoloGame = () => {
   const punishFail = () => {
     soloDispatch({ type: "PUNISH_SCORE" });
   };
+
   useSetListener({ submitSetApi, punishFail });
 
   return { handleStartGame };

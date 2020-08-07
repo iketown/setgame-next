@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSoloGameCtx } from "@context/game/SoloGameCtx";
+import { useGameCtx } from "@context/game/GameCtx";
 
 const RenderTime: React.FC<{
   remainingTime: number;
@@ -64,6 +65,8 @@ const CountdownToGame: React.FC<{
   onCountdownEnd: () => void;
 }> = ({ onCountdownEnd }) => {
   const { soloState } = useSoloGameCtx();
+  const { gameOver } = useGameCtx();
+
   const secondsPerBonus = 21;
   const { latestSetTime } = soloState;
   const secondsLeft = latestSetTime
@@ -76,7 +79,7 @@ const CountdownToGame: React.FC<{
   const handleComplete = () => {
     onCountdownEnd();
   };
-
+  if (gameOver) return null;
   return (
     <CountdownCircleTimer
       key={latestSetTime}

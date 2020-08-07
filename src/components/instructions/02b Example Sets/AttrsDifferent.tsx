@@ -36,7 +36,7 @@ const AttrsSame: React.FC<{ advance: () => void }> = ({ advance }) => {
         />
         <Typography>
           If one card has <b>DIAMONDS</b>, and another card has <b>OVALS</b>,{" "}
-          <br /> then the third card can't have EITHER of them. (it must be a{" "}
+          <br /> the third card can't have EITHER shape. (it must be a{" "}
           <b>SQUIGGLE</b>)
         </Typography>
         <AttrsExample cardIds={["bf2d", "be2r", "bs2s"]} ok />
@@ -45,13 +45,8 @@ const AttrsSame: React.FC<{ advance: () => void }> = ({ advance }) => {
           explanation="two cards with ovals = NOT A SET"
         />
         <AttrsExample
-          cardIds={["gf2d", "ge2r", "ge2s"]}
+          cardIds={["bf2d", "be2r", "be2s"]}
           explanation="two cards with empty shapes = NOT A SET"
-          marginTop="0"
-        />
-        <AttrsExample
-          cardIds={["rf1d", "ge2r", "rs3s"]}
-          explanation="two red cards = NOT A SET"
           marginTop="0"
         />
         <AttrsExample
@@ -59,6 +54,11 @@ const AttrsSame: React.FC<{ advance: () => void }> = ({ advance }) => {
           explanation="even if ALL attributes are different, its still a set"
           marginTop="0"
           ok
+        />
+        <AttrsExample
+          cardIds={["rf1d", "ge2r", "rs3s"]}
+          explanation="two red cards = NOT A SET"
+          marginTop="0"
         />
       </Box>
       <NextButton onClick={advance}>Got it</NextButton>

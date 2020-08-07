@@ -33,11 +33,13 @@ export const example1 = {
             <div>
               <Typography>
                 The first two cards are{" "}
-                <span style={sameStyle}>single, purple and full. </span>
+                <span style={sameStyle}>single, purple</span> &{" "}
+                <span style={sameStyle}>solid</span>,{" "}
               </Typography>
               <Typography>
                 so the third card needs to be{" "}
-                <span style={sameStyle}>single, purple and full. </span>
+                <span style={sameStyle}>single, purple</span> &{" "}
+                <span style={sameStyle}>solid. </span>
               </Typography>
             </div>
           }
@@ -48,9 +50,9 @@ export const example1 = {
           content={
             <div>
               <Typography>
-                the first two cards' shapes are{" "}
+                The first two cards' shapes are{" "}
                 <span style={differentStyle}>oval</span> &
-                <span style={differentStyle}> diamond</span>
+                <span style={differentStyle}> diamond</span>,
               </Typography>
               <Typography>
                 so the third card needs to be a{" "}
@@ -99,9 +101,9 @@ export const example2 = {
           content={
             <div>
               <Typography>
-                the first two cards' fills are{" "}
-                <span style={differentStyle}>striped</span> &
-                <span style={differentStyle}> solid</span>
+                The first card is <span style={differentStyle}>striped</span>,
+                the second card is
+                <span style={differentStyle}> solid</span>,
               </Typography>
               <Typography>
                 so the third card needs to be{" "}

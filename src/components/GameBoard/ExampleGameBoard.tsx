@@ -11,8 +11,6 @@ import { useCards } from "@hooks/useCards";
 import { useKeyboardListener } from "@hooks/useKeyboardListener";
 import { useGameCtx } from "@context/game/GameCtx";
 import GameBoardCard from "./GameBoardCard";
-import CheatButtons from "./CheatButtons";
-import GameProgressLine from "./GameProgressLine";
 
 const GameBoard: React.FC = () => {
   const { state, dispatch } = useGameCtx();
@@ -26,25 +24,16 @@ const GameBoard: React.FC = () => {
     handleDoubleClick,
   } = useCards();
   const { showShortcuts, activeLetters } = useKeyboardListener();
-
   const onChange: (
     sourceId: string,
     sourceIndex: number,
     targetIndex: number,
     targetId?: string | undefined
   ) => void = (sourceId, sourceIndex, targetIndex, targetId) => {
-    console.log("dragend", {
-      sourceId,
-      sourceIndex,
-      targetIndex,
-      targetId,
-    });
-    if (sourceIndex === targetIndex) {
-      return;
-    }
+    console.log("dragend", { sourceId, sourceIndex, targetIndex, targetId });
+    if (sourceIndex === targetIndex) return;
     const nextState = swap(boardCards, sourceIndex, targetIndex);
     console.log({ boardCards, nextState });
-    dispatch({ type: "CLEAR_SET", payload: {} });
     dispatch({ type: "REARRANGE_BOARD", payload: { boardCards: nextState } });
   };
 
@@ -53,7 +42,6 @@ const GameBoard: React.FC = () => {
   return (
     <GridContextProvider onChange={onChange}>
       <Grid container spacing={2}>
-        <CheatButtons />
         <Grid
           item
           xs={12}
@@ -76,8 +64,7 @@ const GameBoard: React.FC = () => {
               return (
                 <GridItem
                   key={cardId}
-                  id={cardId}
-                  onMouseDownCapture={(e) => handleClickCard(e, cardId)}
+                  onClick={(e) => handleClickCard(e, cardId)}
                   onDoubleClick={() => handleDoubleClick(cardId)}
                 >
                   <GameBoardCard
@@ -101,9 +88,6 @@ const GameBoard: React.FC = () => {
               );
             })}
           </GridDropZone>
-        </Grid>
-        <Grid item xs={12} style={{ textAlign: "center" }}>
-          <GameProgressLine cardsLeft={state.deckCards.length} />
         </Grid>
       </Grid>
     </GridContextProvider>

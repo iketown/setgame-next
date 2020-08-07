@@ -16,7 +16,6 @@ import FaceDrawing from "../faces/FaceDrawing";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
 import FaceDialog from "./FaceDialog";
-import SingleClickToSelect from "./SingleClickToSelect";
 
 const UserSettings: React.FC = () => {
   const {
@@ -63,9 +62,6 @@ const UserSettings: React.FC = () => {
                       <IconButton onClick={() => setFaceDialogOpen(true)}>
                         <FaceDrawing faceImageNumber={values.faceImageNumber} />
                       </IconButton>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <SingleClickToSelect />
                     </Grid>
                   </Grid>
                 </DialogContent>

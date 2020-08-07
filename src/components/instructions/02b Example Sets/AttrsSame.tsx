@@ -36,8 +36,8 @@ const AttrsSame: React.FC<{ advance: () => void }> = ({ advance }) => {
           }
         />
         <Typography>
-          If the first two cards are both <b>diamonds</b>, the third card must
-          also be <b>diamonds</b>.
+          If the first two cards are both <b>diamonds</b>,<br /> the third card
+          must also be <b>diamonds</b>.
         </Typography>
         <AttrsExample cardIds={["bf2d", "be2d", "bs2d"]} ok />
         <AttrsExample

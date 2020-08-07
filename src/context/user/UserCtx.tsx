@@ -25,6 +25,8 @@ type UserCtxType = {
   userDispatch: React.Dispatch<UserAction>;
   updateUserPrefs: (updateObj: { [key: string]: string | number }) => void;
   handleSignOut: () => void;
+  tooltipId: string;
+  setTooltipId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const UserCtx = createContext<Partial<UserCtxType>>({});
@@ -33,6 +35,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [userState, userDispatch] = useReducer(userReducer, userInitialValue);
+  const [tooltipId, setTooltipId] = useState("");
   const { firestore, db, firebase } = useFBCtx();
   const router = useRouter();
 
@@ -149,6 +152,8 @@ export const UserCtxProvider: React.FC = ({ children }) => {
         userDispatch,
         updateUserPrefs,
         handleSignOut,
+        tooltipId,
+        setTooltipId,
       }}
       {...{ children }}
     />

@@ -1,9 +1,8 @@
-import React, { useMemo, useEffect } from "react";
-import { useUserCtx } from "@context/user/UserCtx";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React, { useMemo } from "react";
 import { useGameCtx } from "@context/game/GameCtx";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import useWidth from "./useWidth";
-import useEventListener from "./useEventListener";
 
 export const useCards = () => {
   const {
@@ -12,7 +11,6 @@ export const useCards = () => {
     gameId,
     isPlayer,
   } = useGameCtx();
-  const { userProfile } = useUserCtx();
   const { functions } = useFBCtx();
   const row5 = boardCards.length > 12;
 
@@ -50,9 +48,9 @@ export const useCards = () => {
       });
       return;
     }
-    if (event.metaKey || userProfile.singleClickToSelect) {
-      dispatch({ type: "TOGGLE_CARD", payload: { card } });
-    }
+    // if (event.metaKey || userProfile.singleClickToSelect) {
+    dispatch({ type: "TOGGLE_CARD", payload: { card } });
+    // }
   };
   const handleDoubleClick = (card: string) => {
     dispatch({ type: "TOGGLE_CARD", payload: { card } });

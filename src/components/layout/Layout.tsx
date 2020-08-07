@@ -1,7 +1,13 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  Tooltip,
+} from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
-import { FaHome, FaUserCircle, FaUsers } from "react-icons/fa";
+import { FaHome, FaUserCircle } from "react-icons/fa";
 import { useUserCtx } from "@context/user/UserCtx";
 import UserSettings from "@components/UserSettings/UserSettings";
 import { useRouter } from "next/router";
@@ -41,27 +47,40 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
             <div className={classes.grow} />
             <div>
               {gameId && <GameOptionsButton gameId={gameId} />}
-              <Link href="/lobby" as="/lobby">
+              <Tooltip arrow title={<Typography>The Lobby</Typography>}>
                 <IconButton color="inherit">
-                  <FaHome />
+                  <Link href="/lobby" as="/lobby">
+                    <div>
+                      <FaHome />
+                    </div>
+                  </Link>
                 </IconButton>
-              </Link>
-              <IconButton
-                color="inherit"
-                onClick={() => userDispatch({ type: "OPEN_SETTINGS" })}
+              </Tooltip>
+              <Tooltip
+                arrow
+                title={
+                  <div style={{}}>
+                    <Typography>user settings</Typography>
+                  </div>
+                }
               >
-                {typeof userProfile?.faceImageNumber === "number" ? (
-                  <FaceDrawing
-                    height="30px"
-                    faceImageNumber={userProfile.faceImageNumber}
-                  />
-                ) : (
-                  <FaUserCircle />
-                )}
-              </IconButton>
-              <IconButton color="inherit" edge="end">
+                <IconButton
+                  color="inherit"
+                  onClick={() => userDispatch({ type: "OPEN_SETTINGS" })}
+                >
+                  {typeof userProfile?.faceImageNumber === "number" ? (
+                    <FaceDrawing
+                      height="30px"
+                      faceImageNumber={userProfile.faceImageNumber}
+                    />
+                  ) : (
+                    <FaUserCircle />
+                  )}
+                </IconButton>
+              </Tooltip>
+              {/* <IconButton color="inherit" edge="end">
                 <FaUsers />
-              </IconButton>
+              </IconButton> */}
             </div>
           </Toolbar>
         </AppBar>

@@ -1,27 +1,38 @@
 /* eslint-disable no-console */
-import React from "react";
-import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
-import { useUserCtx } from "@context/user/UserCtx";
-import { useSoloGameCtx, SoloGameCtxProvider } from "@context/game/SoloGameCtx";
-import PleaseSignIn from "@components/SignIn/PleaseSignIn";
-import { useSoloGame } from "@hooks/useSoloGame";
-import { Button, Grid, Box } from "@material-ui/core";
 import NotASet from "@components/GameMessages/NotASet";
 import SoloGameOver from "@components/GameMessages/SoloGameOver";
-import moment from "moment";
+import PleaseSignIn from "@components/SignIn/PleaseSignIn";
+import { GameCtxProvider } from "@context/game/GameCtx";
+import { SoloGameCtxProvider, useSoloGameCtx } from "@context/game/SoloGameCtx";
+import { useUserCtx } from "@context/user/UserCtx";
+import { useSoloGame } from "@hooks/useSoloGame";
+import { Box, Button, Grid } from "@material-ui/core";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+
 import GameBoard from "../GameBoard/GameBoard";
 import GameTimer from "./GameTimer";
-import PointsDisplay from "./PointsDisplay";
 import PlayedSoloSets from "./PlayedSoloSets";
+import PointsDisplay from "./PointsDisplay";
 
-const SoloGame: React.FC<{ specialDeck?: string[] }> = ({ specialDeck }) => {
+const SoloGame: React.FC = () => {
+  const { query } = useRouter();
   const { user } = useUserCtx();
-  const { setGameOver } = useGameCtx();
+  const { soloDispatch } = useSoloGameCtx();
   const { handleStartGame } = useSoloGame();
-  const { soloState } = useSoloGameCtx();
-  const gameInProgess = soloState.sets.length > 0;
+
+  useEffect(() => {
+    const gameId = query.soloGameId as string;
+    soloDispatch({
+      type: "SET_GAMEID",
+      payload: { gameId },
+    });
+    handleStartGame();
+  }, [query.soloGameId]);
 
   if (!user) return <PleaseSignIn />;
+
   return (
     <Grid container style={{ marginTop: "1rem" }} spacing={2}>
       <Grid
@@ -37,20 +48,9 @@ const SoloGame: React.FC<{ specialDeck?: string[] }> = ({ specialDeck }) => {
         <NotASet />
         <SoloGameOver />
         <Box marginTop="2rem">
-          {gameInProgess ? (
-            <Button onClick={() => setGameOver(moment().format())}>
-              quit game
-            </Button>
-          ) : (
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => handleStartGame(specialDeck)}
-            >
-              START GAME
-            </Button>
-          )}
+          <Link href="/solo" as="/solo">
+            <Button>quit game</Button>
+          </Link>
         </Box>
       </Grid>
       <Grid
@@ -70,20 +70,17 @@ const SoloGame: React.FC<{ specialDeck?: string[] }> = ({ specialDeck }) => {
         </Box>
         <PlayedSoloSets />
       </Grid>
-      {/* <Grid item xs={12}>
-        <pre>{JSON.stringify(soloState, null, 2)}</pre>
-      </Grid> */}
     </Grid>
   );
 };
 
-const WrappedSoloGame: React.FC<{ specialDeck?: string[] }> = ({
-  specialDeck,
-}) => {
+const WrappedSoloGame: React.FC = () => {
+  const { query } = useRouter();
+  const soloGameId = query.soloGameId as string;
   return (
-    <GameCtxProvider>
-      <SoloGameCtxProvider>
-        <SoloGame {...{ specialDeck }} />
+    <GameCtxProvider key={soloGameId}>
+      <SoloGameCtxProvider key={soloGameId}>
+        <SoloGame />
       </SoloGameCtxProvider>
     </GameCtxProvider>
   );
