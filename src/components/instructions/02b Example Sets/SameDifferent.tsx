@@ -2,13 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 
 import { FullLine, NextButton, P } from "../typographyElements";
-import {
-  equalColor,
-  EqualityStatement,
-  Equals,
-  notEqualColor,
-  NotEquals,
-} from "./EqualsIcons";
+import { equalColor, EqualityStatement, notEqualColor } from "./EqualsIcons";
 
 const SameDifferent: React.FC<{ advance: () => void }> = ({ advance }) => {
   return (

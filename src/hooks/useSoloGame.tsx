@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-plusplus */
 import { useGameCtx } from "@context/game/GameCtx";
 import { useSetListener } from "@hooks/useSetListener";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import moment from "moment";
 import { useSoloGameCtx } from "@context/game/SoloGameCtx";
 import shortid from "shortid";

@@ -1,13 +1,11 @@
-import React, { useMemo, useState } from "react";
 import { useGameCtx } from "@context/game/GameCtx";
-import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
-import useGame from "@hooks/useGame";
-import GameMessageOverlay from "./GameMessageOverlay";
-import UserDisplay from "../UserSettings/UserDisplay";
-import Rematch from "../GameBoard/Rematch";
+import React, { useState } from "react";
+import styled from "styled-components";
+
 import RematchSimple from "../GameBoard/RematchSimple";
+import GameMessageOverlay from "./GameMessageOverlay";
 
 const PlayerFinalList = styled.div`
   display: flex;
@@ -17,7 +15,7 @@ const PlayerFinalList = styled.div`
 `;
 
 const GameOver: React.FC = () => {
-  const { gameOver, state, playerProfiles, isPlayer } = useGameCtx();
+  const { gameOver } = useGameCtx();
   const [showGameOver, setShowGameOver] = useState(false); // allows for a couple seconds before showing game over screen
   const delayShowGameOver = () => {
     setTimeout(() => {

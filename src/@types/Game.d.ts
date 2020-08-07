@@ -5,7 +5,7 @@ type GameState = {
   successSet?: SuccessSet;
   failSet?: string[];
   newCards?: string[];
-  sets: { length: 0; sets: string[][] };
+  sets: { length: number; sets: string[][] };
   mySet: string[];
   declaring: boolean;
   message?: GameMessage | null;
@@ -13,7 +13,7 @@ type GameState = {
   delayedState?: {
     boardCards: string[];
     deckCards: string[];
-    sets: { length: 0; sets: string[][] };
+    sets: { length: number; sets: string[][] };
   };
 };
 interface SuccessSet {

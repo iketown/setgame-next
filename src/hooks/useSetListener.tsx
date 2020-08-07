@@ -3,7 +3,6 @@
 /* eslint-disable import/prefer-default-export */
 import { useGameCtx } from "@context/game/GameCtx";
 import { useEffect } from "react";
-import firebase from "firebase";
 import { checkSet } from "../../functions/cards/checkCards";
 
 export const useSetListener = ({

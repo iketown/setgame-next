@@ -1,10 +1,10 @@
 import { useGameCtx } from "@context/game/GameCtx";
 import { Typography, Button } from "@material-ui/core";
 import { motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import useSoloGame from "@hooks/useSoloGame";
+import { useSoloGame } from "@hooks/useSoloGame";
 import GameMessageOverlay from "./GameMessageOverlay";
 
 const PlayerFinalList = styled.div`

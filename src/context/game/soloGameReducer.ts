@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const initialState: SoloGameState = {
   sets: [],
   latestSetTime: "",

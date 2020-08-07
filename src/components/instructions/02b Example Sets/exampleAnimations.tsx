@@ -1,4 +1,4 @@
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import React from "react";
 
 const allVariants: Variants = {

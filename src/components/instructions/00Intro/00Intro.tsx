@@ -27,11 +27,11 @@ const cardVar: Variants = {
     opacity: 0,
     scale: 0,
   },
-  cardIn: (i) => ({
+  cardIn: {
     opacity: 1,
     scale: 1,
     rotate: 0,
-  }),
+  },
   selected: {
     scale: 1.1,
     opacity: 1,
@@ -144,7 +144,7 @@ const Intro: React.FC<{ advance: () => void }> = ({ advance }) => {
             variant={i === showSetIndex ? "outlined" : "text"}
             color="primary"
             onClick={() => handleSetButton(i)}
-            key={i}
+            key={set.join("")}
           >
             set {i + 1}
           </Button>

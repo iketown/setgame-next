@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Grid, Container } from "@material-ui/core";
+import { Button, Grid, Container } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
 import FrontPageMediaCard from "@components/FrontPage/FrontPageMediaCard";

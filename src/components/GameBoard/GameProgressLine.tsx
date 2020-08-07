@@ -3,7 +3,7 @@ import { Box, LinearProgress, Typography } from "@material-ui/core";
 
 //
 //
-const GameProgressLine = ({ cardsLeft }: { cardsLeft: number }) => {
+const GameProgressLine: React.FC<{ cardsLeft: number }> = ({ cardsLeft }) => {
   const MIN = 0;
   const MAX = 81;
   const normalize = (value: number) => ((value - MIN) * 100) / (MAX - MIN);

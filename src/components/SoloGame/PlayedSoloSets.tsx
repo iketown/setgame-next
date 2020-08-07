@@ -24,7 +24,7 @@ const SetDisplay = styled.div`
     }
   }
 `;
-const PlayedSoloSets = () => {
+const PlayedSoloSets: React.FC = () => {
   const { soloState } = useSoloGameCtx();
   const { sets } = soloState;
   const listRef = useRef(null);
@@ -39,7 +39,7 @@ const PlayedSoloSets = () => {
       ref={listRef}
       style={{ transform: "scale(.8)", height: "400px", overflow: "scroll" }}
     >
-      {sets.map((setItem, index) => {
+      {sets.map((setItem) => {
         const { time, set, points } = setItem;
         return (
           <motion.div

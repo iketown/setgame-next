@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Grid } from "@material-ui/core";
-import GameBoard from "../../src/components/GameBoard/GameBoard";
+import { Container } from "@material-ui/core";
 import SoloGame from "../../src/components/SoloGame/SoloGame";
 
-const SoloScored = () => {
+const SoloScored: React.FC = () => {
   return (
     <Container maxWidth="md" style={{ marginTop: "2rem" }}>
       <SoloGame />

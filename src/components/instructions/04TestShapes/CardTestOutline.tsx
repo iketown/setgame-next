@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { FaThumbsUp, FaTimesCircle } from "react-icons/fa";
 import styled from "styled-components";
 
-import { FullLine, P } from "../typographyElements";
 import { popCardVariants } from "../utils/cardVariants";
 
 //

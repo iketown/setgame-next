@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React, { useState } from "react";
 
 import CardTestOutline from "../04TestShapes/CardTestOutline";

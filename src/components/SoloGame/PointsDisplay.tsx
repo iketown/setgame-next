@@ -1,10 +1,10 @@
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from "react";
 import { useSoloGameCtx } from "@context/game/SoloGameCtx";
-import { motion, AnimatePresence } from "framer-motion";
-import { Typography, Button } from "@material-ui/core";
-import { red, green, teal } from "@material-ui/core/colors";
+import { Typography } from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const PointsBox = styled.div`
@@ -15,7 +15,7 @@ const PointsBox = styled.div`
   }
 `;
 
-const PointsDisplay = () => {
+const PointsDisplay: React.FC = () => {
   const { soloState } = useSoloGameCtx();
   // const [newPoints, setNewPoints] = useState(10);
   const { points } = soloState;
@@ -28,7 +28,6 @@ const PointsDisplay = () => {
       return;
     }
     const interval = setInterval(() => {
-      console.log("changing display points");
       if (displayPoints === points) {
         clearInterval(interval);
       }

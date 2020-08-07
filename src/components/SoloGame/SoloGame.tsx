@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable no-console */
+import React from "react";
 import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
-import { useRouter } from "next/router";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useSoloGameCtx, SoloGameCtxProvider } from "@context/game/SoloGameCtx";
 import PleaseSignIn from "@components/SignIn/PleaseSignIn";
@@ -16,7 +16,7 @@ import PlayedSoloSets from "./PlayedSoloSets";
 
 const SoloGame = () => {
   const { user } = useUserCtx();
-  const { setGameOver, gameOver } = useGameCtx();
+  const { setGameOver } = useGameCtx();
   const { handleStartGame } = useSoloGame();
   const { soloState } = useSoloGameCtx();
   const gameInProgess = soloState.sets.length > 0;
@@ -77,9 +77,7 @@ const SoloGame = () => {
   );
 };
 
-const WrappedSoloGame = () => {
-  const router = useRouter();
-
+const WrappedSoloGame: React.FC = () => {
   return (
     <GameCtxProvider>
       <SoloGameCtxProvider>
