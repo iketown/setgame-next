@@ -6,13 +6,37 @@ import { useCallback } from "react";
 import moment from "moment";
 import { useSoloGameCtx } from "@context/game/SoloGameCtx";
 import shortid from "shortid";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useRouter } from "next/router";
 import { getMixedDeck } from "../../functions/cards/allCards";
+import { useUserCtx } from "../context/user/UserCtx";
 import { getSets } from "../utils/checkCards";
 //
 //
 export const useSoloGame = () => {
   const { dispatch, state, setIsPlayer, setGameOver } = useGameCtx();
-  const { soloDispatch } = useSoloGameCtx();
+  const { soloDispatch, soloState } = useSoloGameCtx();
+  const { user } = useUserCtx();
+  const { firestore } = useFBCtx();
+  const { push } = useRouter();
+
+  const handleSaveGame = async () => {
+    if (!user.uid) return;
+    const { boardCards, deckCards } = state;
+    const gameRef = firestore.doc(
+      `users/${user.uid}/savedSoloGames/${soloState.gameId}`
+    );
+    await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
+    push("/solo", "/solo");
+  };
+
+  const deleteSavedGame = useCallback(
+    (gameId: string) => {
+      if (!user?.uid) return;
+      firestore.doc(`users/${user.uid}/savedSoloGames/${gameId}`).delete();
+    },
+    [user]
+  );
 
   const handleStartGame = (specialDeck?: string[]) => {
     const deck = specialDeck || getMixedDeck();
@@ -61,6 +85,7 @@ export const useSoloGame = () => {
       const sets = getSets(boardCards);
       if (!sets.length) {
         setGameOver(moment().format());
+        deleteSavedGame(soloState.gameId);
       }
 
       dispatch({
@@ -90,7 +115,7 @@ export const useSoloGame = () => {
 
   useSetListener({ submitSetApi, punishFail });
 
-  return { handleStartGame };
+  return { handleStartGame, handleSaveGame, deleteSavedGame };
 };
 
 export default useSoloGame;

@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { useLayoutStyles } from "./layoutStyles";
 import FaceDrawing from "../faces/FaceDrawing";
 import GameOptionsButton from "./GameOptionsButton";
+import SoloGameOptionsButton from "./SoloGameOptionsButton";
 
 interface LayoutI {
   pageTitle?: string;
@@ -24,6 +25,7 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
   const classes = useLayoutStyles();
   const { userDispatch, userProfile } = useUserCtx();
   const gameId = router.query?.gameId as string;
+  const soloGameId = router.query?.soloGameId as string;
   return (
     <div>
       <div className={classes.grow}>
@@ -47,6 +49,7 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
             <div className={classes.grow} />
             <div>
               {gameId && <GameOptionsButton gameId={gameId} />}
+              {soloGameId && <SoloGameOptionsButton />}
               <Tooltip arrow title={<Typography>The Lobby</Typography>}>
                 <IconButton color="inherit">
                   <Link href="/lobby" as="/lobby">

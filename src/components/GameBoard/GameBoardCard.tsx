@@ -78,15 +78,13 @@ const GameBoardCard: React.FC<{ cardId: string; overlay?: JSX.Element }> = ({
       case !!state.successSet: {
         return { animationVariant: "notSelected", border: defaultBorder };
       }
-      case state.cheatCards.includes(cardId):
       case state.mySet.includes(cardId):
         return {
           animationVariant: "selected",
           border: "1px solid blue",
           rotation: 5,
         };
-      case !!state.cheatCards.length:
-        return { animationVariant: "notSelected", border: defaultBorder };
+
       case state.newCards.includes(cardId):
         return { animationVariant: "new", border: defaultBorder };
       default:

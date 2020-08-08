@@ -11,7 +11,8 @@ type SoloGameActionType =
   | "LATEST_SET_TIME"
   | "ADD_SET_TO_SCORE"
   | "PUNISH_SCORE"
-  | "SET_GAMEID";
+  | "SET_GAMEID"
+  | "LOAD_GAME";
 
 interface SoloGamePayload {
   bonusPoints?: number;
@@ -19,8 +20,25 @@ interface SoloGamePayload {
   time?: string;
   set?: string[];
   gameId?: string;
+  soloGameState?: SoloGameState;
 }
 interface SoloGameAction {
   type: SoloGameActionType;
   payload?: SoloGamePayload;
 }
+
+type SavedGame = {
+  bonusPoints: number;
+  gameId: string;
+  latestSetTime: string;
+  points: number;
+  sets: {
+    points: number;
+    set: string[];
+    time: string;
+  }[];
+  gameState: {
+    boardCards: string[];
+    deckCards: string[];
+  };
+};

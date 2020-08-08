@@ -41,6 +41,11 @@ export const soloGameReducer = (
       if (typeof gameId !== "string") return state;
       return { ...initialState, gameId };
     }
+    case "LOAD_GAME": {
+      const { soloGameState } = action.payload;
+      if (!soloGameState) return state;
+      return soloGameState;
+    }
     default:
       return state;
   }

@@ -4,9 +4,7 @@ export const initialGameState: GameState = {
   boardCards: [],
   newCards: [],
   deckCards: [],
-  cheatCards: [],
   sets: { length: 0, sets: [] },
-  declaring: false,
   mySet: [],
 };
 
@@ -79,7 +77,7 @@ export const gameReducer = (
       };
     }
     case "CLEAR_SET": {
-      return { ...state, mySet: [], cheatCards: [] };
+      return { ...state, mySet: [] };
     }
     case "TOGGLE_CARD": {
       const { card } = action.payload;
@@ -90,16 +88,6 @@ export const gameReducer = (
         mySet = [...state.mySet, card];
       }
       return { ...state, mySet };
-    }
-    case "TOGGLE_CHEATER": {
-      const { card } = action.payload;
-      let cheatCards;
-      if (state.cheatCards.includes(card)) {
-        cheatCards = state.cheatCards.filter((c) => c !== card);
-      } else {
-        cheatCards = [...state.cheatCards, card];
-      }
-      return { ...state, cheatCards };
     }
 
     default:

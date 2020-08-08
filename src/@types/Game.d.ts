@@ -1,13 +1,11 @@
 type GameState = {
   boardCards: string[];
   deckCards: string[];
-  cheatCards: string[];
   successSet?: SuccessSet;
   failSet?: string[];
   newCards?: string[];
   sets: { length: number; sets: string[][] };
   mySet: string[];
-  declaring: boolean;
   message?: GameMessage | null;
   playedSets?: PlayedSets;
   delayedState?: {
@@ -37,7 +35,6 @@ type GameActionType =
   | "SET_MESSAGE"
   | "TOGGLE_HIDE"
   | "TOGGLE_EXTRA"
-  | "TOGGLE_CHEATER"
   | "FAIL_SET"
   | "SET_DELAYED_STATE"
   | "ACTIVATE_DELAYED_STATE";
