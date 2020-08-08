@@ -10,6 +10,8 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListSubheader,
+  Typography,
+  Card,
 } from "@material-ui/core";
 import moment from "moment";
 import FaceDrawing from "../faces/FaceDrawing";
@@ -41,21 +43,42 @@ const HighScores: React.FC = () => {
     return () => hsRef.off("value");
   }, []);
   return (
-    <div>
+    <Card>
       <List>
         <ListSubheader>High Scores</ListSubheader>
         {highScores?.map(([gameId, { date, playerId, points }]) => {
           const profile = userProfiles && userProfiles[playerId];
           const faceImageNumber = profile?.faceImageNumber;
           const displayName = profile?.displayName;
+          const location = profile?.location;
           return (
-            <ListItem dense key={gameId}>
+            <ListItem
+              dense
+              key={gameId}
+              style={{ maxHeight: "60vh", overflow: "scroll" }}
+            >
               <ListItemAvatar>
                 <FaceDrawing faceImageNumber={faceImageNumber} />
               </ListItemAvatar>
               <ListItemText
-                primary={points}
-                secondary={`${displayName}: ${moment(date).fromNow()}`}
+                primary={
+                  <div>
+                    <Typography variant="h5" display="inline">
+                      {points}
+                    </Typography>
+                    <Typography
+                      style={{ marginLeft: "5px" }}
+                      noWrap
+                      color="textSecondary"
+                      display="inline"
+                    >
+                      {displayName}
+                    </Typography>
+                  </div>
+                }
+                secondary={`${moment(date).fromNow()} ${
+                  location ? ` • ${location}` : ""
+                }`}
               />
             </ListItem>
           );
@@ -63,7 +86,7 @@ const HighScores: React.FC = () => {
       </List>
       {/* <pre>{JSON.stringify(highScores, null, 2)}</pre> */}
       {/* <pre>{JSON.stringify(userProfiles, null, 2)}</pre> */}
-    </div>
+    </Card>
   );
 };
 

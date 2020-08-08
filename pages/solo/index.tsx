@@ -10,13 +10,15 @@ const Index: React.FC = () => {
   return (
     <Container maxWidth="md" fixed>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
+          <Box marginTop="1rem" />
           <SavedSoloGames />
+          <Box marginTop="1rem" />
           <HighScores />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <Box
-            height="80vh"
+            padding="20%"
             display="flex"
             justifyContent="center"
             alignItems="center"

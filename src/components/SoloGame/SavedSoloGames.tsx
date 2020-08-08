@@ -12,6 +12,7 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
+  Card,
 } from "@material-ui/core";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -42,7 +43,7 @@ const SavedSoloGames: React.FC = () => {
 
   if (!user?.uid) return null;
   return (
-    <>
+    <Card>
       <List>
         <ListSubheader>Games in Progress</ListSubheader>
         {!savedGames?.length && (
@@ -92,7 +93,7 @@ const SavedSoloGames: React.FC = () => {
         })}
       </List>
       {/* <pre>{JSON.stringify(savedGames, null, 2)}</pre> */}
-    </>
+    </Card>
   );
 };
 

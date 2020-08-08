@@ -15,6 +15,7 @@ import { Form } from "react-final-form";
 import FaceDrawing from "../faces/FaceDrawing";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
+import LocationInput from "./LocationInput";
 import FaceDialog from "./FaceDialog";
 
 const UserSettings: React.FC = () => {
@@ -58,10 +59,13 @@ const UserSettings: React.FC = () => {
                     <Grid item xs={6} sm={8}>
                       <DisplayNameInput />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <IconButton onClick={() => setFaceDialogOpen(true)}>
                         <FaceDrawing faceImageNumber={values.faceImageNumber} />
                       </IconButton>
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                      <LocationInput />
                     </Grid>
                   </Grid>
                 </DialogContent>
