@@ -1,6 +1,7 @@
 type PlayerProfile = {
   uid: string;
   displayName: string;
+  location?: string;
   photoURL?: string;
   userColor?: PlayerColorOption;
   faceImageNumber?: number;
