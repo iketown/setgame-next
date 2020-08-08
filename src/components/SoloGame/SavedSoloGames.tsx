@@ -45,7 +45,12 @@ const SavedSoloGames: React.FC = () => {
     <>
       <List>
         <ListSubheader>Games in Progress</ListSubheader>
-        {savedGames.map(({ gameId, points, latestSetTime, gameState }) => {
+        {!savedGames?.length && (
+          <ListItem>
+            <ListItemText primary="no saved games" />
+          </ListItem>
+        )}
+        {savedGames?.map(({ gameId, points, latestSetTime, gameState }) => {
           return (
             <ListItem divider dense key={gameId}>
               <ListItemAvatar>

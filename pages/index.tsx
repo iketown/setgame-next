@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { useRouter } from "next/router";
 import React from "react";
 
 import AnimatedSet from "@components/FrontPage/AnimatedSet";
@@ -56,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const Album: React.FC = () => {
   const classes = useStyles();
-  const { push } = useRouter();
 
   return (
     <>
@@ -74,14 +72,14 @@ export const Album: React.FC = () => {
             >
               Set City
             </Typography>
-            <Typography
+            {/* <Typography
               variant="h5"
               align="center"
               color="textSecondary"
               paragraph
             >
               A place to connect with fellow Set Citizens.
-            </Typography>
+            </Typography> */}
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>

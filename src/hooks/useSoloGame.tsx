@@ -17,7 +17,7 @@ export const useSoloGame = () => {
   const { dispatch, state, setIsPlayer, setGameOver } = useGameCtx();
   const { soloDispatch, soloState } = useSoloGameCtx();
   const { user } = useUserCtx();
-  const { firestore } = useFBCtx();
+  const { firestore, functions } = useFBCtx();
   const { push } = useRouter();
 
   const handleSaveGame = async () => {
@@ -84,6 +84,12 @@ export const useSoloGame = () => {
       }
       const sets = getSets(boardCards);
       if (!sets.length) {
+        // HANDLE GAME OVER
+        const registerSoloGame = functions.httpsCallable("registerSoloGame");
+        registerSoloGame({
+          gameId: soloState.gameId,
+          points: soloState.points + 3 + soloState.bonusPoints,
+        });
         setGameOver(moment().format());
         deleteSavedGame(soloState.gameId);
       }

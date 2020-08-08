@@ -2,7 +2,8 @@ import React from "react";
 import { Container, Box, Button, Grid } from "@material-ui/core";
 import Link from "next/link";
 import shortid from "shortid";
-import SavedSoloGames from "../../src/components/SoloGame/SavedSoloGames";
+import SavedSoloGames from "@components/SoloGame/SavedSoloGames";
+import HighScores from "@components/SoloGame/HighScores";
 
 const Index: React.FC = () => {
   const nextGameId = shortid.generate();
@@ -11,6 +12,7 @@ const Index: React.FC = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <SavedSoloGames />
+          <HighScores />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Box

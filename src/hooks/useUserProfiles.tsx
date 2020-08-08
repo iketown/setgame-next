@@ -28,7 +28,6 @@ export const useUserProfiles = () => {
           // @ts-ignore
           _userProfiles[doc.id] = doc.data();
         });
-        console.log("updating profiles", _userProfiles);
         setUserProfiles(_userProfiles);
       }
     });
