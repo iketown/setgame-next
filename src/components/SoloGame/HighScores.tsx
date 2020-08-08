@@ -67,18 +67,33 @@ const HighScores: React.FC = () => {
                       {points}
                     </Typography>
                     <Typography
-                      style={{ marginLeft: "5px" }}
+                      style={{ marginLeft: "10px" }}
                       noWrap
                       color="textSecondary"
                       display="inline"
+                      variant="caption"
                     >
+                      {moment(date).fromNow()}
+                    </Typography>
+                    {location && (
+                      <Typography
+                        display="inline"
+                        variant="caption"
+                        color="textSecondary"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        {location}
+                      </Typography>
+                    )}
+                  </div>
+                }
+                secondary={
+                  <div>
+                    <Typography color="textPrimary" display="inline">
                       {displayName}
                     </Typography>
                   </div>
                 }
-                secondary={`${moment(date).fromNow()} ${
-                  location ? ` • ${location}` : ""
-                }`}
               />
             </ListItem>
           );
