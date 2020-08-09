@@ -21,7 +21,7 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!publicGames || !user?.uid) return;
     const _myGames = Object.entries(publicGames)
-      .filter(([_, { players }]) => !!players[user.uid])
+      .filter(([_, { players }]) => players && !!players[user.uid])
       .map(([gameId]) => gameId);
     setMyGames(_myGames);
   }, [publicGames]);
