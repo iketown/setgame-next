@@ -105,6 +105,7 @@ export const useGame = () => {
   const removeMeFromGame = (_gameId: string) => {
     if (!user) return;
     db.ref(`/games/${_gameId}/players/${user.uid}`).remove();
+    db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove();
   };
 
   const setCurrentOptionsAsDefault = async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import { useRenderCount } from "@hooks/useRenderCount";
@@ -10,17 +11,20 @@ const LobbyCtx = createContext<Partial<LobbyCtxType>>({});
 export const LobbyCtxProvider: React.FC = ({ children }) => {
   useRenderCount("LobbyCtxProvider");
   const { db } = useFBCtx();
-  const { userProfile } = useUserCtx();
+  const { userProfile, user } = useUserCtx();
 
-  const [publicGames, setPublicGames] = useState();
+  const [publicGames, setPublicGames] = useState<{
+    [gameId: string]: PublicGame;
+  }>();
+  const [myGames, setMyGames] = useState<string[]>([]);
 
   useEffect(() => {
-    // listen to which of my friends are online
-    if (!userProfile) return;
-    const friendIds =
-      (userProfile.friends && Object.keys(userProfile.friends)) || [];
-    console.log({ friendIds });
-  }, [userProfile]);
+    if (!publicGames || !user?.uid) return;
+    const _myGames = Object.entries(publicGames)
+      .filter(([_, { players }]) => !!players[user.uid])
+      .map(([gameId]) => gameId);
+    setMyGames(_myGames);
+  }, [publicGames]);
 
   useEffect(() => {
     // listen to public game listings
@@ -28,10 +32,12 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
       setPublicGames(snap.val());
     });
 
-    return () => db.ref(`publicGames`).off();
+    return () => db.ref(`publicGames`).off("value");
   }, []);
 
-  return <LobbyCtx.Provider value={{ publicGames }} {...{ children }} />;
+  return (
+    <LobbyCtx.Provider value={{ publicGames, myGames }} {...{ children }} />
+  );
 };
 
 export const useLobbyCtx = (): Partial<LobbyCtxType> => useContext(LobbyCtx);

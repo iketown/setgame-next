@@ -14,6 +14,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getUniqueName } from "../src/utils/getUniqueName";
 import { useFBCtx } from "../src/context/firebase/firebaseCtx";
+
 //
 //
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ const Lobby = () => {
   const { createPendingGame } = useGame();
   const { db } = useFBCtx();
   const [newGameId, setNewGameId] = useState("");
+  const { myGames } = useLobbyCtx();
   const changeGameId = () => {
     setNewGameId(getUniqueName());
   };
@@ -46,34 +48,38 @@ const Lobby = () => {
         }
       });
   }, [newGameId]);
-
+  const imAvailable = !myGames || myGames?.length < 2;
   return (
     <main className={classes.root}>
-      <Container maxWidth="md" className={classes.container}>
+      <Container fixed maxWidth="md" className={classes.container}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <Card>
-              <GameList />
               <CardActions>
-                <Link href="/games/[gameId]" as={`/games/${newGameId}`}>
-                  <Button
-                    onClick={() => createPendingGame(newGameId)}
-                    variant="contained"
-                    color="primary"
-                  >
-                    create new game
-                  </Button>
-                </Link>
-                {!!newGameId && (
+                {imAvailable && (
+                  <Link href="/games/[gameId]" as={`/games/${newGameId}`}>
+                    <Button
+                      onClick={() => createPendingGame(newGameId)}
+                      variant="contained"
+                      color="primary"
+                    >
+                      create new game
+                    </Button>
+                  </Link>
+                )}
+                {imAvailable && !!newGameId && (
                   <Typography
                     onClick={changeGameId}
-                    style={{ cursor: "pointer" }}
+                    variant="caption"
+                    color="textSecondary"
+                    style={{ cursor: "pointer", marginTop: "5px" }}
                     noWrap
                   >
                     {newGameId}
                   </Typography>
                 )}
               </CardActions>
+              <GameList />
             </Card>
           </Grid>
         </Grid>

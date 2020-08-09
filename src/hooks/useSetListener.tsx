@@ -25,7 +25,7 @@ export const useSetListener = ({
     } else {
       dispatch({ type: "FAIL_SET", payload: { set: mySet } });
       dispatch({ type: "CLEAR_SET", payload: {} });
-      punishFail();
+      if (punishFail) punishFail();
     }
   }, [mySet]);
 };

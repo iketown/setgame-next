@@ -10,6 +10,8 @@ import moment from "moment";
 import Link from "next/link";
 import React from "react";
 
+import { FaRegStar } from "react-icons/fa";
+import { motion } from "framer-motion";
 import FaceDrawing from "../faces/FaceDrawing";
 
 //
@@ -19,17 +21,18 @@ interface GameListItemI {
   players: {
     [uid: string]: {
       joinedAt: string;
-      playerProfile: { displayName: string; faceImageNumber?: number };
     };
   };
   gameStartTime: false | string; // when play begins
   createdAt: string; // game was created
+  allowNewPlayers?: boolean;
 }
 
 const GameListItem: React.FC<GameListItemI> = ({
   gameId,
   players,
   gameStartTime,
+  allowNewPlayers,
 }) => {
   const whenText = gameStartTime
     ? `started ${moment(gameStartTime).fromNow()}`
@@ -57,6 +60,7 @@ const GameListItem: React.FC<GameListItemI> = ({
               justifyContent: "flex-end",
             }}
           >
+            {allowNewPlayers && <AnimatedStar />}
             {players &&
               Object.entries(players).map(([uid]) => {
                 return <PlayerHead key={uid} uid={uid} />;
@@ -79,6 +83,28 @@ const PlayerHead = ({ uid }: { uid: string }) => {
       <div>
         <FaceDrawing height="40px" faceImageNumber={faceImageNumber} />
       </div>
+    </Tooltip>
+  );
+};
+
+const AnimatedStar = () => {
+  return (
+    <Tooltip title="may allow new players" placement="top">
+      <motion.div
+        animate={{
+          scale: 0.8,
+          rotate: 360,
+          transition: { duration: 2, loop: Infinity },
+        }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "5px",
+          // border: "1px solid blue",
+        }}
+      >
+        <FaRegStar size="1.5rem" />
+      </motion.div>
     </Tooltip>
   );
 };

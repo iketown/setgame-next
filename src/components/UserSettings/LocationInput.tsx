@@ -1,9 +1,9 @@
 import React from "react";
-import { useField, useForm } from "react-final-form";
+import { useField } from "react-final-form";
 import { TextField } from "@material-ui/core";
 
-const DisplayNameInput = () => {
-  const { input, meta } = useField("location");
+const DisplayNameInput: React.FC = () => {
+  const { input } = useField("location");
 
   return (
     <TextField

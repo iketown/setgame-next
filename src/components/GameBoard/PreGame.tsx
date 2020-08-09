@@ -17,7 +17,6 @@ import React, { useState } from "react";
 
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
-import PreGameInvitePlayers from "./PreGameInvitePlayers";
 
 const PreGame: React.FC = () => {
   useRenderCount("PreGame");
@@ -42,10 +41,6 @@ const PreGame: React.FC = () => {
       }}
       container
     >
-      <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>
-        <div>{isGameAdmin && <PreGameInvitePlayers />}</div>
-      </Grid>
-
       <Grid
         item
         xs={12}
@@ -73,7 +68,7 @@ const PreGame: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <GamePlayers showTitle={false} />
+            <GamePlayers showTitle={false} verticalOnly />
             {isGameAdmin && (
               <FormControlLabel
                 label="allow new players after start"

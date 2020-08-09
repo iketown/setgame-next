@@ -7,16 +7,10 @@ import { useGameCtx } from "@context/game/GameCtx";
 import UserDisplay from "../UserSettings/UserDisplay";
 import GameRequestButton from "./GameRequestButton";
 
-interface PlayersObj {
-  [uid: string]: GamePlayer;
-}
-interface PlayerProfiles {
-  [uid: string]: PlayerProfile;
-}
-
-const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
-  showTitle = true,
-}) => {
+const GamePlayers: React.FC<{
+  showTitle?: boolean;
+  verticalOnly?: boolean;
+}> = ({ showTitle = true, verticalOnly }) => {
   const { playerProfiles, state } = useGameCtx();
   const { playedSets } = state;
   const { setPlayerIds, whosHere } = usePresence();
@@ -40,6 +34,13 @@ const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
     setPlayerIds(Object.keys(playerProfiles));
   }, [playerProfiles]);
   if (!usersByPoints || !usersByPoints.length) return <UserDisplay />;
+  if (verticalOnly)
+    return (
+      <>
+        <PlayersVerticalList {...{ usersByPoints, whosHere }} />
+        <GameRequestButton />
+      </>
+    );
   return (
     <>
       <Hidden smDown>
@@ -48,36 +49,10 @@ const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
             PLAYERS
           </Typography>
         )}
-        <List>
-          {usersByPoints?.map(({ uid, points }) => {
-            return (
-              <motion.div key={uid} layout>
-                <UserDisplay
-                  userId={uid}
-                  points={points || undefined}
-                  isHere={whosHere && whosHere[uid]}
-                />
-              </motion.div>
-            );
-          })}
-        </List>
+        <PlayersVerticalList {...{ usersByPoints, whosHere }} />
       </Hidden>
       <Hidden mdUp>
-        <Grid container spacing={2} style={{ marginTop: "2rem" }}>
-          {usersByPoints?.map(({ uid, points }) => {
-            return (
-              <Grid item key={uid}>
-                <motion.div layout>
-                  <UserDisplay
-                    userId={uid}
-                    points={points}
-                    isHere={whosHere && whosHere[uid]}
-                  />
-                </motion.div>
-              </Grid>
-            );
-          })}
-        </Grid>
+        <PlayersHorizontalList {...{ usersByPoints, whosHere }} />
       </Hidden>
       <GameRequestButton />
     </>
@@ -85,3 +60,57 @@ const GamePlayers: React.FC<{ showTitle?: boolean }> = ({
 };
 
 export default GamePlayers;
+
+const PlayersVerticalList: React.FC<{
+  usersByPoints: {
+    uid: string;
+    points: number;
+  }[];
+  whosHere: {
+    [uid: string]: boolean;
+  };
+}> = ({ usersByPoints, whosHere }) => {
+  return (
+    <List>
+      {usersByPoints?.map(({ uid, points }) => {
+        return (
+          <motion.div key={uid} layout>
+            <UserDisplay
+              userId={uid}
+              points={points || undefined}
+              isHere={whosHere && whosHere[uid]}
+            />
+          </motion.div>
+        );
+      })}
+    </List>
+  );
+};
+
+const PlayersHorizontalList: React.FC<{
+  usersByPoints: {
+    uid: string;
+    points: number;
+  }[];
+  whosHere: {
+    [uid: string]: boolean;
+  };
+}> = ({ usersByPoints, whosHere }) => {
+  return (
+    <Grid container spacing={2} style={{ marginTop: "2rem" }}>
+      {usersByPoints?.map(({ uid, points }) => {
+        return (
+          <Grid item key={uid}>
+            <motion.div layout>
+              <UserDisplay
+                userId={uid}
+                points={points}
+                isHere={whosHere && whosHere[uid]}
+              />
+            </motion.div>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
+};

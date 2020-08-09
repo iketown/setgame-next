@@ -5,7 +5,8 @@ import { useLobbyCtx } from "@context/lobby/LobbyCtx";
 import GameListItem from "./GameListItem";
 
 const GameList: React.FC = () => {
-  const { publicGames } = useLobbyCtx();
+  const { publicGames, myGames } = useLobbyCtx();
+
   const gamesByStartTime =
     publicGames &&
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,20 +14,61 @@ const GameList: React.FC = () => {
       if (moment(obj.createdAt).isBefore(moment(obj2.createdAt))) return 1;
       return -1;
     });
+  const myGameObjects = gamesByStartTime?.filter(([gameId]) =>
+    myGames?.includes(gameId)
+  );
+  const otherGameObjects = gamesByStartTime?.filter(
+    ([gameId]) => !myGames?.includes(gameId)
+  );
   return (
-    <List dense subheader={<ListSubheader>CURRENT GAMES</ListSubheader>}>
-      {gamesByStartTime &&
-        gamesByStartTime.map(
-          ([gameId, { players, gameStartTime, createdAt }]) => {
+    <>
+      <List dense>
+        {myGameObjects?.length ? (
+          <ListSubheader>MY GAMES</ListSubheader>
+        ) : (
+          <div />
+        )}
+        {myGameObjects?.map(
+          ([
+            gameId,
+            { players, gameStartTime, createdAt, allowNewPlayers },
+          ]) => {
             return (
               <GameListItem
                 key={gameId}
-                {...{ gameId, players, gameStartTime, createdAt }}
+                {...{
+                  gameId,
+                  players,
+                  gameStartTime,
+                  createdAt,
+                  allowNewPlayers,
+                }}
               />
             );
           }
         )}
-    </List>
+        <ListSubheader>CURRENT GAMES</ListSubheader>
+        {otherGameObjects?.map(
+          ([
+            gameId,
+            { players, gameStartTime, createdAt, allowNewPlayers },
+          ]) => {
+            return (
+              <GameListItem
+                key={gameId}
+                {...{
+                  gameId,
+                  players,
+                  gameStartTime,
+                  createdAt,
+                  allowNewPlayers,
+                }}
+              />
+            );
+          }
+        )}
+      </List>
+    </>
   );
 };
 
