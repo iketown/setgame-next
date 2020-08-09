@@ -67,7 +67,7 @@ const CountdownToGame: React.FC<{
   const { soloState } = useSoloGameCtx();
   const { gameOver } = useGameCtx();
 
-  const secondsPerBonus = 21;
+  const secondsPerBonus = 30;
   const { latestSetTime } = soloState;
   const secondsLeft = latestSetTime
     ? moment
