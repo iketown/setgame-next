@@ -12,9 +12,10 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useUserCtx } from "@context/user/UserCtx";
 import { getUniqueName } from "../src/utils/getUniqueName";
 import { useFBCtx } from "../src/context/firebase/firebaseCtx";
-
+import PleaseSignIn from "../src/components/SignIn/PleaseSignIn";
 //
 //
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Lobby = () => {
   const classes = useStyles();
+  const { user } = useUserCtx();
   const { createPendingGame } = useGame();
   const { db } = useFBCtx();
   const [newGameId, setNewGameId] = useState("");
@@ -49,6 +51,7 @@ const Lobby = () => {
       });
   }, [newGameId]);
   const imAvailable = !myGames || myGames?.length < 2;
+  if (!user) return <PleaseSignIn />;
   return (
     <main className={classes.root}>
       <Container fixed maxWidth="md" className={classes.container}>
