@@ -3,7 +3,9 @@
 /* eslint-disable no-underscore-dangle */
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useUserCtx } from "@context/user/UserCtx";
+import { useSoloGame } from "@hooks/useSoloGame";
 import {
+  Card,
   IconButton,
   List,
   ListItem,
@@ -12,15 +14,21 @@ import {
   ListItemText,
   ListSubheader,
   Typography,
-  Card,
 } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { FaTrash, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
-import { useSoloGame } from "@hooks/useSoloGame";
+import React, { useEffect, useState } from "react";
+import { FaArrowRight, FaTrash } from "react-icons/fa";
+
+const useStyles = makeStyles((theme: Theme) => ({
+  card: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const SavedSoloGames: React.FC = () => {
+  const classes = useStyles();
   const { firestore } = useFBCtx();
   const { deleteSavedGame } = useSoloGame();
   const [savedGames, setSavedGames] = useState<SavedGame[]>([]);
@@ -42,15 +50,11 @@ const SavedSoloGames: React.FC = () => {
   }, [user]);
 
   if (!user?.uid) return null;
+  if (!savedGames?.length) return null;
   return (
-    <Card>
+    <Card className={classes.card}>
       <List>
-        <ListSubheader>Games in Progress</ListSubheader>
-        {!savedGames?.length && (
-          <ListItem>
-            <ListItemText primary="no saved games" />
-          </ListItem>
-        )}
+        <ListSubheader>MY SOLO GAMES</ListSubheader>
         {savedGames?.map(({ gameId, points, latestSetTime, gameState }) => {
           return (
             <ListItem divider dense key={gameId}>

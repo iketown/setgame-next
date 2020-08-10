@@ -9,16 +9,16 @@ import GamePlayers from "@components/GamePlayers/GamePlayers";
 import GameRequests from "@components/GamePlayers/GameRequestsList";
 import PlayedSets from "@components/PlayedSets/PlayedSets";
 import PleaseSignIn from "@components/SignIn/PleaseSignIn";
-import { Button, Container, Grid } from "@material-ui/core";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useSetListener } from "@hooks/useSetListener";
-import { useRouter } from "next/router";
+import { Container, Grid } from "@material-ui/core";
 import moment from "moment";
 import { NextPage } from "next";
-import React, { useState, useCallback } from "react";
-import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useRouter } from "next/router";
+import React, { useCallback, useState } from "react";
 
 //
 //
@@ -26,7 +26,6 @@ const Game = () => {
   useRenderCount("Game");
   const { query } = useRouter();
   const { functions } = useFBCtx();
-  const { db } = useFBCtx();
 
   const submitSetApi = useCallback(
     ({ mySet }: { mySet: string[] }) => {

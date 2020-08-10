@@ -7,29 +7,30 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Checkbox,
   Container,
-  FormControlLabel,
   Grid,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
 
 const PreGame: React.FC = () => {
   useRenderCount("PreGame");
-  const { startGame, deleteGame } = useGame();
+  const { startGame, deleteGame, wakeUpFxn } = useGame();
   const { push } = useRouter();
   const { isGameAdmin, gameId } = useGameCtx();
-  const [allowNewPlayers, setAllowNewPlayers] = useState(false);
+
   const handleStart = () => {
-    startGame(allowNewPlayers);
+    startGame();
   };
   const handleCancel = async () => {
-    push("/lobby").then(() => deleteGame(gameId));
+    push("/home").then(() => deleteGame(gameId));
   };
+  useEffect(() => {
+    wakeUpFxn(["submitSet", "createRematch", "deleteGame"]);
+  }, []);
 
   const adminView = (
     <Grid
@@ -69,20 +70,6 @@ const PreGame: React.FC = () => {
             }}
           >
             <GamePlayers showTitle={false} verticalOnly />
-            {isGameAdmin && (
-              <FormControlLabel
-                label="allow new players after start"
-                labelPlacement="start"
-                control={
-                  <Checkbox
-                    checked={allowNewPlayers}
-                    onChange={(e, chk) => {
-                      setAllowNewPlayers(chk);
-                    }}
-                  />
-                }
-              />
-            )}
           </CardContent>
 
           {isGameAdmin && (

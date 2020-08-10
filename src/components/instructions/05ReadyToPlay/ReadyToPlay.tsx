@@ -1,10 +1,24 @@
 import { Box, Button, Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import React from "react";
+import StartSoloGameButton from "@components/SoloGame/StartSoloGameButton";
+import CreateNewGameButton from "@components/home/CreateNewGameButton";
+import CurrentGames from "@components/home/CurrentGames";
 
-import FrontPageMediaCard from "@components/FrontPage/FrontPageMediaCard";
+const useStyles = makeStyles((theme) => ({
+  column: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  actionButton: {
+    margin: theme.spacing(3),
+  },
+}));
 
 const ReadyToPlay: React.FC = () => {
+  const classes = useStyles();
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} style={{ textAlign: "center" }}>
@@ -14,56 +28,22 @@ const ReadyToPlay: React.FC = () => {
           Ready to play ?
         </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Box marginTop="2rem" />
+      <Grid item xs={12} md={6} className={classes.column}>
+        <Typography variant="h6" color="textSecondary">
+          WITH FRIENDS:
+        </Typography>
+        <div className={classes.actionButton}>
+          <CreateNewGameButton />
+        </div>
+        <CurrentGames />
       </Grid>
-
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          justifyItems: "center",
-          alignItems: "center",
-        }}
-      >
-        <FrontPageMediaCard
-          imageTitle="a group of people"
-          image="https://images.unsplash.com/photo-1531917115039-473b5a388f40?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
-          header="The Lobby"
-          description={
-            <span>
-              Join up with other players and play <b>SET</b> online
-            </span>
-          }
-          actions={
-            <Link href="/lobby" as="/lobby">
-              <Button>Go to Lobby</Button>
-            </Link>
-          }
-          clickCardLink="/lobby"
-        />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        style={{ display: "flex", justifyContent: "center" }}
-      >
-        <FrontPageMediaCard
-          imageTitle="a clock"
-          image="https://images.unsplash.com/37/tEREUy1vSfuSu8LzTop3_IMG_2538.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80"
-          header="Solo Game"
-          description="Hone your set hunting skills.  You vs the clock"
-          clickCardLink="/solo"
-          actions={
-            <Link href="/solo" as="/solo">
-              <Button>Solo Game</Button>
-            </Link>
-          }
-        />
+      <Grid item xs={12} md={6} className={classes.column}>
+        <Typography variant="h6" color="textSecondary">
+          SOLO:
+        </Typography>
+        <div className={classes.actionButton}>
+          <StartSoloGameButton />
+        </div>
       </Grid>
     </Grid>
   );

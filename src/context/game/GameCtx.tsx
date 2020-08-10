@@ -45,16 +45,15 @@ const GameCtx = createContext<GameContextType>({
   allowsNewPlayers: false,
 });
 
-export const GameCtxProvider: React.FC<{
-  initialBoardCards?: string[];
-  isTraining?: boolean;
-}> = ({ children, initialBoardCards, isTraining }) => {
+export const GameCtxProvider: React.FC = ({ children }) => {
   useRenderCount("GameCtxProvider");
   const { query } = useRouter();
   const [gameId, setGameId] = useState("");
+
   useEffect(() => {
     setGameId(query.gameId as string);
   }, [query.gameId]);
+
   const [state, dispatch] = useReducer(gameReducer, {
     ...initialGameState,
   });
@@ -123,19 +122,6 @@ export const GameCtxProvider: React.FC<{
   }, []);
 
   useEffect(() => {
-    if (!isTraining || !initialBoardCards?.length) return;
-    const sets = getSets(initialBoardCards);
-    setIsPlayer(true);
-    dispatch({
-      type: "UPDATE_BOARD",
-      payload: {
-        boardCards: initialBoardCards,
-        sets: { length: sets.length, sets },
-      },
-    });
-  }, [isTraining]);
-
-  useEffect(() => {
     // firebase game controller.
     if (!gameId || !user?.uid) return;
     const gameRef = db.ref(`games/${gameId}`);
@@ -143,7 +129,7 @@ export const GameCtxProvider: React.FC<{
     gameRef.on("value", (snapshot) => {
       if (!snapshot.exists || !snapshot.val()) {
         createGame(gameId);
-        return null;
+        return;
       }
 
       dispatch({

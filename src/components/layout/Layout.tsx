@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
-import { FaHome, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { useUserCtx } from "@context/user/UserCtx";
 import UserSettings from "@components/UserSettings/UserSettings";
 import { useRouter } from "next/router";
@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
       <div className={classes.grow}>
         <AppBar position="static">
           <Toolbar>
-            <Link href="/">
+            <Link href="/home">
               <Typography className={classes.title} variant="h6" noWrap>
                 set.city
               </Typography>
@@ -50,15 +50,7 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
             <div>
               {gameId && <GameOptionsButton gameId={gameId} />}
               {soloGameId && <SoloGameOptionsButton />}
-              <Tooltip arrow title={<Typography>The Lobby</Typography>}>
-                <IconButton color="inherit">
-                  <Link href="/lobby" as="/lobby">
-                    <div>
-                      <FaHome />
-                    </div>
-                  </Link>
-                </IconButton>
-              </Tooltip>
+
               <Tooltip
                 arrow
                 title={

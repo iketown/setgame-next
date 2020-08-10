@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="550px" height="1003px" viewBox="0 0 550 1003" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M79.787886,13.386008 C36.783411,16.3863949 11.7808093,58.3918123 8.78049706,81.394779 C7.35236383,92.3440732 5.78018486,128.400841 24.7821622,139.40226 C43.7841395,150.403679 66.7865331,123.400196 87.7887185,115.399165 C116.113086,104.60866 133.793506,115.399165 161.79642,123.400196 C187.433607,130.72529 205.800999,132.401357 234.804017,123.400196 C284.215404,108.065246 311.81203,24.3874268 283.809116,5.38497608 C255.806202,-13.6174746 249.805578,23.3872978 208.801311,28.3879428 C146.794859,37.3891036 141.794338,10.385621 79.787886,13.386008 Z" id="Path-2" stroke="#ECECEC" stroke-width="4"></path>
+        <rect id="Rectangle" stroke="#ECECEC" stroke-width="4" x="2" y="674" width="299" height="143" rx="71.5"></rect>
+        <polygon id="Path-3" stroke="#ECECEC" stroke-width="4" points="151 328 302 408 151 488 0 408"></polygon>
+    </g>
+</svg>

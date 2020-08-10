@@ -68,11 +68,11 @@ const AnimatedSet: React.FC<AnimatedSetI> = ({
   const [set, setSet] = useState(
     listOfSets[(startIndex && startIndex + 1) || 13]
   );
-  const getNewSet = () => {
-    setSet(listOfSets[setIndex]);
-    setSetIndex((old) => (old + 1) % listOfSets.length);
-  };
   useEffect(() => {
+    const getNewSet = () => {
+      setSetIndex((old) => (old + 1) % listOfSets.length);
+      setSet(listOfSets[setIndex]);
+    };
     let interval;
     const timeout = setTimeout(() => {
       interval = setInterval(getNewSet, 4000);
@@ -81,7 +81,7 @@ const AnimatedSet: React.FC<AnimatedSetI> = ({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, []);
+  }, [setIndex]);
   return (
     <div>
       <ThreeCards>

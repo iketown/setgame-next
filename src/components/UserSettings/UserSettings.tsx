@@ -8,10 +8,11 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  Typography,
 } from "@material-ui/core";
+import { FaTimes } from "react-icons/fa";
 import React, { useState } from "react";
 import { Form } from "react-final-form";
-
 import FaceDrawing from "../faces/FaceDrawing";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
@@ -40,6 +41,7 @@ const UserSettings: React.FC = () => {
       maxWidth="sm"
       fullWidth
       open={userState.dialogOpen}
+      aria-labelledby="user-settings-dialog"
       onClose={handleCancel}
     >
       {user ? (
@@ -50,7 +52,21 @@ const UserSettings: React.FC = () => {
           {({ handleSubmit, values, submitting }) => {
             return (
               <form onSubmit={handleSubmit}>
-                <DialogTitle>User Settings</DialogTitle>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "0 8px 0 0",
+                  }}
+                >
+                  <DialogTitle disableTypography id="user-settings-dialog">
+                    <Typography variant="h6">User Settings</Typography>
+                  </DialogTitle>
+                  <IconButton onClick={handleCancel}>
+                    <FaTimes />
+                  </IconButton>
+                </div>
                 <DialogContent>
                   <Grid container spacing={2}>
                     <Grid container item xs={6} sm={4}>
@@ -71,9 +87,7 @@ const UserSettings: React.FC = () => {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleSignOut}>sign out</Button>
-                  <Button color="secondary" onClick={handleCancel}>
-                    cancel
-                  </Button>
+
                   <Button
                     variant="outlined"
                     disabled={submitting}

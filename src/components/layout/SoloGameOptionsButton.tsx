@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
 import { useUserCtx } from "@context/user/UserCtx";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import React, { useState } from "react";
 import Link from "next/link";
+
 //
 //
 const GameOptionsButton: React.FC = () => {
@@ -42,8 +43,8 @@ const GameOptionsButton: React.FC = () => {
         onClose={handleClose}
       >
         <MenuItem>
-          <Link href="/solo" as="/solo">
-            Exit Game
+          <Link href="/home" as="/home">
+            <Typography>Quit Game</Typography>
           </Link>
         </MenuItem>
       </Menu>

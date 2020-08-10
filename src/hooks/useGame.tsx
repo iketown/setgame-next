@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
@@ -18,6 +19,21 @@ export const useGame = () => {
   const gameId = router.query.gameId as string;
   const { db, firestore, functions } = useFBCtx();
   const { user } = useUserCtx();
+
+  type CallableFxn =
+    | "createRematch"
+    | "createGame"
+    | "deleteGame"
+    | "submitSet";
+
+  const wakeUpFxn = useCallback(async (names: CallableFxn[]) => {
+    const promises: Promise<any>[] = names.map((name) => {
+      const fxn = functions.httpsCallable(name);
+      return fxn({ wakeUp: true });
+    });
+    const responses = await Promise.all(promises);
+    console.log("wake up responses", responses);
+  }, []);
 
   const createRematch = useCallback(
     async (_gameId: string, gameStartTime: string) => {
@@ -62,7 +78,7 @@ export const useGame = () => {
     const promises = [];
     promises.push(db.ref(`/games/${_gameId}`).update({ isValid: true }));
     promises.push(db.ref(`/publicGames/${_gameId}`).update({ isValid: true }));
-    Promise.all(promises).then(() => {
+    return Promise.all(promises).then(() => {
       createNewGame(_gameId);
     });
   }, []);
@@ -86,14 +102,6 @@ export const useGame = () => {
     [gameId]
   );
 
-  const endGame = useCallback(async (_gameId: string) => {
-    db.ref(`/games/${_gameId}`).update({
-      ended: moment().toISOString(),
-      gameOver: moment().toISOString(),
-    });
-    db.ref(`/publicGames/${_gameId}`).remove();
-  }, []);
-
   const setNewAdmin = useCallback(
     async (_gameId: string, newAdminUid: string) => {
       const newAdminRef = db.ref(`games/${_gameId}/players/${newAdminUid}`);
@@ -102,10 +110,27 @@ export const useGame = () => {
     []
   );
 
-  const removeMeFromGame = (_gameId: string) => {
+  const endGame = useCallback(async (_gameId: string) => {
     if (!user) return;
-    db.ref(`/games/${_gameId}/players/${user.uid}`).remove();
-    db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove();
+    const promises = [
+      db.ref(`/games/${_gameId}`).update({
+        ended: moment().toISOString(),
+        gameOver: moment().toISOString(),
+      }),
+      db.ref(`/publicGames/${_gameId}`).remove(),
+    ];
+    await Promise.all(promises);
+    router.push(`/home`, `/home`);
+  }, []);
+
+  const removeMeFromGame = async (_gameId: string) => {
+    if (!user) return;
+    const promises = [
+      db.ref(`/games/${_gameId}/players/${user.uid}`).remove(),
+      db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove(),
+    ];
+    await Promise.all(promises);
+    router.push(`/home`, `/home`);
   };
 
   const setCurrentOptionsAsDefault = async () => {
@@ -126,6 +151,7 @@ export const useGame = () => {
     setNewAdmin,
     endGame,
     makeRematch,
+    wakeUpFxn,
   };
 };
 

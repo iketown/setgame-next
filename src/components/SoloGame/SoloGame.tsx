@@ -27,8 +27,9 @@ const SoloGame: React.FC = () => {
   const { soloDispatch } = useSoloGameCtx();
   const { handleStartGame, handleSaveGame } = useSoloGame();
   const { firestore } = useFBCtx();
+
   useEffect(() => {
-    if (!user?.uid) return null;
+    if (!user?.uid) return;
     const gameId = query.soloGameId as string;
     soloDispatch({
       type: "SET_GAMEID",

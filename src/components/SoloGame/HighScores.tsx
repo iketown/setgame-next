@@ -12,12 +12,22 @@ import {
   ListSubheader,
   Typography,
   Card,
+  Theme,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import FaceDrawing from "../faces/FaceDrawing";
 //
 //
+
+const useStyles = makeStyles((theme: Theme) => ({
+  card: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 const HighScores: React.FC = () => {
+  const classes = useStyles();
   const [highScores, setHighScores] = useState([]);
   const { setUserIds, userProfiles } = useUserProfiles();
   const { db } = useFBCtx();
@@ -43,9 +53,9 @@ const HighScores: React.FC = () => {
     return () => hsRef.off("value");
   }, []);
   return (
-    <Card>
+    <Card className={classes.card}>
       <List>
-        <ListSubheader>High Scores</ListSubheader>
+        <ListSubheader>HIGH SCORES</ListSubheader>
         {highScores?.map(([gameId, { date, playerId, points }]) => {
           const profile = userProfiles && userProfiles[playerId];
           const faceImageNumber = profile?.faceImageNumber;
@@ -88,11 +98,9 @@ const HighScores: React.FC = () => {
                   </div>
                 }
                 secondary={
-                  <div>
-                    <Typography color="textPrimary" display="inline">
-                      {displayName}
-                    </Typography>
-                  </div>
+                  <Typography color="textPrimary" display="inline">
+                    {displayName}
+                  </Typography>
                 }
               />
             </ListItem>

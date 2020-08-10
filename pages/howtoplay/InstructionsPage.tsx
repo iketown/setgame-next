@@ -33,15 +33,6 @@ const InstructionsPage: React.FC = () => {
     <ExampleSets key="examplesets" {...{ advance }} />,
 
     <ReadyToPlay key="ready2play" />,
-    <div key="junk" style={{ marginTop: "4rem" }}>
-      <Button
-        key="bakbutton"
-        size="large"
-        onClick={() => setFrameIndex((o) => o - 1)}
-      >
-        back
-      </Button>
-    </div>,
   ];
 
   return (
@@ -51,7 +42,7 @@ const InstructionsPage: React.FC = () => {
         index={frameIndex}
         setIndex={setFrameIndex}
       />
-      <Container fixed maxWidth="md" style={{ marginTop: "2rem" }}>
+      <Container fixed maxWidth="md" style={{ margin: "2rem auto 4rem" }}>
         {frames[frameIndex]}
         {/* <InstructionCardDisplay /> */}
         {/* <InstructionProgressButtons {...{ setFrameIndex, frameIndex }} /> */}

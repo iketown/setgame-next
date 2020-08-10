@@ -44,6 +44,8 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     let location = "?";
     if (router.route === "/lobby") location = "lobby";
     else if (router.query?.gameId) location = router.query.gameId as string;
+    else if (router.query?.soloGameId)
+      location = router.query.soloGameId as string;
     return db.ref(`/status/${user.uid}`).update({ location });
   }, [router, user]);
 
@@ -68,8 +70,8 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       .auth()
       .onAuthStateChanged(async (_user: firebaseScope.User) => {
         try {
-          if (_user) {
-            const userStatusDBRef = db.ref(`/status/${_user?.uid}`);
+          if (_user?.uid) {
+            const userStatusDBRef = db.ref(`/status/${_user.uid}`);
             setUser(_user);
             presenceRef.on("value", (snap) => {
               if (!snap.val()) return;
@@ -92,10 +94,10 @@ export const UserCtxProvider: React.FC = ({ children }) => {
         }
       });
     return () => {
-      unsubscriber();
-      presenceRef.off();
+      if (unsubscriber) unsubscriber();
+      if (presenceRef.off) presenceRef.off();
     };
-  }, [router]);
+  }, [firebase]);
 
   const handleSignOut = useCallback(async () => {
     const isOffline = {

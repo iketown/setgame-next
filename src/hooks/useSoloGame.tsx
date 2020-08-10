@@ -18,16 +18,17 @@ export const useSoloGame = () => {
   const { soloDispatch, soloState } = useSoloGameCtx();
   const { user } = useUserCtx();
   const { firestore, functions } = useFBCtx();
-  const { push } = useRouter();
+  const { push, query } = useRouter();
 
   const handleSaveGame = async () => {
     if (!user.uid) return;
+    const soloGameId = query.soloGameId as string;
     const { boardCards, deckCards } = state;
     const gameRef = firestore.doc(
-      `users/${user.uid}/savedSoloGames/${soloState.gameId}`
+      `users/${user.uid}/savedSoloGames/${soloGameId}`
     );
     await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
-    push("/solo", "/solo");
+    push("/home", "/home");
   };
 
   const deleteSavedGame = useCallback(

@@ -6,6 +6,7 @@ import Layout from "@components/layout/Layout";
 import { FirebaseCtxProvider } from "@context/firebase/firebaseCtx";
 import { UserCtxProvider } from "@context/user/UserCtx";
 import theme from "../src/theme";
+import "./fonts.css";
 // Custom App to wrap it with context provider
 
 export const App: React.FC<AppProps> = ({ Component, pageProps }) => {

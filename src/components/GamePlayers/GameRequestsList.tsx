@@ -3,10 +3,10 @@ import { IconButton, List, Typography } from "@material-ui/core";
 import { ThumbDown, ThumbUp } from "@material-ui/icons";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
-
 import { usePresence } from "@hooks/usePresence";
 import { useGameInvites } from "@hooks/useGameInvites";
 import { useGameCtx } from "@context/game/GameCtx";
+import AllowNewPlayersSwitch from "./AllowNewPlayersSwitch";
 import UserDisplay from "../UserSettings/UserDisplay";
 
 //
@@ -21,8 +21,6 @@ const GameRequestsList: React.FC = () => {
     if (!isGameAdmin || !gameRequests) return;
     setPlayerIds(Object.keys(gameRequests));
   }, [gameRequests]);
-
-  if (!isGameAdmin || !gameRequests) return <div />;
 
   return (
     <>
@@ -77,6 +75,8 @@ const GameRequestsList: React.FC = () => {
             </List>
           </>
         )}
+        {/** switch to turn off requests */}
+        <AllowNewPlayersSwitch />
       </div>
     </>
   );

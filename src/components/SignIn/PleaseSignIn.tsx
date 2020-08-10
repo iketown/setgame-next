@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useUserCtx } from "@context/user/UserCtx";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,7 +19,8 @@ const PleaseSignIn: React.FC = () => {
   const classes = useStyles();
   const { userDispatch, userState } = useUserCtx();
   const isOpen = userState.dialogOpen;
-
+  const router = useRouter();
+  console.log("router", router);
   return (
     <Container maxWidth="sm" className={classes.root}>
       <Typography variant="h3">Please sign in</Typography>

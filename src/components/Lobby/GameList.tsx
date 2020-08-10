@@ -17,8 +17,13 @@ const GameList: React.FC = () => {
   const myGameObjects = gamesByStartTime?.filter(([gameId]) =>
     myGames?.includes(gameId)
   );
-  const otherGameObjects = gamesByStartTime?.filter(
-    ([gameId]) => !myGames?.includes(gameId)
+  const availableGames = gamesByStartTime?.filter(
+    ([gameId, publicGame]) =>
+      !myGames?.includes(gameId) && publicGame.allowNewPlayers
+  );
+  const unavailableGames = gamesByStartTime?.filter(
+    ([gameId, publicGame]) =>
+      !myGames?.includes(gameId) && !publicGame.allowNewPlayers
   );
   return (
     <>
@@ -47,8 +52,28 @@ const GameList: React.FC = () => {
             );
           }
         )}
-        <ListSubheader>CURRENT GAMES</ListSubheader>
-        {otherGameObjects?.map(
+        <ListSubheader>AVAILABLE GAMES</ListSubheader>
+        {availableGames?.map(
+          ([
+            gameId,
+            { players, gameStartTime, createdAt, allowNewPlayers },
+          ]) => {
+            return (
+              <GameListItem
+                key={gameId}
+                {...{
+                  gameId,
+                  players,
+                  gameStartTime,
+                  createdAt,
+                  allowNewPlayers,
+                }}
+              />
+            );
+          }
+        )}
+        <ListSubheader>IN PROGRESS</ListSubheader>
+        {unavailableGames?.map(
           ([
             gameId,
             { players, gameStartTime, createdAt, allowNewPlayers },

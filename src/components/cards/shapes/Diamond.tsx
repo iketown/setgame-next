@@ -11,7 +11,7 @@ function _Diamond({
   stripes: boolean;
 }) {
   return (
-    <svg viewBox="0 0 312 166">
+    <svg viewBox="0 0 305 166">
       <defs>
         <path id="diamond_a" d="M151 0l151 80-151 80L0 80z" />
       </defs>
@@ -33,7 +33,7 @@ function _Diamond({
         )}
         <path
           stroke={stroke || "#979797"}
-          strokeWidth={8}
+          strokeWidth={4}
           d="M156 3l151 80-151 80L5 83z"
           fill={fill || "none"}
           fillRule="evenodd"

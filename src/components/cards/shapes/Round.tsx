@@ -11,7 +11,7 @@ function _RoundStripes({
   stripes: boolean;
 }) {
   return (
-    <svg viewBox="0 0 303 147">
+    <svg viewBox="0 0 315 147">
       <defs>
         <rect
           id="prefix__roundA"
@@ -40,7 +40,7 @@ function _RoundStripes({
         )}
         <rect
           stroke={stroke || "#979797"}
-          strokeWidth={8}
+          strokeWidth={4}
           x={2}
           y={2}
           width={299}
