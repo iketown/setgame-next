@@ -15,7 +15,8 @@ import ChatTextField from "./ChatTextField";
 const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: theme.spacing(2),
-    width: "35rem",
+    maxWidth: "35rem",
+    width: "90vw",
   },
   chatInput: {
     display: "flex",

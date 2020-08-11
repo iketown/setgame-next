@@ -10,15 +10,25 @@ import {
   Container,
   Grid,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-
 import { useUserCtx } from "@context/user/UserCtx";
+import CopyGameUrl from "./CopyGameUrl";
 import ChatBox from "../GameMessages/ChatBox";
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
 
+const useStyles = makeStyles((theme) => ({
+  card: {
+    marginTop: theme.spacing(2),
+    maxWidth: "35rem",
+    width: "90vw",
+  },
+}));
+
 const PreGame: React.FC = () => {
+  const classes = useStyles();
   useRenderCount("PreGame");
   const { startGame, deleteGame, wakeUpFxn } = useGame();
   const { push } = useRouter();
@@ -47,7 +57,6 @@ const PreGame: React.FC = () => {
   const adminView = (
     <Grid
       style={{
-        height: "100%",
         display: "flex",
         justifyContent: "center",
         alignContent: "center",
@@ -60,7 +69,7 @@ const PreGame: React.FC = () => {
             <GameRequestsList />
           </div>
         )}
-        <Card style={{ width: "25rem" }}>
+        <Card className={classes.card}>
           <CardHeader title="Players" />
           <CardContent
             style={{
@@ -94,6 +103,9 @@ const PreGame: React.FC = () => {
             </CardActions>
           )}
         </Card>
+      </Grid>
+      <Grid item xs={12} style={{ ...centeredGridItem, marginTop: "2rem" }}>
+        <CopyGameUrl />
       </Grid>
       <Grid style={centeredGridItem} item xs={12}>
         <ChatBox />

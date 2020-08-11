@@ -6,7 +6,7 @@ import HighScores from "@components/SoloGame/HighScores";
 import SavedSoloGames from "@components/SoloGame/SavedSoloGames";
 import StartSoloGameButton from "@components/SoloGame/StartSoloGameButton";
 import { useGame } from "@hooks/useGame";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import RecentFinishedGames from "@components/home/RecentFinishedGames";
@@ -52,23 +52,55 @@ const HomePage: React.FC = () => {
         <Header />
         <Container maxWidth="md" className={classes.container}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="h6" color="textSecondary">
-                WITH FRIENDS:
-              </Typography>
-              <div className={classes.buttonDiv}>
-                <CreateNewGameButton />
+            <Hidden smUp>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "100%",
+                }}
+              >
+                <div style={{ textAlign: "center" }}>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    WITH FRIENDS:
+                  </Typography>
+                  <div className={classes.buttonDiv}>
+                    <CreateNewGameButton />
+                  </div>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    SOLO:
+                  </Typography>
+                  <div className={classes.buttonDiv}>
+                    <StartSoloGameButton />
+                  </div>
+                </div>
               </div>
+            </Hidden>
+
+            <Grid item xs={12} md={6}>
+              <Hidden xsDown>
+                <Typography variant="h6" color="textSecondary">
+                  WITH FRIENDS:
+                </Typography>
+                <div className={classes.buttonDiv}>
+                  <CreateNewGameButton />
+                </div>
+              </Hidden>
+
               <CurrentGames />
               <RecentFinishedGames />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Typography variant="h6" color="textSecondary">
-                SOLO:
-              </Typography>
-              <div className={classes.buttonDiv}>
-                <StartSoloGameButton />
-              </div>
+              <Hidden xsDown>
+                <Typography variant="h6" color="textSecondary">
+                  SOLO:
+                </Typography>
+                <div className={classes.buttonDiv}>
+                  <StartSoloGameButton />
+                </div>
+              </Hidden>
               <HighScores />
               <SavedSoloGames />
             </Grid>

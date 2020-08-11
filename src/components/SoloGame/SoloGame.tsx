@@ -74,7 +74,8 @@ const SoloGame: React.FC = () => {
     bottom: 0,
     zIndex: 10,
     background: "white",
-    border: "1px solid orange",
+    width: "100%",
+    margin: 0,
   };
 
   return (

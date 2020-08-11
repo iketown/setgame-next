@@ -110,28 +110,34 @@ export const useGame = () => {
     []
   );
 
-  const endGame = useCallback(async (_gameId: string) => {
-    if (!user) return;
-    const promises = [
-      db.ref(`/games/${_gameId}`).update({
-        ended: moment().toISOString(),
-        gameOver: moment().toISOString(),
-      }),
-      db.ref(`/publicGames/${_gameId}`).remove(),
-    ];
-    await Promise.all(promises);
-    router.push(`/`, `/`);
-  }, []);
+  const endGame = useCallback(
+    async (_gameId: string) => {
+      if (!user) return;
+      const promises = [
+        db.ref(`/games/${_gameId}`).update({
+          ended: moment().toISOString(),
+          gameOver: moment().toISOString(),
+        }),
+        db.ref(`/publicGames/${_gameId}`).remove(),
+      ];
+      await Promise.all(promises);
+      router.push(`/`, `/`);
+    },
+    [user]
+  );
 
-  const removeMeFromGame = async (_gameId: string) => {
-    if (!user) return;
-    const promises = [
-      db.ref(`/games/${_gameId}/players/${user.uid}`).remove(),
-      db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove(),
-    ];
-    await Promise.all(promises);
-    router.push(`/`, `/`);
-  };
+  const removeMeFromGame = useCallback(
+    async (_gameId: string) => {
+      if (!user) return;
+      const promises = [
+        db.ref(`/games/${_gameId}/players/${user.uid}`).remove(),
+        db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove(),
+      ];
+      await Promise.all(promises);
+      router.push(`/`, `/`);
+    },
+    [user]
+  );
 
   const setCurrentOptionsAsDefault = async () => {
     if (!firestore || !user?.uid) return;
