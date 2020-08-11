@@ -9,6 +9,7 @@ import { useGame } from "@hooks/useGame";
 import { Container, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
+import RecentFinishedGames from "@components/home/RecentFinishedGames";
 
 const useStyles = makeStyles((theme) => ({
   mainArea: {
@@ -68,6 +69,7 @@ const HomePage: React.FC = () => {
                 <StartSoloGameButton />
               </div>
               <HighScores />
+              <RecentFinishedGames />
               <SavedSoloGames />
             </Grid>
           </Grid>

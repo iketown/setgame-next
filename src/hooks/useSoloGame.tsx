@@ -28,7 +28,7 @@ export const useSoloGame = () => {
       `users/${user.uid}/savedSoloGames/${soloGameId}`
     );
     await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
-    push("/home", "/home");
+    push("/", "/");
   };
 
   const deleteSavedGame = useCallback(

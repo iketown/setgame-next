@@ -27,6 +27,7 @@ type UserCtxType = {
   handleSignOut: () => void;
   tooltipId: string;
   setTooltipId: React.Dispatch<React.SetStateAction<string>>;
+  setLocation: () => void;
 };
 
 const UserCtx = createContext<Partial<UserCtxType>>({});
@@ -41,13 +42,9 @@ export const UserCtxProvider: React.FC = ({ children }) => {
 
   const setLocation = useCallback(() => {
     if (!user?.uid) return null;
-    let location = "?";
-    if (router.route === "/lobby") location = "lobby";
-    else if (router.query?.gameId) location = router.query.gameId as string;
-    else if (router.query?.soloGameId)
-      location = router.query.soloGameId as string;
+    const location = router.query?.gameId || router.query?.soloGameId || "?";
     return db.ref(`/status/${user.uid}`).update({ location });
-  }, [router, user]);
+  }, [router.query, user]);
 
   useEffect(() => {
     // setLocation when user moves to different games etc.
@@ -55,6 +52,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
   }, [router, user]);
 
   useEffect(() => {
+    const location = router.query?.gameId || router.query?.soloGameId || "?";
     const isOffline = {
       state: "offline",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
@@ -62,7 +60,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     const isOnline = {
       state: "online",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
-      location: router.query?.gameId ? router.query.gameId : "lobby",
+      location,
     };
     const presenceRef = db.ref(".info/connected");
     // Listen authenticated user
@@ -97,7 +95,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       if (unsubscriber) unsubscriber();
       if (presenceRef.off) presenceRef.off();
     };
-  }, [firebase]);
+  }, [firebase, router.query]);
 
   const handleSignOut = useCallback(async () => {
     const isOffline = {
@@ -156,6 +154,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
         handleSignOut,
         tooltipId,
         setTooltipId,
+        setLocation,
       }}
       {...{ children }}
     />

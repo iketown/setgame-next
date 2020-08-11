@@ -43,7 +43,7 @@ const GameOptionsButton: React.FC = () => {
         onClose={handleClose}
       >
         <MenuItem>
-          <Link href="/home" as="/home">
+          <Link href="/" as="/">
             <Typography>Quit Game</Typography>
           </Link>
         </MenuItem>

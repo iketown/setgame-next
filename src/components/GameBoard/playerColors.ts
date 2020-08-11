@@ -25,7 +25,7 @@ const colors: PlayerColor[] = playerColors.map(({ name, color }) => ({
   name,
   light: color[50],
   med: color[400],
-  dark: color[600],
+  dark: color[700],
 }));
 
 export const colorsObj = colors.reduce(

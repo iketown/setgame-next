@@ -13,6 +13,8 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
+import { useUserCtx } from "@context/user/UserCtx";
+import ChatBox from "../GameMessages/ChatBox";
 import GamePlayers from "../GamePlayers/GamePlayers";
 import GameRequestsList from "../GamePlayers/GameRequestsList";
 
@@ -21,17 +23,27 @@ const PreGame: React.FC = () => {
   const { startGame, deleteGame, wakeUpFxn } = useGame();
   const { push } = useRouter();
   const { isGameAdmin, gameId } = useGameCtx();
-
+  const { setLocation, user } = useUserCtx();
   const handleStart = () => {
     startGame();
   };
+  useEffect(() => {
+    if (!user) return;
+    setLocation();
+  }, [user]);
   const handleCancel = async () => {
-    push("/home").then(() => deleteGame(gameId));
+    push("/").then(() => deleteGame(gameId));
   };
   useEffect(() => {
     wakeUpFxn(["submitSet", "createRematch", "deleteGame"]);
   }, []);
-
+  const centeredGridItem: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  };
   const adminView = (
     <Grid
       style={{
@@ -42,19 +54,9 @@ const PreGame: React.FC = () => {
       }}
       container
     >
-      <Grid
-        item
-        xs={12}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
+      <Grid item xs={12} style={centeredGridItem}>
         {isGameAdmin && (
-          <div style={{ marginBottom: "3rem" }}>
+          <div style={{ margin: "3rem" }}>
             <GameRequestsList />
           </div>
         )}
@@ -93,24 +95,13 @@ const PreGame: React.FC = () => {
           )}
         </Card>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      />
+      <Grid style={centeredGridItem} item xs={12}>
+        <ChatBox />
+      </Grid>
     </Grid>
   );
 
-  return (
-    <Container maxWidth="md" style={{ height: "calc(100vh - 100px)" }}>
-      {adminView}
-    </Container>
-  );
+  return <Container maxWidth="md">{adminView}</Container>;
 };
 
 export default PreGame;

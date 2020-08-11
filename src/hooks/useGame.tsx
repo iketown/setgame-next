@@ -120,7 +120,7 @@ export const useGame = () => {
       db.ref(`/publicGames/${_gameId}`).remove(),
     ];
     await Promise.all(promises);
-    router.push(`/home`, `/home`);
+    router.push(`/`, `/`);
   }, []);
 
   const removeMeFromGame = async (_gameId: string) => {
@@ -130,7 +130,7 @@ export const useGame = () => {
       db.ref(`/publicGames/${_gameId}/players/${user.uid}`).remove(),
     ];
     await Promise.all(promises);
-    router.push(`/home`, `/home`);
+    router.push(`/`, `/`);
   };
 
   const setCurrentOptionsAsDefault = async () => {

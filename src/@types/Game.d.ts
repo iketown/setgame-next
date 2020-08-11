@@ -88,3 +88,8 @@ interface RematchType {
   nextGameId: string;
   nextGameStart: false | string;
 }
+
+type RecentGame = {
+  endedAt: number;
+  scores: { [playerId: string]: number };
+};

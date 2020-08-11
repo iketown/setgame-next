@@ -65,7 +65,7 @@ const GameEnded: React.FC = () => {
       <Typography variant="h3">GAME ENDED</Typography>
       <Typography variant="h5">{fromNow}</Typography>
       <div className={classes.spacer} />
-      <Link href="/home" as="/home">
+      <Link href="/" as="/">
         <Button size="large" variant="contained" color="primary">
           Home
         </Button>

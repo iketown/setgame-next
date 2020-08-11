@@ -76,6 +76,13 @@ const UserSettings: React.FC = () => {
                       <DisplayNameInput />
                     </Grid>
                     <Grid item xs={12} sm={4}>
+                      <Typography
+                        display="block"
+                        variant="caption"
+                        color="textSecondary"
+                      >
+                        Face:
+                      </Typography>
                       <IconButton onClick={() => setFaceDialogOpen(true)}>
                         <FaceDrawing faceImageNumber={values.faceImageNumber} />
                       </IconButton>

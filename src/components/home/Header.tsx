@@ -1,6 +1,6 @@
 import React from "react";
 import AnimatedSet from "@components/FrontPage/AnimatedSet";
-import { Grid, Typography, Container, Button } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 //
@@ -8,10 +8,11 @@ import Link from "next/link";
 const useStyles = makeStyles((theme) => ({
   hero: {
     backgroundColor: theme.palette.background.paper,
-    // position: "relative",
     backgroundImage: "url(/images/city_bg.jpg)",
     backgroundSize: "cover",
     backgroundPosition: "right",
+    width: "100%",
+    zIndex: -1,
   },
   heroContent: {
     padding: theme.spacing(8, 4, 4),
@@ -31,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <Container className={classes.hero}>
-      <Grid container spacing={2} className={classes.heroContent}>
+    <div className={classes.hero}>
+      <Grid container className={classes.heroContent}>
         <Grid item xs={12} sm={6} className={classes.centered}>
           <Typography
             component="h1"
@@ -63,7 +64,7 @@ const Header: React.FC = () => {
           <AnimatedSet />
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 };
 

@@ -29,9 +29,9 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
   return (
     <div>
       <div className={classes.grow}>
-        <AppBar position="static">
+        <AppBar position="sticky" style={{ zIndex: 2 }}>
           <Toolbar>
-            <Link href="/home">
+            <Link href="/">
               <Typography className={classes.title} variant="h6" noWrap>
                 set.city
               </Typography>
