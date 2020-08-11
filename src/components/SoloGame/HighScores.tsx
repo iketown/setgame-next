@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   card: {
     marginTop: theme.spacing(2),
   },
+  list: {
+    maxHeight: theme.spacing(70),
+    overflow: "scroll",
+  },
 }));
 
 const HighScores: React.FC = () => {
@@ -54,7 +58,7 @@ const HighScores: React.FC = () => {
   }, []);
   return (
     <Card className={classes.card}>
-      <List>
+      <List className={classes.list}>
         <ListSubheader>HIGH SCORES</ListSubheader>
         {highScores?.map(([gameId, { date, playerId, points }]) => {
           const profile = userProfiles && userProfiles[playerId];

@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  howToPlayButton: {
+    margin: theme.spacing(3),
+  },
 }));
 
 const Header: React.FC = () => {
@@ -54,7 +57,7 @@ const Header: React.FC = () => {
             </span>
             City
           </Typography>
-          <div>
+          <div className={classes.howToPlayButton}>
             <Link href="/howtoplay" as="/howtoplay">
               <Button variant="outlined">How to Play</Button>
             </Link>

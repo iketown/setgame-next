@@ -60,6 +60,7 @@ const HomePage: React.FC = () => {
                 <CreateNewGameButton />
               </div>
               <CurrentGames />
+              <RecentFinishedGames />
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6" color="textSecondary">
@@ -69,7 +70,6 @@ const HomePage: React.FC = () => {
                 <StartSoloGameButton />
               </div>
               <HighScores />
-              <RecentFinishedGames />
               <SavedSoloGames />
             </Grid>
           </Grid>
