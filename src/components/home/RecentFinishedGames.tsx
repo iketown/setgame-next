@@ -54,21 +54,19 @@ const RecentFinishedGames: React.FC = () => {
       <Card className={classes.card}>
         <List className={classes.list}>
           <ListSubheader>RECENTLY FINISHED</ListSubheader>
-          {[...recentGames, ...recentGames, ...recentGames].map(
-            ([gameId, recentGame]) => {
-              return (
-                <Fragment key={gameId}>
-                  <div style={{ textAlign: "right", paddingRight: "2rem" }}>
-                    <Typography variant="caption" color="textSecondary">
-                      {moment(recentGame.endedAt).fromNow()}
-                    </Typography>
-                  </div>
-                  <RecentGameListItem {...{ recentGame }} />
-                  <Divider className={classes.divider} />
-                </Fragment>
-              );
-            }
-          )}
+          {recentGames.map(([gameId, recentGame]) => {
+            return (
+              <Fragment key={gameId}>
+                <div style={{ textAlign: "right", paddingRight: "2rem" }}>
+                  <Typography variant="caption" color="textSecondary">
+                    {moment(recentGame.endedAt).fromNow()}
+                  </Typography>
+                </div>
+                <RecentGameListItem {...{ recentGame }} />
+                <Divider className={classes.divider} />
+              </Fragment>
+            );
+          })}
         </List>
       </Card>
       {/* <pre>{JSON.stringify(recentGames, null, 2)}</pre> */}
