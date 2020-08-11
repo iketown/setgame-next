@@ -6,7 +6,7 @@ const FaceDiv = styled.div<{
   faceImageNumber: number | string;
   height: number | string;
 }>`
-  background-image: url(${(p) => `/images/face_${p.faceImageNumber}.webp`});
+  background-image: url(${(p) => `/images/face_${p.faceImageNumber}.png`});
   width: ${(p) => p.height};
   height: ${(p) => p.height};
   background-size: contain;

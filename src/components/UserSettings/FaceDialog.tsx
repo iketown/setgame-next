@@ -18,7 +18,6 @@ interface FaceDialogI {
 }
 
 const FaceGrid = styled.div`
-  border: 1px solid orange;
   display: grid;
   grid-gap: 5px;
   grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
@@ -45,7 +44,7 @@ const FaceDialog: React.FC<FaceDialogI> = ({ open, close }) => {
   };
   return (
     <Dialog fullScreen open={open} onClose={close}>
-      <DialogTitle>title</DialogTitle>
+      <DialogTitle>Choose a Face:</DialogTitle>
       <DialogContent>
         <FaceGrid>
           {[...Array(81)].map((_, index) => {
