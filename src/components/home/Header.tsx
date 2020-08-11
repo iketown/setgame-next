@@ -63,7 +63,7 @@ const Header: React.FC = () => {
             </Link>
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ padding: "2rem 0" }}>
           <AnimatedSet />
         </Grid>
       </Grid>

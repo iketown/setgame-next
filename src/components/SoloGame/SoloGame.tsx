@@ -9,10 +9,10 @@ import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
 import { SoloGameCtxProvider, useSoloGameCtx } from "@context/game/SoloGameCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useSoloGame } from "@hooks/useSoloGame";
-import { Box, Button, Grid } from "@material-ui/core";
+import { Box, Button, Grid, Hidden } from "@material-ui/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { getSets } from "@utils/checkCards";
 import GameBoard from "../GameBoard/GameBoard";
@@ -27,6 +27,7 @@ const SoloGame: React.FC = () => {
   const { soloDispatch } = useSoloGameCtx();
   const { handleStartGame, handleSaveGame } = useSoloGame();
   const { firestore } = useFBCtx();
+  const [fullScreen, setFullScreen] = useState(false);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -65,8 +66,44 @@ const SoloGame: React.FC = () => {
 
   if (!user) return <PleaseSignIn />;
 
+  const fullScreenProps: React.CSSProperties = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10,
+    background: "white",
+    border: "1px solid orange",
+  };
+
   return (
-    <Grid container style={{ marginTop: "1rem" }} spacing={2}>
+    <Grid
+      container
+      style={
+        fullScreen
+          ? fullScreenProps
+          : {
+              marginTop: "1rem",
+            }
+      }
+      spacing={2}
+    >
+      <Hidden smUp>
+        <Grid
+          item
+          xs={12}
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Button
+            size="small"
+            onClick={() => setFullScreen((old) => !old)}
+            variant="outlined"
+          >
+            {fullScreen ? "exit" : "enter"} FULL SCREEN
+          </Button>
+        </Grid>
+      </Hidden>
       <Grid
         item
         xs={12}
