@@ -114,10 +114,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   }, []);
 
   const createGame = useCallback(async (_gameId: string) => {
-    const { data } = await createNewGame(_gameId);
-    if (data && data.invalidName) {
-      setInvalidName(true);
-    }
+    createNewGame(_gameId);
   }, []);
 
   useEffect(() => {
