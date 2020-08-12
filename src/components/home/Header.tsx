@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   mainTitle: {
     margin: theme.spacing(2, 0),
-    fontFamily: `Luckiest Guy, sans-serif`,
+    fontFamily: "Roboto Condensed, sans-serif",
+    fontSize: "4rem",
+    fontWeight: 700,
   },
   centered: {
     display: "flex",
@@ -45,17 +47,17 @@ const Header: React.FC = () => {
             color="textPrimary"
             className={classes.mainTitle}
           >
-            Set
+            SET
             <span
               style={{
                 opacity: 0.5,
                 fontSize: "2.5rem",
-                margin: "0 3px",
+                margin: "0 2px",
               }}
             >
               .
             </span>
-            City
+            CITY
           </Typography>
           <div className={classes.howToPlayButton}>
             <Link href="/howtoplay" as="/howtoplay">

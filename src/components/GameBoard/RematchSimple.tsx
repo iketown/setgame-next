@@ -1,18 +1,15 @@
-import { useFBCtx } from "@context/firebase/firebaseCtx";
-import useGame from "@hooks/useGame";
+import { useGameCtx } from "@context/game/GameCtx";
+import { useGame } from "@hooks/useGame";
 import { useRematch } from "@hooks/useRematch";
 import { Button } from "@material-ui/core";
-import moment from "moment";
-import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { useGameCtx } from "@context/game/GameCtx";
+import React from "react";
+
 import RematchCountdown from "./RematchCountdown";
 
 //
 //
-const RematchSimple = () => {
-  const { db } = useFBCtx();
+const RematchSimple: React.FC = () => {
   const { makeRematch } = useGame();
   const { dispatch } = useGameCtx();
   const router = useRouter();

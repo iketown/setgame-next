@@ -9,7 +9,7 @@ const GameProgressLine: React.FC<{ cardsLeft: number }> = ({ cardsLeft }) => {
   const normalize = (value: number) => ((value - MIN) * 100) / (MAX - MIN);
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
-      <Box width="100%">
+      <Box width="80%">
         <LinearProgress variant="determinate" value={normalize(cardsLeft)} />
       </Box>
       <Box minWidth={100}>

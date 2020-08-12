@@ -16,7 +16,10 @@ const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: theme.spacing(2),
     maxWidth: "35rem",
-    width: "90vw",
+    width: "100%",
+  },
+  chatHeader: {
+    textAlign: "left",
   },
   chatInput: {
     display: "flex",
@@ -53,7 +56,7 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
   const [messages, setMessages] = useState<[string, ServerMessage][]>([]);
 
   const chatRef = useMemo(() => {
-    return db.ref(`/games/${gameId}/chat`);
+    return db.ref(`/chats/${gameId}`);
   }, [gameId]);
 
   useEffect(() => {
@@ -96,7 +99,7 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
   return (
     <>
       <Card className={classes.card}>
-        <CardHeader title="Chat" />
+        <CardHeader title="Chat" className={classes.chatHeader} />
         <List className={classes.messageList} dense>
           {messages.map(([messageId, messageObj], index, arr) => {
             const nextSenderId = arr[index + 1] && arr[index + 1][1].userId;

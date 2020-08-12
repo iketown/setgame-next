@@ -37,7 +37,7 @@ const UserDisplay: React.FC<UserDisplayI> = ({
           width: "13rem",
           position: "relative",
           overflow: "unset",
-          opacity: isHere ? 1 : 0.5,
+          opacity: isHere ? 1 : 0.6,
         }}
       >
         <ListItem dense style={{ padding: 0 }}>

@@ -19,7 +19,7 @@ import moment from "moment";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
-
+import ChatBox from "../../src/components/GameMessages/ChatBox";
 //
 //
 const Game = () => {
@@ -86,8 +86,11 @@ const Game = () => {
           xs={12}
           md={9}
           style={{
-            textAlign: "center",
+            // textAlign: "center",
             position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {gameInProgress ? (
@@ -99,11 +102,23 @@ const Game = () => {
           ) : (
             <CountdownToGame onCountdownEnd={() => setGameInProgress(true)} />
           )}
+          <Hidden smDown>
+            <ChatBox />
+          </Hidden>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <GamePlayers />
-          <GameRequests />
-          <PlayedSets />
+        <Grid container item xs={12} md={3} alignContent="flex-start">
+          <Grid item xs={6} md={12}>
+            <GamePlayers verticalOnly />
+            <GameRequests />
+          </Grid>
+          <Grid item xs={6} md={12}>
+            <PlayedSets />
+          </Grid>
+          <Hidden mdUp>
+            <Grid item xs={12}>
+              <ChatBox />
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
     </Container>

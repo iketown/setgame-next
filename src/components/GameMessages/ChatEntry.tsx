@@ -57,7 +57,10 @@ const ChatEntry: React.FC<{
   useEffect(() => {
     // scroll into view when mounted
     if (divRef.current) {
-      divRef.current.scrollIntoView({ behavior: "smooth" });
+      const parent = divRef.current.parentElement;
+      parent.scrollTo({ top: parent.scrollHeight, behavior: "smooth" });
+      // divRef.current.parentElement.scrollTo()
+      // divRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [divRef.current]);
 
@@ -111,7 +114,7 @@ const FaceDisplay: React.FC<{
   userProfile: PlayerProfile;
 }> = ({ faceImageNumber, displayFace, dotColor, userProfile }) => {
   return (
-    <Tooltip title={userProfile?.displayName}>
+    <Tooltip title={userProfile?.displayName || "?"}>
       <div
         style={{
           display: "flex",

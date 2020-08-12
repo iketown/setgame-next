@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutI> = ({ children, pageTitle }) => {
           <Toolbar>
             <Link href="/">
               <Typography className={classes.title} variant="h6" noWrap>
-                set.city
+                SET.CITY
               </Typography>
             </Link>
             {pageTitle && (

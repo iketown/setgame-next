@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-underscore-dangle */
 import React, { useRef, useEffect } from "react";
 // from https://usehooks.com/useEventListener/
 let _window;
@@ -15,6 +17,10 @@ function useEventListener(eventName, handler, element = _window) {
   useEffect(() => {
     savedHandler.current = handler;
   }, [handler]);
+
+  useEffect(() => {
+    console.log("element", element);
+  }, [element]);
 
   useEffect(
     () => {

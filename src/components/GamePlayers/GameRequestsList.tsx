@@ -75,7 +75,6 @@ const GameRequestsList: React.FC = () => {
             </List>
           </>
         )}
-        {/** switch to turn off requests */}
         <AllowNewPlayersSwitch />
       </div>
     </>

@@ -3,7 +3,7 @@ import { FormControlLabel, Switch } from "@material-ui/core";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useGameCtx } from "@context/game/GameCtx";
 
-export const AllowNewPlayersSwitch = () => {
+export const AllowNewPlayersSwitch: React.FC = () => {
   const { db } = useFBCtx();
   const { gameId, isGameAdmin } = useGameCtx();
   const [allowsNewPlayers, setAllowsNewPlayers] = useState(false);

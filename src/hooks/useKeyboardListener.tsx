@@ -3,13 +3,17 @@ import { useGameCtx } from "@context/game/GameCtx";
 import { useState } from "react";
 import useEventListener from "./useEventListener";
 
-export const useKeyboardListener = () => {
+export const useKeyboardListener = (divRef: HTMLDivElement) => {
   const { state, dispatch } = useGameCtx();
   const [showShortcuts, setShowShortcuts] = useState(false);
-  useEventListener("keyup", (e) => {
-    console.log("up", e.key);
-    if (e.key === "Meta") setShowShortcuts(false);
-  });
+  const [keyboardCardEnabled, setKeyboardCardEnabled] = useState(true);
+  useEventListener(
+    "keyup",
+    (e) => {
+      if (e.key === "Meta") setShowShortcuts(false);
+    },
+    divRef
+  );
   const expandedLetters = [
     "q",
     "w",
@@ -41,7 +45,12 @@ export const useKeyboardListener = () => {
       dispatch({ type: "TOGGLE_CARD", payload: { card } });
     }
   });
-  return { showShortcuts, activeLetters };
+  return {
+    showShortcuts,
+    activeLetters,
+    keyboardCardEnabled,
+    setKeyboardCardEnabled,
+  };
 };
 
 export default useKeyboardListener;

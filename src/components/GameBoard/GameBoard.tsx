@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import React from "react";
+import React, { useRef } from "react";
 import { Grid } from "@material-ui/core";
 import {
   GridContextProvider,
@@ -8,7 +8,6 @@ import {
   swap,
 } from "react-grid-dnd";
 import { useCards } from "@hooks/useCards";
-import { useKeyboardListener } from "@hooks/useKeyboardListener";
 import { useGameCtx } from "@context/game/GameCtx";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
@@ -16,6 +15,7 @@ import GameProgressLine from "./GameProgressLine";
 
 const GameBoard: React.FC = () => {
   const { state, dispatch } = useGameCtx();
+  const gameBoardRef = useRef<HTMLDivElement>(null);
   const { boardCards } = state;
   const {
     cardWidth,
@@ -25,7 +25,6 @@ const GameBoard: React.FC = () => {
     handleClickCard,
     handleDoubleClick,
   } = useCards();
-  const { showShortcuts, activeLetters } = useKeyboardListener();
 
   const onChange: (
     sourceId: string,
@@ -52,7 +51,7 @@ const GameBoard: React.FC = () => {
 
   return (
     <GridContextProvider onChange={onChange}>
-      <Grid container spacing={2}>
+      <Grid innerRef={gameBoardRef} container spacing={2}>
         <CheatButtons />
         <Grid
           item
@@ -80,23 +79,7 @@ const GameBoard: React.FC = () => {
                   onMouseDownCapture={(e) => handleClickCard(e, cardId)}
                   onDoubleClick={() => handleDoubleClick(cardId)}
                 >
-                  <GameBoardCard
-                    {...{ cardId, cardIndex }}
-                    overlay={
-                      showShortcuts ? (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: 5,
-                            left: 10,
-                            zIndex: 1,
-                          }}
-                        >
-                          {activeLetters[cardIndex]}
-                        </div>
-                      ) : null
-                    }
-                  />
+                  <GameBoardCard {...{ cardId, cardIndex }} />
                 </GridItem>
               );
             })}
