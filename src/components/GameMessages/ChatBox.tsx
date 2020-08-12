@@ -95,6 +95,8 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
           {/* <Typography variant="h5">Chat</Typography> */}
           <ChatTextField onSubmit={handleSubmitMessage} />
         </div>
+      </Card>
+      <Card className={classes.card}>
         <List className={classes.messageList} dense>
           {messages.map(([messageId, messageObj], index, arr) => {
             const nextSenderId = arr[index + 1] && arr[index + 1][1].userId;

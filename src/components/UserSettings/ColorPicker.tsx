@@ -1,12 +1,10 @@
 import React from "react";
-import { useField, useForm } from "react-final-form";
+import { useField } from "react-final-form";
 import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import colors, { colorsObj } from "../GameBoard/playerColors";
 
-const ColorPicker = () => {
-  const { input, meta } = useField("userColor");
-  const { getState } = useForm();
-  const { values } = getState();
+const ColorPicker: React.FC = () => {
+  const { input } = useField("userColor");
   return (
     <FormControl>
       <InputLabel id="demo-simple-select-label">Color</InputLabel>

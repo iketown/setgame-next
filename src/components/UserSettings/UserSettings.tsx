@@ -17,7 +17,7 @@ import FaceDrawing from "../faces/FaceDrawing";
 import ColorPicker from "./ColorPicker";
 import DisplayNameInput from "./DisplayNameInput";
 import LocationInput from "./LocationInput";
-import FaceDialog from "./FaceDialog";
+import { FormFaceDialog } from "./FaceDialog";
 
 const UserSettings: React.FC = () => {
   const {
@@ -104,7 +104,7 @@ const UserSettings: React.FC = () => {
                     save
                   </Button>
                 </DialogActions>
-                <FaceDialog
+                <FormFaceDialog
                   open={faceDialogOpen}
                   close={() => setFaceDialogOpen(false)}
                 />

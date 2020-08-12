@@ -10,13 +10,12 @@ import {
 } from "@material-ui/core";
 import { useField } from "react-final-form";
 import styled from "styled-components";
+import { useFBCtx } from "@context/firebase/firebaseCtx";
+import { useUserCtx } from "@context/user/UserCtx";
 import FaceDrawing from "../faces/FaceDrawing";
 
-interface FaceDialogI {
-  open: boolean;
-  close: () => void;
-}
-
+//
+//
 const FaceGrid = styled.div`
   display: grid;
   grid-gap: 5px;
@@ -34,10 +33,18 @@ const FaceGrid = styled.div`
   }
 `;
 
-const FaceDialog: React.FC<FaceDialogI> = ({ open, close }) => {
-  const {
-    input: { value, onChange },
-  } = useField("faceImageNumber");
+interface FaceDialogI {
+  open: boolean;
+  close: () => void;
+  onChange: (faceNum: number) => void;
+  value?: number;
+}
+const FaceDialog: React.FC<FaceDialogI> = ({
+  open,
+  close,
+  value,
+  onChange,
+}) => {
   const handleSelectFace = (faceNum: number) => {
     onChange(faceNum);
     close();
@@ -69,3 +76,27 @@ const FaceDialog: React.FC<FaceDialogI> = ({ open, close }) => {
 };
 
 export default FaceDialog;
+
+export const FormFaceDialog: React.FC<{
+  open: boolean;
+  close: () => void;
+}> = ({ open, close }) => {
+  const {
+    input: { value, onChange },
+  } = useField("faceImageNumber");
+  return <FaceDialog {...{ open, close, value, onChange }} />;
+};
+
+export const DirectFaceDialog: React.FC<{
+  open: boolean;
+  close: () => void;
+}> = ({ open, close }) => {
+  const { firestore } = useFBCtx();
+  const { user, userProfile } = useUserCtx();
+  const onChange = (faceImageNumber: number) => {
+    if (!user) return;
+    firestore.doc(`/users/${user.uid}`).update({ faceImageNumber });
+  };
+  const value = userProfile?.faceImageNumber;
+  return <FaceDialog {...{ open, close, value, onChange }} />;
+};

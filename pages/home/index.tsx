@@ -10,6 +10,7 @@ import { Container, Grid, Typography, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import RecentFinishedGames from "@components/home/RecentFinishedGames";
+import ProfileTodos from "@components/home/ProfileTodos";
 
 const useStyles = makeStyles((theme) => ({
   mainArea: {
@@ -50,6 +51,7 @@ const HomePage: React.FC = () => {
     <div className={classes.body}>
       <main className={classes.mainArea}>
         <Header />
+        <ProfileTodos />
         <Container maxWidth="md" className={classes.container}>
           <Grid container spacing={2}>
             <Hidden mdUp>
