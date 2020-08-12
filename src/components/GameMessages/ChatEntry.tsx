@@ -100,7 +100,7 @@ const ChatEntry: React.FC<{
           <div className={classes.listText}>
             <motion.div
               style={{ display: "inline-block" }}
-              initial={{ backgroundColor: "#FFFF0055" }}
+              initial={{ backgroundColor: "#FFFF0033" }}
               animate={{
                 backgroundColor: "#FFFFFF00",
                 transition: { duration: 4 },
