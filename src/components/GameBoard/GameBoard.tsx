@@ -31,18 +31,12 @@ const GameBoard: React.FC = () => {
     sourceIndex: number,
     targetIndex: number,
     targetId?: string | undefined
-  ) => void = (sourceId, sourceIndex, targetIndex, targetId) => {
-    console.log("dragend", {
-      sourceId,
-      sourceIndex,
-      targetIndex,
-      targetId,
-    });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ) => void = (_sourceId, sourceIndex, targetIndex, _targetId) => {
     if (sourceIndex === targetIndex) {
       return;
     }
     const nextState = swap(boardCards, sourceIndex, targetIndex);
-    console.log({ boardCards, nextState });
     dispatch({ type: "CLEAR_SET", payload: {} });
     dispatch({ type: "REARRANGE_BOARD", payload: { boardCards: nextState } });
   };

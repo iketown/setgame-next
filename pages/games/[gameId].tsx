@@ -1,7 +1,6 @@
 import CountdownToGame from "@components/GameBoard/CountdownToGame";
 import GameBoard from "@components/GameBoard/GameBoard";
 import GameEnded from "@components/GameBoard/GameEnded";
-import GameError from "@components/GameBoard/GameError";
 import PreGame from "@components/GameBoard/PreGame";
 import GameOver from "@components/GameMessages/GameOver";
 import NotASet from "@components/GameMessages/NotASet";
@@ -127,11 +126,10 @@ const Game = () => {
 
 const GameOrPreGame = () => {
   useRenderCount("GameOrPreGame");
-  const { gameStartTime, invalidName, gameEnded } = useGameCtx();
+  const { gameStartTime, gameEnded } = useGameCtx();
 
   const { user } = useUserCtx();
   if (!user) return <PleaseSignIn />;
-  if (invalidName) return <GameError />;
   if (gameEnded) return <GameEnded />;
   if (!gameStartTime) return <PreGame />;
   return <Game />;

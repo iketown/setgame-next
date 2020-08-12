@@ -19,7 +19,6 @@ export const useGame = () => {
   const gameId = router.query.gameId as string;
   const { db, firestore, functions } = useFBCtx();
   const { user } = useUserCtx();
-
   type CallableFxn =
     | "createRematch"
     | "createGame"
@@ -66,6 +65,12 @@ export const useGame = () => {
     try {
       createGameFxn({
         gameId: _gameId,
+      }).then(({ data }) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (data.invalidName) {
+          router.push("/", "/");
+        }
       });
     } catch (error) {
       console.error("error", error);

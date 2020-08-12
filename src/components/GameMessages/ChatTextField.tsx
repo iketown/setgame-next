@@ -47,6 +47,7 @@ const ChatTextField: React.FC<{
             setMessage(e.target.value);
           }}
           fullWidth
+          placeholder="...message"
         />
       </div>
       <div className={classes.chatSendButton}>

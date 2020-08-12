@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import Link from "next/link";
 import shortid from "shortid";
 
-const StartSoloGameButton = () => {
+const StartSoloGameButton: React.FC = () => {
   const nextGameId = shortid.generate();
   return (
     <Link href="/solo/[soloGameId]" as={`/solo/${nextGameId}`}>

@@ -20,7 +20,6 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import { getSets } from "../../utils/checkCards";
 
 import { useFBCtx } from "../firebase/firebaseCtx";
 import { gameReducer, initialGameState } from "./gameReducer";
@@ -41,7 +40,6 @@ const GameCtx = createContext<GameContextType>({
   gameOver: false,
   gameStartTime: false,
   gameEnded: false,
-  invalidName: false,
   allowsNewPlayers: false,
 });
 
@@ -67,7 +65,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   const [isGameAdmin, setIsGameAdmin] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
   const [allowsNewPlayers, setAllowsNewPlayers] = useState(false);
-  const [invalidName, setInvalidName] = useState(false);
   const { db } = useFBCtx();
   const { user } = useUserCtx();
   const { playerProfiles } = usePlayerProfiles(gameId);
@@ -137,7 +134,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
       const snapValues = snapshot.val();
       const {
         players: _players,
-        joinRequests,
         allowNewPlayers,
         ended,
         gameOver: _gameOver,
@@ -188,7 +184,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         setGameOver,
         gameStartTime,
         gameEnded,
-        invalidName,
       }}
       {...{ children }}
     />

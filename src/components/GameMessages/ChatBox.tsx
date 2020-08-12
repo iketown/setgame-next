@@ -1,7 +1,7 @@
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useUserProfiles } from "@hooks/useUserProfiles";
-import { Card, CardActions, CardHeader, List } from "@material-ui/core";
+import { Card, CardHeader, List } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -18,23 +18,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "35rem",
     width: "100%",
   },
-  chatHeader: {
-    textAlign: "left",
-  },
-  chatInput: {
-    display: "flex",
-    width: "100%",
-    alignItems: "center",
-  },
-  chatSendButton: {
-    margin: theme.spacing(1),
-  },
-  chatTextField: {
-    padding: theme.spacing(1),
-    width: "100%",
+  header: {
+    display: "grid",
+    gridTemplateColumns: "max-content 1fr",
+    padding: theme.spacing(1, 1, 1),
   },
   messageList: {
-    maxHeight: "15rem",
+    maxHeight: "12rem",
     overflowY: "scroll",
     overflowX: "hidden",
     padding: "1rem",
@@ -100,7 +90,11 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
   return (
     <>
       <Card className={classes.card}>
-        <CardHeader title="Chat" className={classes.chatHeader} />
+        <div className={classes.header}>
+          <CardHeader title="Chat" />
+          {/* <Typography variant="h5">Chat</Typography> */}
+          <ChatTextField onSubmit={handleSubmitMessage} />
+        </div>
         <List className={classes.messageList} dense>
           {messages.map(([messageId, messageObj], index, arr) => {
             const nextSenderId = arr[index + 1] && arr[index + 1][1].userId;
@@ -120,9 +114,6 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
             );
           })}
         </List>
-        <CardActions>
-          <ChatTextField onSubmit={handleSubmitMessage} />
-        </CardActions>
       </Card>
       {/* <pre>{JSON.stringify(playerProfiles, null, 2)}</pre>
       <pre>{JSON.stringify(userProfiles, null, 2)}</pre> */}

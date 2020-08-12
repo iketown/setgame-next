@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useUserCtx } from "@context/user/UserCtx";
-import moment from "moment";
 import { useRouter } from "next/router";
 import { useCallback, useState, useEffect } from "react";
 

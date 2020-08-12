@@ -71,7 +71,6 @@ type GameContextType = {
   setGameOver?: React.Dispatch<React.SetStateAction<string | false>>;
   gameStartTime?: false | string;
   gameEnded?: false | string;
-  invalidName: boolean;
   allowsNewPlayers: boolean;
 };
 

@@ -90,6 +90,7 @@ const ChatEntry: React.FC<{
             scaleY: 1,
             transition: {
               scaleY: { duration: 0.5 },
+              opacity: { duration: 1 },
             },
           }}
           style={{
@@ -97,18 +98,9 @@ const ChatEntry: React.FC<{
             padding: "0 5px",
           }}
         >
-          <div className={classes.listText}>
-            <motion.div
-              style={{ display: "inline-block" }}
-              initial={{ backgroundColor: "#FFFF0033" }}
-              animate={{
-                backgroundColor: "#FFFFFF00",
-                transition: { duration: 4 },
-              }}
-            >
-              <Typography variant="body1">{message}</Typography>
-            </motion.div>
-          </div>
+          <Typography className={classes.listText} variant="body1">
+            {message}
+          </Typography>
 
           <div className={classes.listText}>
             {displayTime ? (

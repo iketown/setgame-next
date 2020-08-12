@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { useLobbyCtx } from "@context/lobby/LobbyCtx";
 import { useGame } from "@hooks/useGame";
 import { useUserCtx } from "@context/user/UserCtx";
@@ -8,7 +8,7 @@ import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useRouter } from "next/router";
 //
 //
-const CreateNewGameButton = () => {
+const CreateNewGameButton: React.FC = () => {
   const { myGames } = useLobbyCtx();
   const { db } = useFBCtx();
   const { push } = useRouter();

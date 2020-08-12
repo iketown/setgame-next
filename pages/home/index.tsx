@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
         <Header />
         <Container maxWidth="md" className={classes.container}>
           <Grid container spacing={2}>
-            <Hidden smUp>
+            <Hidden mdUp>
               <div
                 style={{
                   display: "flex",
@@ -60,46 +60,22 @@ const HomePage: React.FC = () => {
                   width: "100%",
                 }}
               >
-                <div style={{ textAlign: "center" }}>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    WITH FRIENDS:
-                  </Typography>
-                  <div className={classes.buttonDiv}>
-                    <CreateNewGameButton />
-                  </div>
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    SOLO:
-                  </Typography>
-                  <div className={classes.buttonDiv}>
-                    <StartSoloGameButton />
-                  </div>
-                </div>
+                <WithFriendsButton />
+                <SoloButton />
               </div>
             </Hidden>
 
             <Grid item xs={12} md={6}>
-              <Hidden xsDown>
-                <Typography variant="h6" color="textSecondary">
-                  WITH FRIENDS:
-                </Typography>
-                <div className={classes.buttonDiv}>
-                  <CreateNewGameButton />
-                </div>
+              <Hidden smDown>
+                <WithFriendsButton />
               </Hidden>
 
               <CurrentGames />
               <RecentFinishedGames />
             </Grid>
             <Grid item xs={12} md={6}>
-              <Hidden xsDown>
-                <Typography variant="h6" color="textSecondary">
-                  SOLO:
-                </Typography>
-                <div className={classes.buttonDiv}>
-                  <StartSoloGameButton />
-                </div>
+              <Hidden smDown>
+                <SoloButton />
               </Hidden>
               <HighScores />
               <SavedSoloGames />
@@ -113,3 +89,31 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
+const WithFriendsButton = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.buttonDiv}>
+      <Typography variant="subtitle1" color="textSecondary">
+        WITH FRIENDS:
+      </Typography>
+      <div>
+        <CreateNewGameButton />
+      </div>
+    </div>
+  );
+};
+
+const SoloButton = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.buttonDiv}>
+      <Typography variant="subtitle1" color="textSecondary">
+        SOLO:
+      </Typography>
+      <div>
+        <StartSoloGameButton />
+      </div>
+    </div>
+  );
+};
