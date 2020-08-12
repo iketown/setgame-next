@@ -59,7 +59,7 @@ const HighScores: React.FC = () => {
   return (
     <Card className={classes.card}>
       <List className={classes.list}>
-        <ListSubheader>HIGH SCORES</ListSubheader>
+        <ListSubheader>SOLO HIGH SCORES</ListSubheader>
         {highScores?.map(([gameId, { date, playerId, points }]) => {
           const profile = userProfiles && userProfiles[playerId];
           const faceImageNumber = profile?.faceImageNumber;

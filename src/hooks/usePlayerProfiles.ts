@@ -15,7 +15,6 @@ export const usePlayerProfiles = (gameId: string) => {
   useEffect(() => {
     if (!gameId) return;
     const gameRef = db.ref(`games/${gameId}`);
-
     const playersRef = gameRef.child("players");
     playersRef.on("value", (snap) => {
       if (!snap.exists || !snap.val()) return;
@@ -28,18 +27,17 @@ export const usePlayerProfiles = (gameId: string) => {
     if (!fs || !players) return;
     const playerIds = Object.keys(players);
     if (!playerIds.length) return;
-    const usersRef = fs
-      .collection("users")
-      .where(firestore.FieldPath.documentId(), "in", playerIds);
-    const unsubscribe = usersRef.onSnapshot((snap) => {
-      const _playerProfiles: { [uid: string]: PlayerProfile } = {};
-      snap.forEach((doc) => {
+    const playerListeners = playerIds.map((userId) => {
+      const unsub = fs.doc(`/users/${userId}`).onSnapshot((doc) => {
         // @ts-ignore
-        _playerProfiles[doc.id] = doc.data();
+        const thisProfile: PlayerProfile = doc.data();
+        setPlayerProfiles((old) => ({ ...old, [doc.id]: thisProfile }));
       });
-      setPlayerProfiles(_playerProfiles);
+      return unsub;
     });
-    return unsubscribe;
+    return () => {
+      playerListeners.forEach((unsub) => unsub());
+    };
   }, [players]);
 
   return { players, playerProfiles };

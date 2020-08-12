@@ -5,7 +5,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/prefer-default-export */
 import { useState, useEffect } from "react";
-import { firestore } from "firebase";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 
 //
@@ -18,20 +17,17 @@ export const useUserProfiles = () => {
 
   useEffect(() => {
     if (!fs || !userIds?.length) return;
-    const usersRef = fs
-      .collection("users")
-      .where(firestore.FieldPath.documentId(), "in", userIds);
-    const unsubscribe = usersRef.onSnapshot((snap) => {
-      const _userProfiles: { [uid: string]: PlayerProfile } = {};
-      if (!snap.empty) {
-        snap.forEach((doc) => {
-          // @ts-ignore
-          _userProfiles[doc.id] = doc.data();
-        });
-        setUserProfiles(_userProfiles);
-      }
+    const userListeners = userIds.map((userId) => {
+      const unsub = fs.doc(`/users/${userId}`).onSnapshot((doc) => {
+        // @ts-ignore
+        const thisProfile: PlayerProfile = doc.data();
+        setUserProfiles((old) => ({ ...old, [doc.id]: thisProfile }));
+      });
+      return unsub;
     });
-    return unsubscribe;
+    return () => {
+      userListeners.forEach((unsub) => unsub());
+    };
   }, [userIds]);
 
   return { userProfiles, setUserIds, userIds };
