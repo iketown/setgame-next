@@ -67,7 +67,6 @@ type GameContextType = {
   optionsState: GOState;
   optionsDispatch: React.Dispatch<GOAction>;
   playerProfiles?: { [uid: string]: PlayerProfile };
-  gameRequests?: GameRequests;
   gameOver?: false | string;
   setGameOver?: React.Dispatch<React.SetStateAction<string | false>>;
   gameStartTime?: false | string;
@@ -77,7 +76,7 @@ type GameContextType = {
 };
 
 interface GameRequests {
-  [uid: string]: { requestTime: string; requesterProfile: PlayerProfile };
+  [uid: string]: { requestTime: string };
 }
 
 interface PlayedSets {

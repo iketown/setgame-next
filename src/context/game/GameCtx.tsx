@@ -66,7 +66,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
   );
   const [isGameAdmin, setIsGameAdmin] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
-  const [gameRequests, setGameRequests] = useState<GameRequests>();
   const [allowsNewPlayers, setAllowsNewPlayers] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
   const { db } = useFBCtx();
@@ -169,7 +168,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         setGameEnded(ended);
       }
       setAllowsNewPlayers(allowNewPlayers);
-      setGameRequests(joinRequests);
     });
 
     return () => gameRef.off("value");
@@ -188,7 +186,6 @@ export const GameCtxProvider: React.FC = ({ children }) => {
         isPlayer,
         setIsPlayer,
         playerProfiles,
-        gameRequests,
         allowsNewPlayers,
         gameOver,
         setGameOver,

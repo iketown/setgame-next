@@ -10,7 +10,7 @@ const PageDiv = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-const GameError = () => {
+const GameError: React.FC = () => {
   return (
     <PageDiv>
       <Typography
@@ -22,9 +22,9 @@ const GameError = () => {
         hmm... nothing to see here.
       </Typography>
       <div>
-        <Link href="/lobby" as="/lobby">
+        <Link href="/" as="/">
           <Button size="large" variant="contained" color="primary">
-            Lobby
+            Home
           </Button>
         </Link>
       </div>

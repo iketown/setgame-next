@@ -8,9 +8,9 @@ import { useGameCtx } from "@context/game/GameCtx";
 
 const GameRequestButton: React.FC = () => {
   const { user } = useUserCtx();
-  const { isPlayer, gameRequests, allowsNewPlayers } = useGameCtx();
+  const { isPlayer, allowsNewPlayers } = useGameCtx();
   const { requestToJoin, cancelRequestToJoin } = useGameInvites();
-
+  const { gameRequests } = useGameInvites();
   if (isPlayer) return null;
   if (!user?.uid) return null;
 

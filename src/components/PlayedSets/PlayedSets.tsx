@@ -48,7 +48,7 @@ const PlayedSets: React.FC = () => {
       <List
         innerRef={listRef}
         style={{
-          maxHeight: "50vh",
+          maxHeight: "20rem",
           overflowY: "scroll",
           width: "16rem",
         }}

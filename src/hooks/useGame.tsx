@@ -60,28 +60,44 @@ export const useGame = () => {
     console.log("newGame value", newGame);
   }, []);
 
-  const createNewGame = useCallback(async (_gameId: string) => {
+  const createNewGame = useCallback((_gameId: string) => {
     console.log("trying to create game");
     const createGameFxn = functions.httpsCallable("createGame");
     try {
-      const response = await createGameFxn({
+      createGameFxn({
         gameId: _gameId,
       });
-      return response;
     } catch (error) {
       console.error("error", error);
     }
   }, []);
 
-  const createPendingGame = useCallback(async (_gameId: string) => {
-    console.log("creating pending game", _gameId);
-    const promises = [];
-    promises.push(db.ref(`/games/${_gameId}`).update({ isValid: true }));
-    promises.push(db.ref(`/publicGames/${_gameId}`).update({ isValid: true }));
-    return Promise.all(promises).then(() => {
-      createNewGame(_gameId);
-    });
-  }, []);
+  const createPendingGame = useCallback(
+    async (_gameId: string) => {
+      console.log("creating pending game", _gameId);
+      const promises = [];
+      promises.push(
+        db.ref(`/games/${_gameId}`).update({
+          isValid: true,
+          players: {
+            [user.uid]: { admin: true, joinedAt: moment().toISOString() },
+          },
+        })
+      );
+      promises.push(
+        db.ref(`/publicGames/${_gameId}`).update({
+          isValid: true,
+          players: {
+            [user.uid]: { admin: true, joinedAt: moment().toISOString() },
+          },
+        })
+      );
+      return Promise.all(promises).then(() => {
+        createNewGame(_gameId);
+      });
+    },
+    [user]
+  );
 
   const deleteGame = useCallback(async (_gameId: string) => {
     const deleteGameFxn = functions.httpsCallable("deleteGame");

@@ -25,7 +25,7 @@ const UserDisplay: React.FC<UserDisplayI> = ({
 }) => {
   const { profile } = useProfile(userId);
   const userColorString = profile?.userColor || "grey";
-  const { light, med, dark } = colorsObj[userColorString];
+  const { light, dark } = colorsObj[userColorString];
 
   return (
     <>

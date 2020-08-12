@@ -132,8 +132,8 @@ const GameOrPreGame = () => {
   const { user } = useUserCtx();
   if (!user) return <PleaseSignIn />;
   if (invalidName) return <GameError />;
-  if (!gameStartTime) return <PreGame />;
   if (gameEnded) return <GameEnded />;
+  if (!gameStartTime) return <PreGame />;
   return <Game />;
 };
 

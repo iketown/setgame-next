@@ -6,17 +6,17 @@ import React, { useEffect } from "react";
 import { usePresence } from "@hooks/usePresence";
 import { useGameInvites } from "@hooks/useGameInvites";
 import { useGameCtx } from "@context/game/GameCtx";
-import AllowNewPlayersSwitch from "./AllowNewPlayersSwitch";
+import { AllowNewPlayersSwitch } from "./AllowNewPlayersSwitch";
 import UserDisplay from "../UserSettings/UserDisplay";
 
 //
 //
 
 const GameRequestsList: React.FC = () => {
-  const { isGameAdmin, gameRequests } = useGameCtx();
+  const { isGameAdmin } = useGameCtx();
   const { setPlayerIds, whosHere } = usePresence();
 
-  const { respondToRequest } = useGameInvites();
+  const { respondToRequest, gameRequests } = useGameInvites();
   useEffect(() => {
     if (!isGameAdmin || !gameRequests) return;
     setPlayerIds(Object.keys(gameRequests));

@@ -46,7 +46,7 @@ const CreateNewGameButton = () => {
           variant="contained"
           color="primary"
         >
-          create new game
+          new game
         </Button>
       )}
       {/* {imAvailable && !!newGameId && (

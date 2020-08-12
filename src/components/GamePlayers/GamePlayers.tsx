@@ -37,6 +37,11 @@ const GamePlayers: React.FC<{
   if (verticalOnly)
     return (
       <>
+        {showTitle && (
+          <Typography variant="subtitle2" color="textSecondary">
+            PLAYERS
+          </Typography>
+        )}
         <PlayersVerticalList {...{ usersByPoints, whosHere }} />
         <GameRequestButton />
       </>

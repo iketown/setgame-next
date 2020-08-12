@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
   messageList: {
     maxHeight: "15rem",
-    overflow: "scroll",
+    overflowY: "scroll",
+    overflowX: "hidden",
     padding: "1rem",
   },
 }));

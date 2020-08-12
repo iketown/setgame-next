@@ -2,7 +2,7 @@ import { useRenderCount } from "@hooks/useRenderCount";
 import { useUserCtx } from "@context/user/UserCtx";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 
@@ -10,31 +10,33 @@ export const useGameInvites = () => {
   useRenderCount("useGameInvites");
   const router = useRouter();
   const gameId = router.query.gameId as string;
+  const [gameRequests, setGameRequests] = useState<{
+    [userId: string]: { requestTime: string };
+  }>();
   const { db } = useFBCtx();
   const { user } = useUserCtx();
 
-  const inviteToGame = useCallback(
-    (uid: string) => {
-      const time = moment().toISOString();
-      db.ref(`/publicGames/${gameId}/invites`).update({
-        [uid]: { time, invitedBy: user.uid },
-      });
-    },
-    [gameId]
-  );
+  useEffect(() => {
+    // listen for requests
+    const requestsRef = db.ref(`/joinRequests/${gameId}`);
+    requestsRef.on("value", (snap) => {
+      setGameRequests(snap.val());
+    });
+    return () => requestsRef.off();
+  }, []);
 
   const requestToJoin = useCallback(() => {
     if (!user || !user.uid || !gameId) return;
     const requestTime = new Date().toISOString();
-    db.ref(`/games/${gameId}/joinRequests`).update({
+    db.ref(`/joinRequests/${gameId}`).update({
       [user.uid]: { requestTime },
     });
   }, [gameId]);
 
   const cancelRequestToJoin = useCallback(() => {
     if (!user || !user.uid || !gameId) return;
-    db.ref(`/games/${gameId}/joinRequests/${user.uid}`).remove();
-  }, [gameId]);
+    db.ref(`/joinRequests/${gameId}/${user.uid}`).remove();
+  }, [gameId, user]);
 
   const respondToRequest = async ({
     requesterUid,
@@ -44,9 +46,7 @@ export const useGameInvites = () => {
     approved: boolean;
   }) => {
     const joinedAt = new Date().toISOString();
-    const joinRequestRef = db.ref(
-      `/games/${gameId}/joinRequests/${requesterUid}`
-    );
+    const joinRequestRef = db.ref(`/joinRequests/${gameId}/${requesterUid}`);
     if (!approved) {
       return joinRequestRef.remove();
     }
@@ -69,10 +69,10 @@ export const useGameInvites = () => {
   };
 
   return {
-    inviteToGame,
     requestToJoin,
     cancelRequestToJoin,
     respondToRequest,
+    gameRequests,
   };
 };
 

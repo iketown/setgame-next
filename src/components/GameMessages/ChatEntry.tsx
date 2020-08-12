@@ -3,7 +3,7 @@ import { Divider, Tooltip, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
-
+import { motion } from "framer-motion";
 import FaceDrawing from "../faces/FaceDrawing";
 import { colorsObj } from "../GameBoard/playerColors";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: (p) => (p.isMe ? "right" : "left"),
   },
   divider: {
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(1),
   },
 }));
 //
@@ -80,16 +80,35 @@ const ChatEntry: React.FC<{
           />
         </div>
 
-        <div
+        <motion.div
+          initial={{
+            opacity: 0,
+            scaleY: 0,
+          }}
+          animate={{
+            opacity: 1,
+            scaleY: 1,
+            transition: {
+              scaleY: { duration: 0.5 },
+            },
+          }}
           style={{
             gridArea: "1 / text",
-            // border: "1px solid blue",
             padding: "0 5px",
           }}
         >
-          <Typography className={classes.listText} variant="body1">
-            {message}
-          </Typography>
+          <div className={classes.listText}>
+            <motion.div
+              style={{ display: "inline-block" }}
+              initial={{ backgroundColor: "#FFFF0055" }}
+              animate={{
+                backgroundColor: "#FFFFFF00",
+                transition: { duration: 4 },
+              }}
+            >
+              <Typography variant="body1">{message}</Typography>
+            </motion.div>
+          </div>
 
           <div className={classes.listText}>
             {displayTime ? (
@@ -98,7 +117,7 @@ const ChatEntry: React.FC<{
               </Typography>
             ) : null}
           </div>
-        </div>
+        </motion.div>
       </div>
       {displayTime && <Divider className={classes.divider} />}
     </>

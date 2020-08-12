@@ -4,7 +4,7 @@ import { useRenderCount } from "@hooks/useRenderCount";
 import { useEffect, useState } from "react";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 
-export const useProfile = (uid?: string) => {
+export const useProfile = (uid?: string): { profile: PlayerProfile } => {
   const [profile, setProfile] = useState<PlayerProfile>();
   useRenderCount("useProfile");
   const { firestore } = useFBCtx();

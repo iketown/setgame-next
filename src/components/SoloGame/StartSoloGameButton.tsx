@@ -7,7 +7,7 @@ const StartSoloGameButton = () => {
   const nextGameId = shortid.generate();
   return (
     <Link href="/solo/[soloGameId]" as={`/solo/${nextGameId}`}>
-      <Button size="large" variant="outlined" color="primary">
+      <Button size="large" variant="contained" color="primary">
         NEW SOLO GAME
       </Button>
     </Link>
