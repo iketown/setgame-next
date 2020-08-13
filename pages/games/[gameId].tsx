@@ -13,7 +13,7 @@ import { GameCtxProvider, useGameCtx } from "@context/game/GameCtx";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useSetListener } from "@hooks/useSetListener";
-import { Container, Grid, Hidden, Button } from "@material-ui/core";
+import { Container, Grid, Hidden } from "@material-ui/core";
 import moment from "moment";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -34,35 +34,19 @@ const Game = () => {
     },
     [query, functions]
   );
-  const [fullScreen, setFullScreen] = useState(false);
   useSetListener({ submitSetApi });
   const { gameStartTime } = useGameCtx();
   const [gameInProgress, setGameInProgress] = useState(
     !!gameStartTime && moment(gameStartTime).isBefore(moment())
   );
 
-  const fullScreenProps: React.CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 10,
-    background: "white",
-    border: "1px solid orange",
-  };
-
   return (
     <Container maxWidth="lg" fixed>
       <Grid
         container
-        style={
-          fullScreen
-            ? fullScreenProps
-            : {
-                marginTop: "1rem",
-              }
-        }
+        style={{
+          marginTop: "1rem",
+        }}
         spacing={2}
       >
         {/* <Hidden smUp>

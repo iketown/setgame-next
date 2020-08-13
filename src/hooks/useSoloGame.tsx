@@ -4,7 +4,6 @@ import { useSetListener } from "@hooks/useSetListener";
 import { useCallback } from "react";
 import moment from "moment";
 import { useSoloGameCtx } from "@context/game/SoloGameCtx";
-import shortid from "shortid";
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useRouter } from "next/router";
 import { getMixedDeck } from "../../functions/cards/allCards";
@@ -23,7 +22,6 @@ export const useSoloGame = () => {
     async (_soloGameId: string) => {
       if (!user?.uid) return;
       const { boardCards, deckCards } = state;
-      console.log("saving game", _soloGameId);
       const gameRef = firestore.doc(
         `users/${user.uid}/savedSoloGames/${_soloGameId}`
       );
@@ -35,9 +33,7 @@ export const useSoloGame = () => {
 
   const deleteSavedGame = useCallback(
     (gameId: string) => {
-      console.log("deleting", gameId);
       if (!user?.uid) {
-        console.log("missing", user);
         return;
       }
       firestore.doc(`/users/${user.uid}/savedSoloGames/${gameId}`).delete();
@@ -62,10 +58,6 @@ export const useSoloGame = () => {
         deckCards,
         sets: { length: sets.length, sets },
       },
-    });
-    soloDispatch({
-      type: "SET_GAMEID",
-      payload: { gameId: shortid.generate() },
     });
     soloDispatch({
       type: "LATEST_SET_TIME",
@@ -93,12 +85,13 @@ export const useSoloGame = () => {
       if (!sets.length) {
         // HANDLE GAME OVER
         const registerSoloGame = functions.httpsCallable("registerSoloGame");
+        const gameId = query.soloGameId as string;
         registerSoloGame({
-          gameId: soloState.gameId,
+          gameId,
           points: soloState.points + 3 + soloState.bonusPoints,
         });
         setGameOver(moment().format());
-        deleteSavedGame(soloState.gameId);
+        deleteSavedGame(gameId);
       }
 
       dispatch({
@@ -123,10 +116,10 @@ export const useSoloGame = () => {
       deleteSavedGame,
       dispatch,
       functions,
+      query.soloGameId,
       setGameOver,
       soloDispatch,
       soloState.bonusPoints,
-      soloState.gameId,
       soloState.points,
       state,
     ]
