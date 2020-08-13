@@ -3,9 +3,11 @@ import Round from "./shapes/Round";
 import Squig from "./shapes/Squig";
 
 const shapes: {
-  [key: string]: React.MemoExoticComponent<
-    (props: { stroke: string; fill: string; stripes: boolean }) => JSX.Element
-  >;
+  [key: string]: React.FC<{
+    stroke: string;
+    fill: string;
+    stripes: boolean;
+  }>;
 } = {
   d: Diamond,
   r: Round,
