@@ -19,20 +19,20 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
 import ChatBox from "../../src/components/GameMessages/ChatBox";
+
 //
 //
 const Game = () => {
   useRenderCount("Game");
   const { query } = useRouter();
   const { functions } = useFBCtx();
-
   const submitSetApi = useCallback(
     ({ mySet }: { mySet: string[] }) => {
       const { gameId } = query;
       const submitSet = functions.httpsCallable("submitSet");
       return submitSet({ mySet, gameId });
     },
-    [query.gameId, functions]
+    [query, functions]
   );
   const [fullScreen, setFullScreen] = useState(false);
   useSetListener({ submitSetApi });
@@ -65,7 +65,7 @@ const Game = () => {
         }
         spacing={2}
       >
-        <Hidden smUp>
+        {/* <Hidden smUp>
           <Grid
             item
             xs={12}
@@ -79,7 +79,7 @@ const Game = () => {
               {fullScreen ? "exit" : "enter"} FULL SCREEN
             </Button>
           </Grid>
-        </Hidden>
+        </Hidden> */}
         <Grid
           item
           xs={12}

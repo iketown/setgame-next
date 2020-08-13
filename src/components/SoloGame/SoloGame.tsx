@@ -98,7 +98,7 @@ const SoloGame: React.FC = () => {
       }
       spacing={2}
     >
-      <Hidden smUp>
+      {/* <Hidden smUp>
         <Grid
           item
           xs={12}
@@ -112,7 +112,7 @@ const SoloGame: React.FC = () => {
             {fullScreen ? "exit" : "enter"} FULL SCREEN
           </Button>
         </Grid>
-      </Hidden>
+      </Hidden> */}
       <Grid
         item
         xs={12}
