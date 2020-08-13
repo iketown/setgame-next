@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 const RoundStripes: React.FC<{
   stroke: string;
@@ -42,5 +42,4 @@ const RoundStripes: React.FC<{
   );
 };
 
-const MemoRoundStripes = React.memo(RoundStripes);
-export default MemoRoundStripes;
+export default RoundStripes;

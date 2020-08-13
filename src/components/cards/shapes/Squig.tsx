@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 const SquigStripes: React.FC<{
   stroke: string;
@@ -41,5 +41,4 @@ const SquigStripes: React.FC<{
   );
 };
 
-const MemoSquigStripes = React.memo(SquigStripes);
-export default MemoSquigStripes;
+export default SquigStripes;

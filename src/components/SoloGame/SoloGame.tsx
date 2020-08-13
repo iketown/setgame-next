@@ -93,7 +93,7 @@ const SoloGame: React.FC = () => {
         <NotASet />
         <SoloGameOver />
         <Box marginTop="2rem">
-          <Link href="/solo" as="/solo">
+          <Link href="/" as="/">
             <Button
               style={{ marginRight: "1rem" }}
               variant="outlined"

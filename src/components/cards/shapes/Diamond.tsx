@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 const Diamond: React.FC<{
   stroke: string;
@@ -38,5 +38,4 @@ const Diamond: React.FC<{
   );
 };
 
-const MemoDiamondStripes = React.memo(Diamond);
-export default MemoDiamondStripes;
+export default Diamond;
