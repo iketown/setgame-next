@@ -92,6 +92,7 @@ const PreGame: React.FC = () => {
               >
                 Cancel
               </Button>
+              <CopyGameUrl />
               <Button
                 size="large"
                 variant="contained"
@@ -104,9 +105,7 @@ const PreGame: React.FC = () => {
           )}
         </Card>
       </Grid>
-      <Grid item xs={12} style={{ ...centeredGridItem, marginTop: "2rem" }}>
-        <CopyGameUrl />
-      </Grid>
+
       <Grid style={centeredGridItem} item xs={12}>
         <ChatBox />
       </Grid>
