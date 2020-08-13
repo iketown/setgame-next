@@ -30,7 +30,7 @@ export const usePresence = () => {
     return () => {
       playerRefs.forEach(({ ref }) => ref.off());
     };
-  }, [playerIds, router]);
+  }, [db, playerIds, router]);
 
   return { setPlayerIds, whosHere };
 };

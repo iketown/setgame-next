@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-plusplus */
 import { useGameCtx } from "@context/game/GameCtx";
 import { useSetListener } from "@hooks/useSetListener";
@@ -36,7 +35,7 @@ export const useSoloGame = () => {
       if (!user?.uid) return;
       firestore.doc(`users/${user.uid}/savedSoloGames/${gameId}`).delete();
     },
-    [user]
+    [firestore, user.uid]
   );
 
   const handleStartGame = (specialDeck?: string[]) => {
@@ -113,7 +112,17 @@ export const useSoloGame = () => {
         }, 1500);
       });
     },
-    [state]
+    [
+      deleteSavedGame,
+      dispatch,
+      functions,
+      setGameOver,
+      soloDispatch,
+      soloState.bonusPoints,
+      soloState.gameId,
+      soloState.points,
+      state,
+    ]
   );
 
   const punishFail = () => {

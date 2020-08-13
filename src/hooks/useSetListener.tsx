@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable import/prefer-default-export */
 import { useGameCtx } from "@context/game/GameCtx";
 import { useEffect } from "react";
@@ -27,5 +26,5 @@ export const useSetListener = ({
       dispatch({ type: "CLEAR_SET", payload: {} });
       if (punishFail) punishFail();
     }
-  }, [mySet]);
+  }, [dispatch, mySet, punishFail, submitSetApi]);
 };

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useRenderCount } from "@hooks/useRenderCount";
 import { useUserCtx } from "@context/user/UserCtx";
 import { useRouter } from "next/router";
@@ -23,7 +22,7 @@ export const useGameInvites = () => {
       setGameRequests(snap.val());
     });
     return () => requestsRef.off();
-  }, []);
+  }, [db, gameId]);
 
   const requestToJoin = useCallback(() => {
     if (!user || !user.uid || !gameId) return;
@@ -31,12 +30,12 @@ export const useGameInvites = () => {
     db.ref(`/joinRequests/${gameId}`).update({
       [user.uid]: { requestTime },
     });
-  }, [gameId]);
+  }, [db, gameId, user]);
 
   const cancelRequestToJoin = useCallback(() => {
     if (!user || !user.uid || !gameId) return;
     db.ref(`/joinRequests/${gameId}/${user.uid}`).remove();
-  }, [gameId, user]);
+  }, [db, gameId, user]);
 
   const respondToRequest = async ({
     requesterUid,

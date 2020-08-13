@@ -39,7 +39,7 @@ const RecentGameListItem: React.FC<{ recentGame: RecentGame }> = ({
   useEffect(() => {
     const { scores } = recentGame;
     setUserIds(Object.keys(scores));
-  }, [recentGame]);
+  }, [recentGame, setUserIds]);
 
   return (
     <div className={classes.listItem}>

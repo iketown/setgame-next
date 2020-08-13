@@ -32,7 +32,7 @@ const GamePlayers: React.FC<{
   useEffect(() => {
     if (!playerProfiles) return;
     setPlayerIds(Object.keys(playerProfiles));
-  }, [playerProfiles]);
+  }, [playerProfiles, setPlayerIds]);
   if (!usersByPoints || !usersByPoints.length) return <UserDisplay />;
   if (verticalOnly)
     return (

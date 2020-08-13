@@ -56,7 +56,7 @@ const GameEnded: React.FC = () => {
   useEffect(() => {
     if (!playerProfiles) return;
     setPlayerIds(Object.keys(playerProfiles));
-  }, [playerProfiles]);
+  }, [playerProfiles, setPlayerIds]);
 
   const classes = useStyles();
   if (!gameEnded) return <div />;

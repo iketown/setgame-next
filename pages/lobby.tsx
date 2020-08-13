@@ -49,7 +49,7 @@ const Lobby = () => {
           changeGameId();
         }
       });
-  }, [newGameId]);
+  }, [newGameId, db]);
   const imAvailable = !myGames || myGames?.length < 2;
   if (!user) return <PleaseSignIn />;
   return (

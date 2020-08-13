@@ -23,7 +23,7 @@ const RenderTime: React.FC<{
       type: "SET_BONUS_POINTS",
       payload: { bonusPoints: _bonusPoints },
     });
-  }, [remainingTime, secondsPerBonus]);
+  }, [remainingTime, secondsPerBonus, soloDispatch]);
 
   return (
     <motion.div

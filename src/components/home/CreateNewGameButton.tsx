@@ -30,7 +30,7 @@ const CreateNewGameButton: React.FC = () => {
           changeGameId();
         }
       });
-  }, [newGameId]);
+  }, [newGameId, db]);
   return (
     <>
       {imAvailable && (

@@ -1,4 +1,4 @@
-import { Button, Container } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import React, { useState } from "react";
 
 import SetsLookDifferent from "@components/instructions/01SetsLookDifferent/01SetsLookDifferent";
@@ -15,13 +15,6 @@ import ExampleSets from "../../src/components/instructions/02b Example Sets/Exam
 const InstructionsPage: React.FC = () => {
   const [frameIndex, setFrameIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const lastIndex = localStorage.getItem("instructionsIndex");
-  //   if (lastIndex) setFrameIndex(Number(lastIndex));
-  // }, []);
-  // useEffect(() => {
-  //   localStorage.setItem("instructionsIndex", String(frameIndex));
-  // }, [frameIndex]);
   const advance = (number = 1) => {
     setFrameIndex((old) => old + number);
   };

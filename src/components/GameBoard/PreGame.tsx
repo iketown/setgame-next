@@ -40,13 +40,13 @@ const PreGame: React.FC = () => {
   useEffect(() => {
     if (!user) return;
     setLocation();
-  }, [user]);
+  }, [user, setLocation]);
   const handleCancel = async () => {
     push("/").then(() => deleteGame(gameId));
   };
   useEffect(() => {
     wakeUpFxn(["submitSet", "createRematch", "deleteGame"]);
-  }, []);
+  }, [wakeUpFxn]);
   const centeredGridItem: React.CSSProperties = {
     display: "flex",
     justifyContent: "center",

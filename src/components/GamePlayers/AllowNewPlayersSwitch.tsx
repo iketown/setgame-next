@@ -12,11 +12,14 @@ export const AllowNewPlayersSwitch: React.FC = () => {
     const gameRef = db.ref(`/games/${gameId}/allowNewPlayers`);
     gameRef.on("value", (snap) => setAllowsNewPlayers(snap.val()));
     return () => gameRef.off("value");
-  }, [gameId]);
-  const updateAllowsNew = useCallback((allows: boolean) => {
-    db.ref(`/games/${gameId}/allowNewPlayers`).set(allows);
-    db.ref(`/publicGames/${gameId}/allowNewPlayers`).set(allows);
-  }, []);
+  }, [gameId, db]);
+  const updateAllowsNew = useCallback(
+    (allows: boolean) => {
+      db.ref(`/games/${gameId}/allowNewPlayers`).set(allows);
+      db.ref(`/publicGames/${gameId}/allowNewPlayers`).set(allows);
+    },
+    [db, gameId]
+  );
   if (!isGameAdmin) return null;
   return (
     <FormControlLabel

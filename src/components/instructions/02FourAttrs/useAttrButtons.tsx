@@ -53,14 +53,14 @@ export const useAttrButtons = () => {
     const nextIndex = (currentIndex + delta) % 3;
 
     setter(valueOptions[nextIndex]);
-  }, [attrCharIndex, setAttrCharIndex]);
+  }, [attrCharIndex, setAttrCharIndex, gridObjects]);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       changeNextAttr();
     }, 4000);
     return () => clearInterval(intervalRef.current);
-  }, [changeNextAttr, intervalRef.current]);
+  }, [changeNextAttr]);
 
   const cardId = `${color}${fill}${num}${shape}`;
 

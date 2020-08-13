@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable consistent-return */
 import { useFBCtx } from "@context/firebase/firebaseCtx";
 import { useGameCtx } from "@context/game/GameCtx";
@@ -24,7 +23,7 @@ export const usePreGame = () => {
       setThisPublicGame(snap.val());
     });
     return () => thisPGameRef.off();
-  }, [gameId]);
+  }, [db, gameId]);
 
   const friendsLatestFirst = useMemo(() => {
     if (!userProfile?.friends) return null;

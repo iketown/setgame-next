@@ -47,7 +47,7 @@ const SavedSoloGames: React.FC = () => {
       setSavedGames(_savedGames);
     });
     return unsubscribe;
-  }, [user]);
+  }, [firestore, user]);
 
   if (!user?.uid) return null;
   if (!savedGames?.length) return null;

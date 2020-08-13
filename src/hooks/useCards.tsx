@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useMemo } from "react";
 import { useGameCtx } from "@context/game/GameCtx";
 import { useFBCtx } from "@context/firebase/firebaseCtx";

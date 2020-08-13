@@ -62,7 +62,7 @@ const ChatEntry: React.FC<{
       // divRef.current.parentElement.scrollTo()
       // divRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [divRef.current]);
+  }, []);
 
   const dotColor = colorsObj[userProfile?.userColor]
     ? colorsObj[userProfile?.userColor].dark

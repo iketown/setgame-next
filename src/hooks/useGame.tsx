@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
@@ -25,14 +24,17 @@ export const useGame = () => {
     | "deleteGame"
     | "submitSet";
 
-  const wakeUpFxn = useCallback(async (names: CallableFxn[]) => {
-    const promises: Promise<any>[] = names.map((name) => {
-      const fxn = functions.httpsCallable(name);
-      return fxn({ wakeUp: true });
-    });
-    const responses = await Promise.all(promises);
-    console.log("wake up responses", responses);
-  }, []);
+  const wakeUpFxn = useCallback(
+    async (names: CallableFxn[]) => {
+      const promises: Promise<any>[] = names.map((name) => {
+        const fxn = functions.httpsCallable(name);
+        return fxn({ wakeUp: true });
+      });
+      const responses = await Promise.all(promises);
+      console.log("wake up responses", responses);
+    },
+    [functions]
+  );
 
   const createRematch = useCallback(
     async (_gameId: string, gameStartTime: string) => {
@@ -43,39 +45,45 @@ export const useGame = () => {
         gameStartTime,
       });
     },
-    []
+    [functions, gameId]
   );
 
-  const makeRematch = useCallback(async (rematchGameId: string) => {
-    // if someone else started it already, join it.
-    const newGameRef = db.ref(`/games/${rematchGameId}`);
-    const newGame = await newGameRef.once("value").then((snap) => snap.val());
-    if (!newGame) {
-      await newGameRef.update({ isValid: true });
-      const nextGameStart = moment().add(1, "minute").toISOString();
-      await db.ref(`/games/${gameId}/rematch`).update({ nextGameStart });
-      await createRematch(rematchGameId, nextGameStart);
-    }
-    console.log("newGame value", newGame);
-  }, []);
+  const makeRematch = useCallback(
+    async (rematchGameId: string) => {
+      // if someone else started it already, join it.
+      const newGameRef = db.ref(`/games/${rematchGameId}`);
+      const newGame = await newGameRef.once("value").then((snap) => snap.val());
+      if (!newGame) {
+        await newGameRef.update({ isValid: true });
+        const nextGameStart = moment().add(1, "minute").toISOString();
+        await db.ref(`/games/${gameId}/rematch`).update({ nextGameStart });
+        await createRematch(rematchGameId, nextGameStart);
+      }
+      console.log("newGame value", newGame);
+    },
+    [createRematch, db, gameId]
+  );
 
-  const createNewGame = useCallback((_gameId: string) => {
-    console.log("trying to create game");
-    const createGameFxn = functions.httpsCallable("createGame");
-    try {
-      createGameFxn({
-        gameId: _gameId,
-      }).then(({ data }) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (data.invalidName) {
-          router.push("/", "/");
-        }
-      });
-    } catch (error) {
-      console.error("error", error);
-    }
-  }, []);
+  const createNewGame = useCallback(
+    (_gameId: string) => {
+      console.log("trying to create game");
+      const createGameFxn = functions.httpsCallable("createGame");
+      try {
+        createGameFxn({
+          gameId: _gameId,
+        }).then(({ data }) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (data.invalidName) {
+            router.push("/", "/");
+          }
+        });
+      } catch (error) {
+        console.error("error", error);
+      }
+    },
+    [functions, router]
+  );
 
   const createPendingGame = useCallback(
     async (_gameId: string) => {
@@ -101,13 +109,16 @@ export const useGame = () => {
         createNewGame(_gameId);
       });
     },
-    [user]
+    [createNewGame, db, user.uid]
   );
 
-  const deleteGame = useCallback(async (_gameId: string) => {
-    const deleteGameFxn = functions.httpsCallable("deleteGame");
-    return deleteGameFxn({ gameId: _gameId });
-  }, []);
+  const deleteGame = useCallback(
+    async (_gameId: string) => {
+      const deleteGameFxn = functions.httpsCallable("deleteGame");
+      return deleteGameFxn({ gameId: _gameId });
+    },
+    [functions]
+  );
 
   const startGame = useCallback(
     (allowNewPlayers = true) => {
@@ -120,7 +131,7 @@ export const useGame = () => {
         .ref(`/publicGames/${gameId}`)
         .update({ gameStartTime, allowNewPlayers });
     },
-    [gameId]
+    [db, gameId]
   );
 
   const setNewAdmin = useCallback(
@@ -128,7 +139,7 @@ export const useGame = () => {
       const newAdminRef = db.ref(`games/${_gameId}/players/${newAdminUid}`);
       newAdminRef.update({ admin: true });
     },
-    []
+    [db]
   );
 
   const endGame = useCallback(
@@ -144,7 +155,7 @@ export const useGame = () => {
       await Promise.all(promises);
       router.push(`/`, `/`);
     },
-    [user]
+    [db, router, user]
   );
 
   const removeMeFromGame = useCallback(
@@ -157,7 +168,7 @@ export const useGame = () => {
       await Promise.all(promises);
       router.push(`/`, `/`);
     },
-    [user]
+    [db, router, user]
   );
 
   const setCurrentOptionsAsDefault = async () => {

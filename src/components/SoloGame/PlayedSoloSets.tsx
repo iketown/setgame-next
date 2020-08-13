@@ -32,7 +32,7 @@ const PlayedSoloSets: React.FC = () => {
   // automatically scroll to top when set is added
   useEffect(() => {
     listRef.current?.scrollTo({ top: 0, left: 0 });
-  }, [listRef.current, sets]);
+  }, [sets]);
 
   return (
     <div

@@ -18,7 +18,7 @@ export const useProfile = (uid?: string): { profile: PlayerProfile } => {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [firestore, uid]);
 
   return { profile };
 };

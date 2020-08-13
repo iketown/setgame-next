@@ -62,7 +62,15 @@ const SoloGame: React.FC = () => {
       }
     };
     loadOrStartGame();
-  }, [query.soloGameId, user]);
+  }, [
+    dispatch,
+    firestore,
+    handleStartGame,
+    query.soloGameId,
+    setIsPlayer,
+    soloDispatch,
+    user,
+  ]);
 
   if (!user) return <PleaseSignIn />;
 

@@ -50,7 +50,7 @@ const FrontPageMediaCard: React.FC<FrontPageMediaCard> = ({
   const router = useRouter();
   useEffect(() => {
     if (clickCardLink) router.prefetch(clickCardLink);
-  }, []);
+  }, [clickCardLink, router]);
   return (
     <Card className={classes.card} style={{ justifyContent: "space-between" }}>
       <CardActionArea

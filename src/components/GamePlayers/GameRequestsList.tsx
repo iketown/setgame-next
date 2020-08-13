@@ -20,7 +20,7 @@ const GameRequestsList: React.FC = () => {
   useEffect(() => {
     if (!isGameAdmin || !gameRequests) return;
     setPlayerIds(Object.keys(gameRequests));
-  }, [gameRequests]);
+  }, [gameRequests, isGameAdmin, setPlayerIds]);
 
   return (
     <>

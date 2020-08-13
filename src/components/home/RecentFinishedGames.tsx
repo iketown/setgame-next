@@ -47,7 +47,7 @@ const RecentFinishedGames: React.FC = () => {
       }
     });
     return () => recentGamesRef.off();
-  }, []);
+  }, [db]);
   const classes = useStyles();
   return (
     <>

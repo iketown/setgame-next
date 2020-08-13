@@ -2,9 +2,8 @@
 /* eslint-disable no-underscore-dangle */
 import FaceDrawing from "@components/faces/FaceDrawing";
 import { useGameCtx } from "@context/game/GameCtx";
-import { Card } from "@material-ui/core";
 import { motion } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 import SetCard from "../cards/SetCard";

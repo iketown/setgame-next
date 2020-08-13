@@ -1,12 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-  AnimateSharedLayout,
-  AnimatePresence,
-  motion,
-  Variants,
-} from "framer-motion";
 import { Typography } from "@material-ui/core";
-import useComponentSize from "@rehooks/component-size";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import React from "react";
 
 const wordVariants: Variants = {
   in: {
@@ -94,21 +88,3 @@ const AnimatedSentence: React.FC<{ cardId: string }> = ({ cardId }) => {
 };
 
 export default AnimatedSentence;
-
-const AnimatedWord: React.FC<{ word: string }> = ({ word }) => {
-  return (
-    <motion.span
-      key={word}
-      style={{
-        // textAlign: "center",
-        // border: "1px solid blue",
-        marginLeft: "1rem",
-      }}
-      exit="exit"
-      animate="in"
-      variants={wordVariants}
-    >
-      <Typography display="inline">{word}</Typography>
-    </motion.span>
-  );
-};

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* */
 import React, { createContext, useContext, useReducer } from "react";
 import { soloGameReducer, initialState } from "./soloGameReducer";
 

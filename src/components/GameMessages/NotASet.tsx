@@ -2,7 +2,7 @@ import { useGameCtx } from "@context/game/GameCtx";
 import { Button, Typography } from "@material-ui/core";
 import { ThumbDown } from "@material-ui/icons";
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Countdown from "react-countdown";
 import styled from "styled-components";
 
@@ -21,12 +21,13 @@ const CardDisplay = styled.div`
 const NotASet: React.FC = () => {
   const { state, dispatch } = useGameCtx();
   const { failSet } = state;
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     dispatch({ type: "FAIL_SET", payload: {} });
-  };
+  }, [dispatch]);
+
   useEffect(() => {
     return handleClose;
-  }, []);
+  }, [handleClose]);
 
   if (!failSet) return null;
 

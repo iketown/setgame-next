@@ -46,7 +46,7 @@ const HomePage: React.FC = () => {
   const { wakeUpFxn } = useGame();
   useEffect(() => {
     wakeUpFxn(["createGame"]);
-  }, []);
+  }, [wakeUpFxn]);
   return (
     <div className={classes.body}>
       <main className={classes.mainArea}>

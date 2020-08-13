@@ -110,9 +110,12 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     }
   }, []);
 
-  const createGame = useCallback(async (_gameId: string) => {
-    createNewGame(_gameId);
-  }, []);
+  const createGame = useCallback(
+    async (_gameId: string) => {
+      createNewGame(_gameId);
+    },
+    [createNewGame]
+  );
 
   useEffect(() => {
     // firebase game controller.
@@ -164,7 +167,7 @@ export const GameCtxProvider: React.FC = ({ children }) => {
     });
 
     return () => gameRef.off("value");
-  }, [db, user, gameId]);
+  }, [db, user, gameId, createGame, updateWithSuccessDelay]);
 
   return (
     <GameCtx.Provider

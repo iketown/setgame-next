@@ -31,7 +31,7 @@ const AnimatedAttrButtons: React.FC<AnimatedAttrButtonsI> = ({
         return old;
       });
     }, 1000);
-  }, [value, intervalRef.current, noAnimation]);
+  }, [noAnimation, setter]);
 
   return (
     <Grid item xs={12} style={{ display: "flex", justifyContent: "center" }}>

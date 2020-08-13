@@ -24,7 +24,7 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
       .filter(([_, { players }]) => players && !!players[user.uid])
       .map(([gameId]) => gameId);
     setMyGames(_myGames);
-  }, [publicGames]);
+  }, [publicGames, user.uid]);
 
   useEffect(() => {
     // listen to public game listings
@@ -33,7 +33,7 @@ export const LobbyCtxProvider: React.FC = ({ children }) => {
     });
 
     return () => db.ref(`publicGames`).off("value");
-  }, []);
+  }, [db]);
 
   return (
     <LobbyCtx.Provider value={{ publicGames, myGames }} {...{ children }} />

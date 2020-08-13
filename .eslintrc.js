@@ -12,7 +12,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint", "react", "prettier"],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "prettier"],
   extends: [
     "airbnb",
     "plugin:@typescript-eslint/recommended",
@@ -23,6 +23,7 @@ module.exports = {
     "prettier",
     "prettier/@typescript-eslint",
     "prettier/react",
+    "plugin:react-hooks/recommended",
   ],
   rules: {
     "react/jsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],
@@ -34,6 +35,7 @@ module.exports = {
     "jsx-a11y/label-has-associated-control": "off",
     "react/no-unescaped-entities": "off",
     "jsx-a11y/accessible-emoji": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
   },
   settings: {
     "import/resolver": {

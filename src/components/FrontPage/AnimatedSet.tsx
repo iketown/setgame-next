@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 import SetCard from "../cards/SetCard";
 
@@ -81,7 +81,7 @@ const AnimatedSet: React.FC<AnimatedSetI> = ({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [setIndex]);
+  }, [setIndex, delay]);
   return (
     <div>
       <ThreeCards>
@@ -93,13 +93,10 @@ const AnimatedSet: React.FC<AnimatedSetI> = ({
 
 export default AnimatedSet;
 
-const CardList = ({
-  set,
-  cardWidth = 80,
-}: {
+const CardList: React.FC<{
   set: string[];
   cardWidth?: number;
-}) => {
+}> = ({ set, cardWidth = 80 }) => {
   const setNum = useRef(0);
   return (
     <>

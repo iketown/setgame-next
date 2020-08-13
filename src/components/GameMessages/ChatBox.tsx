@@ -48,7 +48,7 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
 
   const chatRef = useMemo(() => {
     return db.ref(`/chats/${gameId}`);
-  }, [gameId]);
+  }, [gameId, db]);
 
   useEffect(() => {
     chatRef.on("value", (snap) => {
@@ -72,7 +72,7 @@ const Chat: React.FC<{ allowStrangers?: boolean }> = ({ allowStrangers }) => {
       }
     });
     return () => chatRef.off();
-  }, [chatRef]);
+  }, [chatRef, setUserIds]);
 
   const handleSubmitMessage = ({
     message,

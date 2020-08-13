@@ -55,7 +55,7 @@ const SoloGameOver: React.FC = () => {
         });
     }
     saveSoloGame();
-  }, [user, soloState, gameOver]);
+  }, [user, soloState, gameOver, firestore, query.soloGameId]);
 
   const delayShowGameOver = () => {
     setTimeout(() => {

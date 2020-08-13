@@ -9,6 +9,7 @@ export const useRematch = () => {
   const { gameId } = useGameCtx();
   const [rematch, setRematch] = useState<RematchType>();
   const rematchRef = useMemo(() => db.ref(`/games/${gameId}/rematch`), [
+    db,
     gameId,
   ]);
   useEffect(() => {

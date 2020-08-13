@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/functions";
@@ -48,10 +48,7 @@ if (useLocalEmulators) {
 }
 
 export const FirebaseCtxProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState(null);
-
   const db = firebase.database();
-
   const firestore = firebase.firestore();
   const functions = firebase.functions();
 
@@ -62,5 +59,4 @@ export const FirebaseCtxProvider: React.FC = ({ children }) => {
   );
 };
 
-// Custom hook that shorhands the context!
-export const useFBCtx = () => useContext(FirebaseCtx);
+export const useFBCtx = (): Partial<FirebaseCtxType> => useContext(FirebaseCtx);

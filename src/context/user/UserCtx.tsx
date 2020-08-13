@@ -44,12 +44,12 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     if (!user?.uid) return null;
     const location = router.query?.gameId || router.query?.soloGameId || "?";
     return db.ref(`/status/${user.uid}`).update({ location });
-  }, [router.query, user]);
+  }, [db, router.query?.gameId, router.query?.soloGameId, user.uid]);
 
   useEffect(() => {
     // setLocation when user moves to different games etc.
     setLocation();
-  }, [router, user]);
+  }, [router, setLocation, user]);
 
   useEffect(() => {
     const location = router.query?.gameId || router.query?.soloGameId || "?";
@@ -95,7 +95,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       if (unsubscriber) unsubscriber();
       if (presenceRef.off) presenceRef.off();
     };
-  }, [firebase, router.query]);
+  }, [db, firebase, router.query]);
 
   const handleSignOut = useCallback(async () => {
     const isOffline = {
@@ -107,7 +107,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     }
     firebase.auth().signOut();
     userDispatch({ type: "CLOSE_SETTINGS" });
-  }, [user, db]);
+  }, [firebase, user, db]);
 
   // user profile listener
   useEffect(() => {
@@ -129,7 +129,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       setUserProfile(doc.data());
     });
     return unsub;
-  }, [user]);
+  }, [firestore, user]);
 
   const updateUserPrefs = useCallback(
     async (updateObj: { [key: string]: string | number }) => {
@@ -141,7 +141,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       const response = await userProfileRef.set(updateObj, { merge: true });
       return response;
     },
-    [user]
+    [firestore, user.uid]
   );
   return (
     <UserCtx.Provider

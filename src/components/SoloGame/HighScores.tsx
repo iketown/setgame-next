@@ -55,7 +55,7 @@ const HighScores: React.FC = () => {
       }
     });
     return () => hsRef.off("value");
-  }, []);
+  }, [db, setUserIds]);
   return (
     <Card className={classes.card}>
       <List className={classes.list}>

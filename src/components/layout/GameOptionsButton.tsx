@@ -29,7 +29,7 @@ const GameOptionsButton: React.FC<{ gameId: string }> = ({ gameId }) => {
     return () => {
       playerRef.off();
     };
-  }, [gameId]);
+  }, [gameId, db]);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };

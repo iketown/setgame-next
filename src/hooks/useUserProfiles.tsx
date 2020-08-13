@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable consistent-return */
@@ -28,7 +27,7 @@ export const useUserProfiles = () => {
     return () => {
       userListeners.forEach((unsub) => unsub());
     };
-  }, [userIds]);
+  }, [userIds, fs]);
 
   return { userProfiles, setUserIds, userIds };
 };

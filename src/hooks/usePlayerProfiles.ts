@@ -2,8 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 import { useFBCtx } from "@context/firebase/firebaseCtx";
-import { useEffect, useMemo, useState } from "react";
-import { firestore } from "firebase";
+import { useEffect, useState } from "react";
 
 export const usePlayerProfiles = (gameId: string) => {
   const { db, firestore: fs } = useFBCtx();
@@ -21,7 +20,7 @@ export const usePlayerProfiles = (gameId: string) => {
       setPlayers(snap.val());
     });
     return () => playersRef.off("value");
-  }, [gameId]);
+  }, [gameId, db]);
 
   useEffect(() => {
     if (!fs || !players) return;
@@ -38,7 +37,7 @@ export const usePlayerProfiles = (gameId: string) => {
     return () => {
       playerListeners.forEach((unsub) => unsub());
     };
-  }, [players]);
+  }, [players, fs]);
 
   return { players, playerProfiles };
 };

@@ -18,7 +18,7 @@ const PlayedSets: React.FC = () => {
   // automatically scroll to top when set is added
   useEffect(() => {
     listRef.current?.scrollTo({ top: 0, left: 0 });
-  }, [listRef.current, playedSets]);
+  }, [playedSets]);
 
   const setsInOrder = useMemo(() => {
     if (!playedSets) return null;

@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 // from https://usehooks.com/useEventListener/
-let _window;
+let _window: Window & typeof globalThis;
 if (typeof window !== "undefined") _window = window;
 
 // Hook
-function useEventListener(eventName, handler, element = _window) {
+function useEventListener(
+  eventName: string,
+  handler: { (e: any): void; (e: any): void },
+  element = _window
+) {
   // Create a ref that stores handler
   const savedHandler = useRef(null);
 
@@ -18,10 +23,6 @@ function useEventListener(eventName, handler, element = _window) {
     savedHandler.current = handler;
   }, [handler]);
 
-  useEffect(() => {
-    console.log("element", element);
-  }, [element]);
-
   useEffect(
     () => {
       // Make sure element supports addEventListener
@@ -30,7 +31,7 @@ function useEventListener(eventName, handler, element = _window) {
       if (!isSupported) return;
 
       // Create event listener that calls handler function stored in ref
-      const eventListener = (event) =>
+      const eventListener = (event: any) =>
         savedHandler.current && savedHandler.current(event);
 
       // Add event listener
