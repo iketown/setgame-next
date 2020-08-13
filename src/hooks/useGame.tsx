@@ -109,7 +109,7 @@ export const useGame = () => {
         createNewGame(_gameId);
       });
     },
-    [createNewGame, db, user.uid]
+    [createNewGame, db, user?.uid]
   );
 
   const deleteGame = useCallback(

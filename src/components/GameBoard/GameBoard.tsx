@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useRef } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import {
   GridContextProvider,
   GridDropZone,
@@ -9,12 +9,14 @@ import {
 } from "react-grid-dnd";
 import { useCards } from "@hooks/useCards";
 import { useGameCtx } from "@context/game/GameCtx";
+import useScrollBlock from "@hooks/useScrollBlock";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
 import GameProgressLine from "./GameProgressLine";
 
 const GameBoard: React.FC = () => {
   const { state, dispatch } = useGameCtx();
+  const [blockScroll, allowScroll] = useScrollBlock();
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const { boardCards } = state;
   const {
@@ -70,8 +72,10 @@ const GameBoard: React.FC = () => {
                 <GridItem
                   key={cardId}
                   id={cardId}
-                  onMouseDownCapture={(e) => handleClickCard(e, cardId)}
-                  onDoubleClick={() => handleDoubleClick(cardId)}
+                  onClick={(e) => handleClickCard(e, cardId)}
+                  onTouchStart={() => blockScroll()}
+                  onTouchEnd={() => allowScroll()}
+                  // onDoubleClick={() => handleDoubleClick(cardId)}
                 >
                   <GameBoardCard {...{ cardId, cardIndex }} />
                 </GridItem>
@@ -82,6 +86,10 @@ const GameBoard: React.FC = () => {
         <Grid item xs={12} style={{ textAlign: "center" }}>
           <GameProgressLine cardsLeft={state.deckCards.length} />
         </Grid>
+        {/* <Grid item xs={12}>
+          <Button onClick={blockScroll}>block</Button>
+          <Button onClick={allowScroll}>allow</Button>
+        </Grid> */}
       </Grid>
     </GridContextProvider>
   );

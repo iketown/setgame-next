@@ -44,7 +44,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
     if (!user?.uid) return null;
     const location = router.query?.gameId || router.query?.soloGameId || "?";
     return db.ref(`/status/${user.uid}`).update({ location });
-  }, [db, router.query?.gameId, router.query?.soloGameId, user.uid]);
+  }, [db, router.query?.gameId, router.query?.soloGameId, user?.uid]);
 
   useEffect(() => {
     // setLocation when user moves to different games etc.
@@ -141,7 +141,7 @@ export const UserCtxProvider: React.FC = ({ children }) => {
       const response = await userProfileRef.set(updateObj, { merge: true });
       return response;
     },
-    [firestore, user.uid]
+    [firestore, user?.uid]
   );
   return (
     <UserCtx.Provider

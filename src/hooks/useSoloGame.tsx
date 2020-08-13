@@ -35,7 +35,7 @@ export const useSoloGame = () => {
       if (!user?.uid) return;
       firestore.doc(`users/${user.uid}/savedSoloGames/${gameId}`).delete();
     },
-    [firestore, user.uid]
+    [firestore, user?.uid]
   );
 
   const handleStartGame = (specialDeck?: string[]) => {

@@ -106,11 +106,11 @@ const Game = () => {
           </Hidden>
         </Grid>
         <Grid container item xs={12} md={3} alignContent="flex-start">
-          <Grid item xs={6} md={12}>
+          <Grid item xs={12} sm={6} md={12}>
             <GamePlayers verticalOnly />
             <GameRequests />
           </Grid>
-          <Grid item xs={6} md={12}>
+          <Grid item xs={12} sm={6} md={12}>
             <PlayedSets />
           </Grid>
           <Hidden mdUp>
