@@ -9,14 +9,12 @@ import {
 } from "react-grid-dnd";
 import { useCards } from "@hooks/useCards";
 import { useGameCtx } from "@context/game/GameCtx";
-import useScrollBlock from "@hooks/useScrollBlock";
 import GameBoardCard from "./GameBoardCard";
 import CheatButtons from "./CheatButtons";
 import GameProgressLine from "./GameProgressLine";
 
 const GameBoard: React.FC = () => {
   const { state, dispatch } = useGameCtx();
-  const [blockScroll, allowScroll] = useScrollBlock();
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const { boardCards } = state;
   const {
@@ -73,8 +71,8 @@ const GameBoard: React.FC = () => {
                   key={cardId}
                   id={cardId}
                   onClick={(e) => handleClickCard(e, cardId)}
-                  onTouchStart={() => blockScroll()}
-                  onTouchEnd={() => allowScroll()}
+                  // onTouchStart={() => blockScroll()}
+                  // onTouchEnd={() => allowScroll()}
                   // onDoubleClick={() => handleDoubleClick(cardId)}
                 >
                   <GameBoardCard {...{ cardId, cardIndex }} />

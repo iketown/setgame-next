@@ -19,7 +19,7 @@ export const useSoloGame = () => {
   const { firestore, functions } = useFBCtx();
   const { push, query } = useRouter();
 
-  const handleSaveGame = async () => {
+  const handleSaveGame = useCallback(async () => {
     if (!user.uid) return;
     const soloGameId = query.soloGameId as string;
     const { boardCards, deckCards } = state;
@@ -28,7 +28,7 @@ export const useSoloGame = () => {
     );
     await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
     push("/", "/");
-  };
+  }, [firestore, push, query.soloGameId, soloState, state, user?.uid]);
 
   const deleteSavedGame = useCallback(
     (gameId: string) => {
@@ -38,8 +38,8 @@ export const useSoloGame = () => {
     [firestore, user?.uid]
   );
 
-  const handleStartGame = (specialDeck?: string[]) => {
-    const deck = specialDeck || getMixedDeck();
+  const handleStartGame = useCallback(() => {
+    const deck = getMixedDeck();
     let boardCards = deck.slice(0, 12);
     let deckCards = deck.slice(12);
     for (let i = 0; !getSets(boardCards).length; i += 3) {
@@ -64,7 +64,7 @@ export const useSoloGame = () => {
       type: "LATEST_SET_TIME",
       payload: { latestSetTime: moment().add(1, "second").format() },
     });
-  };
+  }, [dispatch, setIsPlayer, soloDispatch]);
 
   const submitSetApi = useCallback(
     ({ mySet }: { mySet: string[] }) => {
