@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-param-reassign */
 require("dotenv").config();
 const withSourceMaps = require("@zeit/next-source-maps")();
