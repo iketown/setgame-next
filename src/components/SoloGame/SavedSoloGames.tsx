@@ -42,7 +42,7 @@ const SavedSoloGames: React.FC = () => {
       const _savedGames: SavedGame[] = [];
       snap.forEach((doc) => {
         // @ts-ignore
-        _savedGames.push(doc.data());
+        _savedGames.push({ gameId: doc.id, ...doc.data() });
       });
       setSavedGames(_savedGames);
     });

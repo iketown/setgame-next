@@ -2,7 +2,6 @@ export const initialState: SoloGameState = {
   sets: [],
   latestSetTime: "",
   bonusPoints: 6,
-  gameId: "",
   points: 0,
 };
 
@@ -35,11 +34,6 @@ export const soloGameReducer = (
     case "PUNISH_SCORE": {
       const { points } = state;
       return { ...state, points: points - 3 };
-    }
-    case "SET_GAMEID": {
-      const { gameId } = action.payload;
-      if (typeof gameId !== "string") return state;
-      return { ...initialState, gameId };
     }
     case "LOAD_GAME": {
       const { soloGameState } = action.payload;

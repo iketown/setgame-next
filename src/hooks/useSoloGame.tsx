@@ -19,21 +19,28 @@ export const useSoloGame = () => {
   const { firestore, functions } = useFBCtx();
   const { push, query } = useRouter();
 
-  const handleSaveGame = useCallback(async () => {
-    if (!user.uid) return;
-    const soloGameId = query.soloGameId as string;
-    const { boardCards, deckCards } = state;
-    const gameRef = firestore.doc(
-      `users/${user.uid}/savedSoloGames/${soloGameId}`
-    );
-    await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
-    push("/", "/");
-  }, [firestore, push, query.soloGameId, soloState, state, user?.uid]);
+  const handleSaveGame = useCallback(
+    async (_soloGameId: string) => {
+      if (!user?.uid) return;
+      const { boardCards, deckCards } = state;
+      console.log("saving game", _soloGameId);
+      const gameRef = firestore.doc(
+        `users/${user.uid}/savedSoloGames/${_soloGameId}`
+      );
+      await gameRef.set({ ...soloState, gameState: { boardCards, deckCards } });
+      push("/", "/");
+    },
+    [firestore, push, soloState, state, user?.uid]
+  );
 
   const deleteSavedGame = useCallback(
     (gameId: string) => {
-      if (!user?.uid) return;
-      firestore.doc(`users/${user.uid}/savedSoloGames/${gameId}`).delete();
+      console.log("deleting", gameId);
+      if (!user?.uid) {
+        console.log("missing", user);
+        return;
+      }
+      firestore.doc(`/users/${user.uid}/savedSoloGames/${gameId}`).delete();
     },
     [firestore, user?.uid]
   );

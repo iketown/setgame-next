@@ -2,7 +2,6 @@ type SoloGameState = {
   sets: { points: number; set: string[]; time: string }[];
   latestSetTime: string;
   bonusPoints: number;
-  gameId: string;
   points: number;
 };
 
@@ -11,7 +10,6 @@ type SoloGameActionType =
   | "LATEST_SET_TIME"
   | "ADD_SET_TO_SCORE"
   | "PUNISH_SCORE"
-  | "SET_GAMEID"
   | "LOAD_GAME";
 
 interface SoloGamePayload {
@@ -19,7 +17,6 @@ interface SoloGamePayload {
   latestSetTime?: string;
   time?: string;
   set?: string[];
-  gameId?: string;
   soloGameState?: SoloGameState;
 }
 interface SoloGameAction {

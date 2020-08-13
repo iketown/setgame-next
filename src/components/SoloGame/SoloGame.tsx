@@ -24,25 +24,22 @@ const SoloGame: React.FC = () => {
   const { query } = useRouter();
   const { user } = useUserCtx();
   const { dispatch, setIsPlayer } = useGameCtx();
-  const { soloDispatch } = useSoloGameCtx();
+  const { soloDispatch, soloState } = useSoloGameCtx();
   const { handleStartGame, handleSaveGame } = useSoloGame();
   const { firestore } = useFBCtx();
   const [fullScreen, setFullScreen] = useState(false);
 
+  const gameId = query.soloGameId as string;
+
   useEffect(() => {
     if (!user?.uid) return;
-    const gameId = query.soloGameId as string;
-    soloDispatch({
-      type: "SET_GAMEID",
-      payload: { gameId },
-    });
+
     const loadOrStartGame = async () => {
       //@ts-ignore
       const savedGame: SavedGame | null = await firestore
         .doc(`/users/${user.uid}/savedSoloGames/${gameId}`)
         .get()
         .then((doc) => doc.data());
-      console.log("savedGame", savedGame);
       if (savedGame) {
         const { gameState, ...soloGameState } = savedGame;
         setIsPlayer(true);
@@ -56,8 +53,10 @@ const SoloGame: React.FC = () => {
             sets: { length: sets.length, sets },
           },
         });
+        console.log("LOADING SAVED GAME");
         soloDispatch({ type: "LOAD_GAME", payload: { soloGameState } });
       } else {
+        console.log("STARTING NEW GAME");
         handleStartGame();
       }
     };
@@ -65,8 +64,8 @@ const SoloGame: React.FC = () => {
   }, [
     dispatch,
     firestore,
+    gameId,
     handleStartGame,
-    query.soloGameId,
     setIsPlayer,
     soloDispatch,
     user,
@@ -135,9 +134,17 @@ const SoloGame: React.FC = () => {
               quit
             </Button>
           </Link>
-          <Button variant="outlined" color="primary" onClick={handleSaveGame}>
-            Save & quit
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              handleSaveGame(gameId);
+            }}
+          >
+            Save & quit {gameId}
           </Button>
+          <pre>gameId: {gameId}</pre>
+          <pre>soloStateId: {soloState.gameId}</pre>
         </Box>
       </Grid>
       <Grid
