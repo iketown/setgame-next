@@ -32,7 +32,7 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": [, "pages/_error.jsx"
+  "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
