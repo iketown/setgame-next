@@ -9,7 +9,7 @@ import { UserCtxProvider } from "@context/user/UserCtx";
 import theme from "../src/theme";
 import "./fonts.css";
 // Custom App to wrap it with context provider
-
+// https://leerob.io/blog/configuring-sentry-for-nextjs-apps
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     enabled: process.env.NODE_ENV === "production",

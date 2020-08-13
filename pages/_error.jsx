@@ -2,8 +2,9 @@
 /* eslint-disable spaced-comment */
 import NextErrorComponent from "next/error";
 import * as Sentry from "@sentry/node";
+import React from "react";
 
-const Error = ({ statusCode, hasGetInitialPropsRun, err }) => {
+const ErrorPage = ({ statusCode, hasGetInitialPropsRun, err }) => {
   if (!hasGetInitialPropsRun && err) {
     // getInitialProps is not called in case of
     // https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
@@ -14,7 +15,7 @@ const Error = ({ statusCode, hasGetInitialPropsRun, err }) => {
   return <NextErrorComponent statusCode={statusCode} />;
 };
 
-Error.getInitialProps = async ({ res, err, asPath }) => {
+ErrorPage.getInitialProps = async ({ res, err, asPath }) => {
   const errorInitialProps = await NextErrorComponent.getInitialProps({
     res,
     err,
@@ -51,7 +52,6 @@ Error.getInitialProps = async ({ res, err, asPath }) => {
   // information about what the error might be. This is unexpected and may
   // indicate a bug introduced in Next.js, so record it in Sentry
   Sentry.captureException(
-    //@ts-ignore
     new Error(`_error.js getInitialProps missing data at path: ${asPath}`)
   );
   await Sentry.flush(2000);
@@ -59,4 +59,4 @@ Error.getInitialProps = async ({ res, err, asPath }) => {
   return errorInitialProps;
 };
 
-export default Error;
+export default ErrorPage;
