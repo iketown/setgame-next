@@ -20,7 +20,7 @@
     "@types/mdx-js__react": "1.5.2",
     "@types/shortid": "0.0.29",
     "@zeit/next-source-maps": "0.0.4-canary.1",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "final-form": "4.20.1",
     "firebase": "7.11.0",
     "framer-motion": "2.1.0",
